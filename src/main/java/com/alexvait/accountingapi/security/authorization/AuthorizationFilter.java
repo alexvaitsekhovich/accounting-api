@@ -1,7 +1,10 @@
 package com.alexvait.accountingapi.security.authorization;
 
 import com.alexvait.accountingapi.security.config.SecurityConstants;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Slf4j
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     public AuthorizationFilter(AuthenticationManager authenticationManager) {
@@ -34,17 +38,22 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(req, resp);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req, String authHeader) {
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req, String authHeader) throws JwtException {
 
         authHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
-        String user = Jwts.parser()
-                .setSigningKey(SecurityConstants.getTokenSecret())
-                .parseClaimsJws(authHeader)
-                .getBody()
-                .getSubject();
 
-        if (user != null) {
-            return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+        try {
+            String user = Jwts.parser()
+                    .setSigningKey(SecurityConstants.getTokenSecret())
+                    .parseClaimsJws(authHeader)
+                    .getBody()
+                    .getSubject();
+            if (user != null) {
+                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            }
+        }
+        catch (ExpiredJwtException ex) {
+            log.error(ex.getMessage());
         }
 
         return null;

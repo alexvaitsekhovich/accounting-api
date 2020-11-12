@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.security.config;
 
-import com.alexvait.accountingapi.security.controller.UserController;
+import com.alexvait.accountingapi.usermanagement.controller.UserController;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
 import com.alexvait.accountingapi.security.utils.PropertiesReader;
 

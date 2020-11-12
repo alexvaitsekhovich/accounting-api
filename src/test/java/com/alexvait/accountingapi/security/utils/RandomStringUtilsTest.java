@@ -13,21 +13,34 @@ class RandomStringUtilsTest {
 
     @Test
     @DisplayName("Test alphabetic string generation")
-    void randomAlphabetic() {
+    void testRandomAlphabetic() {
         int length = 300;
         String randomString = RandomStringUtils.randomAlphabetic(length);
+        String randomString2 = RandomStringUtils.randomAlphabetic(length);
 
         assertEquals(length, randomString.length());
+        assertEquals(length, randomString2.length());
+
         assertTrue(randomString.matches(onlyCharsRegexp));
+        assertTrue(randomString2.matches(onlyCharsRegexp));
+
+        assertNotEquals(randomString2, randomString);
     }
 
     @Test
     @DisplayName("Test alphanumeric string generation")
-    void randomAlphanumeric() {
+    void testRandomAlphanumeric() {
         int length = 300;
         String randomString = RandomStringUtils.randomAlphanumeric(length);
+        String randomString2 = RandomStringUtils.randomAlphanumeric(length);
 
         assertEquals(length, randomString.length());
+        assertEquals(length, randomString2.length());
+
         assertTrue(randomString.matches(digitsAndCharsRegexp));
+        assertTrue(randomString2.matches(digitsAndCharsRegexp));
+
+        assertNotEquals(randomString2, randomString);
     }
+
 }

@@ -13,13 +13,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
-@Profile("!testing")
-public class WebSecurity extends WebSecurityConfigurerAdapter {
+@Profile("testing")
+public class WebSecurityAllowAll extends WebSecurityConfigurerAdapter {
 
     private final UserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public WebSecurity(UserService userDetailsService, PasswordEncoder passwordEncoder) {
+    public WebSecurityAllowAll(UserService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -31,21 +31,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, SecurityConstants.SIGNUP_URL).permitAll()
-                .anyRequest().authenticated().and()
-                .addFilter(getAuthenticationFilter())
-                .addFilter(new AuthorizationFilter(authenticationManager()));
+                .anyRequest().permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
-
-    private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
-        filter.setFilterProcessesUrl(SecurityConstants.LOGIN_URL);
-        return filter;
-    }
-
 }

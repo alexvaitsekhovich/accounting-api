@@ -1,9 +1,9 @@
 package com.alexvait.accountingapi.security.authentication;
 
 import com.alexvait.accountingapi.security.config.SecurityConstants;
-import com.alexvait.accountingapi.security.model.dto.UserDto;
-import com.alexvait.accountingapi.security.model.request.UserLoginRequestModel;
-import com.alexvait.accountingapi.security.service.UserService;
+import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
+import com.alexvait.accountingapi.usermanagement.model.request.UserLoginRequestModel;
+import com.alexvait.accountingapi.usermanagement.service.UserService;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
