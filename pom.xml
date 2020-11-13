@@ -155,6 +155,10 @@
                         <exclude>**/UserCreateRequestModel*</exclude>
                         <exclude>**/UserLoginRequestModel*</exclude>
                         <exclude>**/UserUpdateRequestModel*</exclude>
+                        <exclude>**/UserResponseModel*</exclude>
+                        <exclude>**/UserResponseModel*</exclude>
+                        <exclude>**/AccountingApiApplication*</exclude>
+                        <exclude>**/model/dto/*</exclude>
                         <exclude>**/security/**/*</exclude>
                     </excludes>
                 </configuration>
