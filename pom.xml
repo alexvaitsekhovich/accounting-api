@@ -152,6 +152,9 @@
                 <configuration>
                     <excludes>
                         <exclude>**/SecurityConstants*</exclude>
+                        <exclude>**/UserCreateRequestModel*</exclude>
+                        <exclude>**/UserLoginRequestModel*</exclude>
+                        <exclude>**/UserUpdateRequestModel*</exclude>
                         <exclude>**/security/**/*</exclude>
                     </excludes>
                 </configuration>
