@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
+import com.alexvait.accountingapi.usermanagement.exception.ControllerExceptionHandler;
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
@@ -9,8 +10,12 @@ import com.alexvait.accountingapi.usermanagement.model.response.UserResponseMode
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,11 +36,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
+@ExtendWith(MockitoExtension.class)
 @DisplayName("Test User controller with mockMvc")
 @ActiveProfiles("testing")
-class UserControllerSpringMVCTestIT {
+class UserControllerSpringMVCTest {
 
+    /*
     @Autowired
     private MockMvc mockMvc;
 
@@ -45,6 +52,25 @@ class UserControllerSpringMVCTestIT {
     private PasswordEncoder passwordEncoder;
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
+*/
+
+
+    @Mock
+    private UserService userService;
+
+    private ObjectMapper jsonMapper;
+
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        jsonMapper = new ObjectMapper();
+
+        UserController userController = new UserController(userService);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
+    }
 
     @Test
     @DisplayName("Test get user")
@@ -111,7 +137,6 @@ class UserControllerSpringMVCTestIT {
                 .andExpect(jsonPath("$.firstName").value(userDto.getFirstName()))
                 .andExpect(jsonPath("$.lastName").value(userDto.getLastName()))
                 .andExpect(jsonPath("$.email").value(userDto.getEmail()))
-                .andExpect(jsonPath("$._links.self").isMap())
                 .andReturn();
 
         EntityModel<UserResponseModel> returnedEntity = jsonMapper.readValue(
@@ -167,7 +192,6 @@ class UserControllerSpringMVCTestIT {
                 .andExpect(jsonPath("$.firstName").value(userDto.getFirstName()))
                 .andExpect(jsonPath("$.lastName").value(userDto.getLastName()))
                 .andExpect(jsonPath("$.email").value(userDto.getEmail()))
-                .andExpect(jsonPath("$._links.self").isMap())
                 .andReturn();
 
         EntityModel<UserResponseModel> returnedEntity = jsonMapper.readValue(
