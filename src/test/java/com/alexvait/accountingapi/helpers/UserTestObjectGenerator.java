@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.helpers;
 
-import com.alexvait.accountingapi.security.utils.RandomStringUtils;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;

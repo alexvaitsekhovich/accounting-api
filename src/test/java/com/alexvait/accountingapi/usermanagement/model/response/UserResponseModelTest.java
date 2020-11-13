@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.usermanagement.model.response;
 
-import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

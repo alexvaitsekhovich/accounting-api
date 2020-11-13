@@ -152,6 +152,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/SecurityConstants*</exclude>
+                        <exclude>**/security/**/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

@@ -1,7 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.model.response;
 
 import com.alexvait.accountingapi.accounting.controller.InvoiceController;
-import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
 import com.alexvait.accountingapi.usermanagement.controller.UserController;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class HateoasBuilder {
+public class HateoasBuilderUtil {
 
     public static EntityModel<UserResponseModel> getUserResponseModelHateoasFromDto(UserDto userDto) {
 

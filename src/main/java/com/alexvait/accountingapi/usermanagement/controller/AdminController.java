@@ -1,7 +1,7 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
-import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilder;
+import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilderUtil;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.springframework.hateoas.CollectionModel;
@@ -43,6 +43,6 @@ public class AdminController {
     }
 
     private EntityModel<UserResponseModel> userDtoToResponseModelHateoas(UserDto userDto) {
-        return HateoasBuilder.getUserResponseModelHateoasFromDto(userDto);
+        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
     }
 }

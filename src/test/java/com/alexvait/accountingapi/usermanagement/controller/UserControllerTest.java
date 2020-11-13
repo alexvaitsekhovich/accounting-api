@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.usermanagement.exception.OperationResponse;
+import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;

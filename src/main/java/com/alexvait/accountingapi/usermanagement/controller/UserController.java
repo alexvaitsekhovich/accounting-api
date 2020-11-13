@@ -1,11 +1,11 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.usermanagement.exception.OperationResponse;
+import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
-import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilder;
+import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilderUtil;
 import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
@@ -31,7 +31,7 @@ public class UserController {
     public EntityModel<UserResponseModel> getUser(@PathVariable String publicId) {
 
         UserDto userDto = userService.getUserByPublicId(publicId);
-        return HateoasBuilder.getUserResponseModelHateoasFromDto(userDto);
+        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
     }
 
     @PostMapping
@@ -40,7 +40,7 @@ public class UserController {
 
         UserDto createdUserDto = userService.createUser(userMapper.userCreateRequestModelToDto(userReqModel));
 
-        return HateoasBuilder.getUserResponseModelHateoasFromDto(createdUserDto);
+        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(createdUserDto);
     }
 
     @PutMapping("/{publicId}")
@@ -50,15 +50,13 @@ public class UserController {
 
         UserDto createdUserDto = userService.updateUser(publicId, userDto);
 
-        return HateoasBuilder.getUserResponseModelHateoasFromDto(createdUserDto);
+        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(createdUserDto);
     }
 
     @DeleteMapping("/{publicId}")
     public OperationResponse deleteUser(@PathVariable String publicId) {
 
         userService.deleteUserByPublicId(publicId);
-        OperationResponse operationResponse = new OperationResponse(ResponseOperationState.SUCCESS, HttpStatus.OK);
-
-        return operationResponse;
+        return new OperationResponse(ResponseOperationState.SUCCESS, HttpStatus.OK);
     }
 }

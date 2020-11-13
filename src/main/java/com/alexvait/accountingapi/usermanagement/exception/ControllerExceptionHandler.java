@@ -1,6 +1,7 @@
 package com.alexvait.accountingapi.usermanagement.exception;
 
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
+import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
