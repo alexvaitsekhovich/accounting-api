@@ -1,15 +1,13 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
+import com.alexvait.accountingapi.usermanagement.exception.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
-import com.alexvait.accountingapi.usermanagement.model.request.RequestOperations;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
-import com.alexvait.accountingapi.usermanagement.model.response.OperationResponseModel;
-import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationStates;
+import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
@@ -38,13 +37,9 @@ class UserControllerTest {
 
     UserMapper userMapper = UserMapper.INSTANCE;
 
-    @BeforeEach
-    void setUp() {
-    }
-
     @Test
     @DisplayName("Test get user")
-    void getUser() {
+    void testGetUser() {
         // arrange
         UserDto userDto = createTestUserDto();
         when(userService.getUserByPublicId(anyString())).thenReturn(userDto);
@@ -58,8 +53,20 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("Test get user not found")
+    void testGetUserNotFound() {
+        // arrange
+        when(userService.getUserByPublicId(anyString())).thenThrow(new UsernameNotFoundException(""));
+
+        // act, assert
+        assertThrows(UsernameNotFoundException.class, () -> userController.getUser("1"));
+        verify(userService, times(1)).getUserByPublicId(anyString());
+    }
+
+
+    @Test
     @DisplayName("Test create user")
-    void createUser() {
+    void testCreateUser() {
         // arrange
         UserDto userDto = createTestUserDto();
         when(userService.createUser(any(UserDto.class))).thenReturn(userDto);
@@ -74,7 +81,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test update user")
-    void updateUser() {
+    void testUpdateUser() {
         // arrange
         UserDto userDto = createTestUserDto();
         when(userService.updateUser(anyString(), any(UserDto.class))).thenReturn(userDto);
@@ -89,21 +96,21 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Test delete user")
-    void deleteUser() {
+    void testDeleteUser() {
         // arrange
 
         // act
-        OperationResponseModel operationResponse = userController.deleteUser("x");
+        OperationResponse operationResponse = userController.deleteUser("x");
 
         //assert
         verify(userService, times(1)).deleteUserByPublicId(anyString());
-        assertEquals(RequestOperations.DELETE, operationResponse.getOperation());
-        assertEquals(ResponseOperationStates.SUCCESS, operationResponse.getResult());
+        assertEquals(HttpStatus.OK, operationResponse.getHttpStatus());
+        assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState());
     }
 
     @Test
-    @DisplayName("Test delete user when no user found")
-    void deleteUserNotFound() {
+    @DisplayName("Test delete user when no user was found")
+    void testDeleteUserNotFound() {
         // arrange
         doThrow(new UsernameNotFoundException("")).when(userService).deleteUserByPublicId(anyString());
 

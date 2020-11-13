@@ -1,16 +1,16 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
+import com.alexvait.accountingapi.usermanagement.exception.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
-import com.alexvait.accountingapi.usermanagement.model.request.RequestOperations;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilder;
-import com.alexvait.accountingapi.usermanagement.model.response.OperationResponseModel;
-import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationStates;
+import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,6 +35,7 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public EntityModel<UserResponseModel> createUser(@RequestBody UserCreateRequestModel userReqModel) {
 
         UserDto createdUserDto = userService.createUser(userMapper.userCreateRequestModelToDto(userReqModel));
@@ -53,12 +54,10 @@ public class UserController {
     }
 
     @DeleteMapping("/{publicId}")
-    public OperationResponseModel deleteUser(@PathVariable String publicId) {
-
-        OperationResponseModel operationResponse = new OperationResponseModel(RequestOperations.DELETE);
+    public OperationResponse deleteUser(@PathVariable String publicId) {
 
         userService.deleteUserByPublicId(publicId);
-        operationResponse.setResult(ResponseOperationStates.SUCCESS);
+        OperationResponse operationResponse = new OperationResponse(ResponseOperationState.SUCCESS, HttpStatus.OK);
 
         return operationResponse;
     }

@@ -21,4 +21,9 @@ public interface UserMapper {
     UserEntity userDtoToEntity(UserDto userDto);
 
     UserResponseModel userDtoToResponseModel(UserDto userDto);
+
+    UserCreateRequestModel userDtoToUserCreateRequestModel(UserDto userDto);
+
+    UserUpdateRequestModel userDtoToUserUpdateRequestModel(UserDto userDto);
+
 }

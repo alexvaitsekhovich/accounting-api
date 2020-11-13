@@ -1,5 +1,5 @@
 package com.alexvait.accountingapi.usermanagement.model.response;
 
-public enum ResponseOperationStates {
+public enum ResponseOperationState {
     FAILURE, SUCCESS
 }
