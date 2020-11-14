@@ -1,18 +1,15 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
 import com.alexvait.accountingapi.security.config.SecurityConstants;
-import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilderUtil;
-import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

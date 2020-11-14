@@ -1,14 +1,7 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
 import com.alexvait.accountingapi.usermanagement.exception.ControllerExceptionHandler;
-import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
-import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
-import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
-import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
-import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
-import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,19 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
