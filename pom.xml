@@ -156,10 +156,8 @@
                 <version>0.8.5</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/SecurityConstants*</exclude>
                         <exclude>**/AccountingApiApplication*</exclude>
                         <exclude>**/bootstrap/*</exclude>
-                        <exclude>**/model/dto/*</exclude>
                         <exclude>**/security/**/*</exclude>
                     </excludes>
                 </configuration>
