@@ -41,20 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("testing")
 class UserControllerSpringMVCTest {
 
-    /*
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private UserService userService;
-
-    @MockBean
-    private PasswordEncoder passwordEncoder;
-
-    private final ObjectMapper jsonMapper = new ObjectMapper();
-*/
-
-
     @Mock
     private UserService userService;
 
@@ -224,44 +210,5 @@ class UserControllerSpringMVCTest {
                 .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"));
 
         verify(userService, times(1)).updateUser(anyString(), any(UserDto.class));
-    }
-
-    @Test
-    @DisplayName("Test delete user")
-    void testDeleteUser() throws Exception {
-        // arrange
-
-        // act
-        mockMvc.perform(delete(UserController.BASE_URL + "/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.details.status").value("200"))
-                .andExpect(jsonPath("$.responseState").value("SUCCESS"))
-                .andExpect(jsonPath("$.httpStatus").value("OK"));
-
-        // assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
-    }
-
-    @Test
-    @DisplayName("Test delete user when no user was found")
-    void testDeleteUserNotFound() throws Exception {
-        // arrange
-        doThrow(new UsernameNotFoundException("")).when(userService).deleteUserByPublicId(anyString());
-
-        // act
-        mockMvc.perform(delete(UserController.BASE_URL + "/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.details.status").value("400"))
-                .andExpect(jsonPath("$.responseState").value("FAILURE"))
-                .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"));
-
-        // assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
     }
 }

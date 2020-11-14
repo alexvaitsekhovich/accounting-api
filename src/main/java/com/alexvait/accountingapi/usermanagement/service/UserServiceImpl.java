@@ -1,5 +1,7 @@
 package com.alexvait.accountingapi.usermanagement.service;
 
+import com.alexvait.accountingapi.security.entity.RoleEntity;
+import com.alexvait.accountingapi.security.repository.RoleRepository;
 import com.alexvait.accountingapi.security.utils.RandomStringUtils;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
@@ -7,13 +9,11 @@ import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,11 +22,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = UserMapper.INSTANCE;
     }
@@ -44,10 +46,16 @@ public class UserServiceImpl implements UserService {
         userEntity.setPublicId(RandomStringUtils.randomAlphanumeric(40));
         userEntity.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        UserEntity savedUser = userRepository.save(userEntity);
-        UserDto savedUserDto = userMapper.userEntityToDto(savedUser);
+        Collection<RoleEntity> roleEntities = userDto.getRoles().stream()
+                .map(roleRepository::findByName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
-        return savedUserDto;
+        userEntity.setRoles(roleEntities);
+
+        UserEntity savedUser = userRepository.save(userEntity);
+
+        return userMapper.userEntityToDto(savedUser);
     }
 
     @Override
@@ -104,16 +112,5 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> entitiesPage = userRepository.findAll(PageRequest.of(page, size)).getContent();
 
         return entitiesPage.stream().map(userMapper::userEntityToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        UserEntity userEntity = userRepository.findByEmail(email);
-
-        if (null == userEntity)
-            throw new UsernameNotFoundException(email);
-
-        return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
     }
 }

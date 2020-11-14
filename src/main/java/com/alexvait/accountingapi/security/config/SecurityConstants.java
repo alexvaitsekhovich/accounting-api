@@ -14,6 +14,13 @@ public class SecurityConstants {
     public static final String SIGNUP_URL = UserController.BASE_URL;
     public static final String LOGIN_URL = "/gettoken";
 
+    public static final String READ_AUTHORITY = "CAN_READ";
+    public static final String WRITE_AUTHORITY = "CAN_WRITE";
+    public static final String DELETE_AUTHORITY = "CAN_DELETE";
+
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+
     public static String getTokenSecret() {
         PropertiesReader propsReader = SpringApplicationContextProvider.getBean(PropertiesReader.class);
         return propsReader.getTokenSecret();

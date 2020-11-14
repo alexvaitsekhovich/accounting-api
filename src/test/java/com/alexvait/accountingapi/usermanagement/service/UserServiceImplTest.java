@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.service;
 
+import com.alexvait.accountingapi.security.repository.RoleRepository;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -37,6 +37,9 @@ class UserServiceImplTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    RoleRepository roleRepository;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -265,33 +268,5 @@ class UserServiceImplTest {
         List<UserDto> usersDtoExpected = List.of(UserMapper.INSTANCE.userEntityToDto(userEntity1), UserMapper.INSTANCE.userEntityToDto(userEntity2));
         assertEquals(usersDtoExpected, usersDto);
         assertThat(usersDtoExpected, containsInAnyOrder(usersDto.toArray()));
-    }
-
-    @Test
-    @DisplayName("Test loadUserByUsername")
-    void loadUserByUsername() {
-        // arrange
-        UserEntity userEntity = createTestUserEntity();
-        when(userRepository.findByEmail(anyString())).thenReturn(userEntity);
-
-        // act
-        UserDetails userDetails = userService.loadUserByUsername("test");
-
-        // assert
-        verify(userRepository, times(1)).findByEmail(anyString());
-        assertEquals(userEntity.getEmail(), userDetails.getUsername());
-        assertEquals(userEntity.getEncryptedPassword(), userDetails.getPassword());
-        assertEquals(0, userDetails.getAuthorities().size());
-    }
-
-    @Test
-    @DisplayName("Test loadUserByUsername when user not found")
-    void loadUserByUsernameNotFound() {
-        // arrange
-        when(userRepository.findByEmail(anyString())).thenReturn(null);
-
-        // act, assert
-        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("test"));
-        verify(userRepository, times(1)).findByEmail(anyString());
     }
 }

@@ -1,6 +1,10 @@
 package com.alexvait.accountingapi.security.authorization;
 
 import com.alexvait.accountingapi.security.config.SecurityConstants;
+import com.alexvait.accountingapi.security.model.UserPrincipal;
+import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
+import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
+import com.alexvait.accountingapi.usermanagement.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Slf4j
 public class AuthorizationFilter extends BasicAuthenticationFilter {
@@ -43,16 +46,22 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         authHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
 
         try {
-            String user = Jwts.parser()
+            String userEmail = Jwts.parser()
                     .setSigningKey(SecurityConstants.getTokenSecret())
                     .parseClaimsJws(authHeader)
                     .getBody()
                     .getSubject();
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+
+            if (userEmail != null) {
+                UserRepository userRepository = SpringApplicationContextProvider.getBean(UserRepository.class);
+
+                UserEntity userEntity = userRepository.findByEmail(userEmail);
+                if (userEntity != null) {
+                    UserPrincipal userPrincipal = new UserPrincipal(userEntity);
+                    return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
+                }
             }
-        }
-        catch (ExpiredJwtException ex) {
+        } catch (ExpiredJwtException ex) {
             log.error(ex.getMessage());
         }
 

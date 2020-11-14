@@ -2,6 +2,8 @@ package com.alexvait.accountingapi.usermanagement.controller;
 
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
+import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
+import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
 import java.util.List;
@@ -72,5 +76,32 @@ class AdminControllerTest {
             assertNotNull(responseModel.getLink("self"));
             assertNotNull(responseModel.getLink("invoices"));
         });
+    }
+
+    @Test
+    @DisplayName("Test delete user")
+    void testDeleteUser() {
+        // arrange
+
+        // act
+        OperationResponse operationResponse = adminController.deleteUser("x");
+
+        //assert
+        verify(userService, times(1)).deleteUserByPublicId(anyString());
+        assertEquals(HttpStatus.OK, operationResponse.getHttpStatus());
+        assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState());
+    }
+
+    @Test
+    @DisplayName("Test delete user when no user was found")
+    void testDeleteUserNotFound() {
+        // arrange
+        doThrow(new UsernameNotFoundException("")).when(userService).deleteUserByPublicId(anyString());
+
+        // act
+        assertThrows(UsernameNotFoundException.class, () -> adminController.deleteUser("x"));
+
+        //assert
+        verify(userService, times(1)).deleteUserByPublicId(anyString());
     }
 }

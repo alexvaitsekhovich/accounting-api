@@ -3,23 +3,28 @@ package com.alexvait.accountingapi.security.config;
 import com.alexvait.accountingapi.security.authentication.AuthenticationFilter;
 import com.alexvait.accountingapi.security.authorization.AuthorizationFilter;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableWebSecurity
 @Profile("!testing")
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-    private final UserService userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public WebSecurity(UserService userDetailsService, PasswordEncoder passwordEncoder) {
+    public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -32,6 +37,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGNUP_URL).permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/user/**").hasAuthority(SecurityConstants.DELETE_AUTHORITY)
+//                .antMatchers("/admin/**").hasRole(SecurityConstants.ROLE_ADMIN)
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter())
                 .addFilter(new AuthorizationFilter(authenticationManager()));

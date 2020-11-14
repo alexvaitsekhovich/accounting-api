@@ -1,9 +1,12 @@
 package com.alexvait.accountingapi.usermanagement.entity;
 
+import com.alexvait.accountingapi.security.entity.RoleEntity;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "users")
@@ -32,4 +35,11 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String encryptedPassword;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id")
+    )
+    private Collection<RoleEntity> roles = new HashSet<>();
 }

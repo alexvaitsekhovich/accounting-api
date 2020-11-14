@@ -93,32 +93,4 @@ class UserControllerTest {
         assertEquals(userMapper.userDtoToResponseModel(userDto), userEntityModel.getContent());
         verify(userService, times(1)).updateUser(anyString(), any());
     }
-
-    @Test
-    @DisplayName("Test delete user")
-    void testDeleteUser() {
-        // arrange
-
-        // act
-        OperationResponse operationResponse = userController.deleteUser("x");
-
-        //assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
-        assertEquals(HttpStatus.OK, operationResponse.getHttpStatus());
-        assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState());
-    }
-
-    @Test
-    @DisplayName("Test delete user when no user was found")
-    void testDeleteUserNotFound() {
-        // arrange
-        doThrow(new UsernameNotFoundException("")).when(userService).deleteUserByPublicId(anyString());
-
-        // act
-        assertThrows(UsernameNotFoundException.class, () -> userController.deleteUser("x"));
-
-        //assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
-    }
-
 }

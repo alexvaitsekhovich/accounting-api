@@ -1,10 +1,11 @@
 package com.alexvait.accountingapi.security.authentication;
 
 import com.alexvait.accountingapi.security.config.SecurityConstants;
+import com.alexvait.accountingapi.security.model.UserPrincipal;
+import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.request.UserLoginRequestModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
-import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -53,7 +55,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse resp,
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        String userEmail = ((User) authResult.getPrincipal()).getUsername();
+        String userEmail = ((UserPrincipal) authResult.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
                 .setSubject(userEmail)
