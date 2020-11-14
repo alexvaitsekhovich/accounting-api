@@ -85,7 +85,7 @@ public class UsersSetup implements CommandLineRunner {
         return role;
     }
 
-    Optional<UserEntity> createUser(UserEntity user) {
+    private Optional<UserEntity> createUser(UserEntity user) {
         if (userRepository.findByEmail(user.getEmail()) != null) {
             return Optional.empty();
         }

@@ -2,7 +2,6 @@ package com.alexvait.accountingapi.security.config;
 
 import com.alexvait.accountingapi.security.authentication.AuthenticationFilter;
 import com.alexvait.accountingapi.security.authorization.AuthorizationFilter;
-import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

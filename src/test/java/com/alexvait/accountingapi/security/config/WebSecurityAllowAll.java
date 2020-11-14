@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.security.config;
 
-import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

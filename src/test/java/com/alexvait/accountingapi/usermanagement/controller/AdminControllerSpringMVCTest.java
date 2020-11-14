@@ -2,7 +2,6 @@ package com.alexvait.accountingapi.usermanagement.controller;
 
 import com.alexvait.accountingapi.usermanagement.exception.ControllerExceptionHandler;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,14 +27,10 @@ class AdminControllerSpringMVCTest {
     @Mock
     private UserService userService;
 
-    private ObjectMapper jsonMapper;
-
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        jsonMapper = new ObjectMapper();
-
         AdminController adminController = new AdminController(userService);
         mockMvc = MockMvcBuilders.standaloneSetup(adminController)
                 .setControllerAdvice(new ControllerExceptionHandler())

@@ -81,7 +81,6 @@ class UserControllerSpringMVCTest {
     @DisplayName("Test get user not found")
     void testGetUserNotFound() throws Exception {
         // arrange
-        UserDto userDto = createTestUserDto();
         when(userService.getUserByPublicId(anyString())).thenThrow(new UsernameNotFoundException(""));
 
         // act
