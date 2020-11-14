@@ -157,12 +157,8 @@
                 <configuration>
                     <excludes>
                         <exclude>**/SecurityConstants*</exclude>
-                        <exclude>**/UserCreateRequestModel*</exclude>
-                        <exclude>**/UserLoginRequestModel*</exclude>
-                        <exclude>**/UserUpdateRequestModel*</exclude>
-                        <exclude>**/UserResponseModel*</exclude>
-                        <exclude>**/UserResponseModel*</exclude>
                         <exclude>**/AccountingApiApplication*</exclude>
+                        <exclude>**/bootstrap/*</exclude>
                         <exclude>**/model/dto/*</exclude>
                         <exclude>**/security/**/*</exclude>
                     </excludes>
