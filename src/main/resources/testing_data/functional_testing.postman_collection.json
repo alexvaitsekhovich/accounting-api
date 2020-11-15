@@ -150,7 +150,6 @@
 							"pm.test(\"Test error data\", function () {",
 							"    pm.expect(message.status).to.eql(403);",
 							"    pm.expect(message.error).to.eql(\"Forbidden\");",
-							"    pm.expect(message.message).to.eql(\"Access Denied\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -208,7 +207,6 @@
 							"pm.test(\"Test error data\", function () {",
 							"    pm.expect(message.status).to.eql(403);",
 							"    pm.expect(message.error).to.eql(\"Forbidden\");",
-							"    pm.expect(message.message).to.eql(\"Access Denied\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -280,7 +278,6 @@
 							"pm.test(\"Test error data\", function () {",
 							"    pm.expect(message.status).to.eql(403);",
 							"    pm.expect(message.error).to.eql(\"Forbidden\");",
-							"    pm.expect(message.message).to.eql(\"Access Denied\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -341,7 +338,6 @@
 							"pm.test(\"Test error data\", function () {",
 							"    pm.expect(message.status).to.eql(403);",
 							"    pm.expect(message.error).to.eql(\"Forbidden\");",
-							"    pm.expect(message.message).to.eql(\"Access Denied\");",
 							"});"
 						],
 						"type": "text/javascript"
