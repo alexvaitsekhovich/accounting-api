@@ -5,6 +5,7 @@ stages:
   - test
   - build
   - functest
+  - deploy
 
 unit tests:
   stage: test
@@ -32,3 +33,13 @@ functional testing:
     - newman run src/main/resources/testing_data/functional_testing.postman_collection.json
   dependencies:
     - build a jar
+
+push to docker:
+  stage: deploy
+  image: openjdk:12-alpine
+  script:
+    - ./mvnw clean compile jib:build -Djib.to.auth.username=alexvaitsekhovich -Djib.to.auth.password="${DOCKERHUB_PASSWORD}"
+  dependencies:
+    - build a jar
+  only:
+    - master
