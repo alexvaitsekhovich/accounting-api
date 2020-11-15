@@ -1,8 +1,34 @@
+variables:
+  ARTIFACT_NAME: accounting-api-1.0.$CI_PIPELINE_IID.jar
+
 stages:
   - test
+  - build
+  - functest
 
 unit tests:
   stage: test
   image: openjdk:12-alpine
   script:
     - ./mvnw test
+
+build a jar:
+  stage: build
+  image: openjdk:12-alpine
+  script:
+    - ./mvnw package -Dmaven.test.skip=true
+    - mkdir ./build
+    - mv target/accounting-api-1.0.0.jar ./build/$ARTIFACT_NAME
+  artifacts:
+    paths:
+      - ./build
+
+functional testing:
+  stage: functest
+  image: alexvaitsekhovich/alpine-jre-newman
+  script:
+    - java -jar -Dspring.profiles.active=testing ./build/$ARTIFACT_NAME &
+    - sleep 40
+    - newman run src/main/resources/testing_data/functional_testing.postman_collection.json
+  dependencies:
+    - build a jar

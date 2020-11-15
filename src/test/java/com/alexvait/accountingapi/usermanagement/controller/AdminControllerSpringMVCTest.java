@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.usermanagement.exception.ControllerExceptionHandler;
+import com.alexvait.accountingapi.security.config.ControllerExceptionHandler;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

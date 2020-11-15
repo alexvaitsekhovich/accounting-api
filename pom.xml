@@ -8,17 +8,31 @@
         <version>2.3.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.alexvait</groupId>
     <artifactId>accounting-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
+
     <name>accounting-api</name>
     <description>Accounting API</description>
+    <developers>
+        <developer>
+            <name>Alex Vaitsekhovich</name>
+            <email>alex.vaitsekhovich@gmail.com</email>
+            <organization>private</organization>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>11</java.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+
+        <docker.image.prefix>alexvaitsekhovich</docker.image.prefix>
+        <docker.image.name>${project.artifactId}</docker.image.name>
     </properties>
 
     <dependencies>
@@ -175,6 +189,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <to>
+                        <image>${docker.image.prefix}/${docker.image.name}</image>
+                    </to>
+                </configuration>
             </plugin>
         </plugins>
     </build>

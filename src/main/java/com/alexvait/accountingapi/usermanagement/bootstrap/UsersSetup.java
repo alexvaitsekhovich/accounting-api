@@ -9,6 +9,7 @@ import com.alexvait.accountingapi.security.utils.RandomStringUtils;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import com.alexvait.accountingapi.usermanagement.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Component
+@Profile({"dev", "testing"})
 public class UsersSetup implements CommandLineRunner {
 
     private final AuthorityRepository authorityRepository;
@@ -52,14 +54,8 @@ public class UsersSetup implements CommandLineRunner {
             throw new RuntimeException("Cannot create admin role");
         }
 
-        UserEntity admin = new UserEntity();
-        admin.setFirstName("Admin");
-        admin.setLastName("John");
-        admin.setEmail("admin@api.com");
-        admin.setPublicId(RandomStringUtils.randomAlphanumeric(40));
-        admin.setEncryptedPassword(passwordEncoder.encode("pass"));
-        admin.setRoles(Collections.singletonList(adminRole));
-        createUser(admin);
+        createUser("John", "Admin", "admin@api.com", "admin-pass", adminRole);
+        IntStream.range(1, 12).forEach(i -> createDummyUser("john.doe" + i + "@api.com", userRole));
     }
 
     @Transactional
@@ -85,11 +81,25 @@ public class UsersSetup implements CommandLineRunner {
         return role;
     }
 
-    private Optional<UserEntity> createUser(UserEntity user) {
+
+    private UserEntity createDummyUser(String email, RoleEntity role) {
+        return createUser("John", "Doe", email, "user-pass", role);
+    }
+
+    private UserEntity createUser(String firstName, String lastName,
+                                  String email, String password, RoleEntity role) {
+        UserEntity user = new UserEntity();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPublicId(RandomStringUtils.randomAlphanumeric(40));
+        user.setEncryptedPassword(passwordEncoder.encode(password));
+        user.setRoles(Collections.singletonList(role));
+
         if (userRepository.findByEmail(user.getEmail()) != null) {
-            return Optional.empty();
+            return null;
         }
 
-        return Optional.of(userRepository.save(user));
+        return userRepository.save(user);
     }
 }

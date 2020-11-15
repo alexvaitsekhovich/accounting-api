@@ -1,4 +1,4 @@
-package com.alexvait.accountingapi.usermanagement.exception;
+package com.alexvait.accountingapi.security.config;
 
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
 import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
