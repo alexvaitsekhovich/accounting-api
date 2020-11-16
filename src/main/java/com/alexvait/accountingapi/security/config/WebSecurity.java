@@ -35,8 +35,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGNUP_URL).permitAll()
-//                .antMatchers(HttpMethod.DELETE, "/user/**").hasAuthority(SecurityConstants.DELETE_AUTHORITY)
-//                .antMatchers("/admin/**").hasRole(SecurityConstants.ROLE_ADMIN)
                 .antMatchers("/h2-console/**")
                 .permitAll()
                 .anyRequest().authenticated().and()

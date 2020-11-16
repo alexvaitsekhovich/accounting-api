@@ -18,7 +18,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<OperationResponse> handleUserExistsException(UserAlreadyExistsException ex, HttpServletRequest httpRequest) {
-        return constructResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), httpRequest.getRequestURI());
+        return constructResponseEntity(HttpStatus.CONFLICT, ex.getMessage(), httpRequest.getRequestURI());
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)

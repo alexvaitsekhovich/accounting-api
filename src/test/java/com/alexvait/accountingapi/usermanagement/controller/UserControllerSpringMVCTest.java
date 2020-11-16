@@ -143,11 +143,11 @@ class UserControllerSpringMVCTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isConflict())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.details.status").value("500"))
+                .andExpect(jsonPath("$.details.status").value("409"))
                 .andExpect(jsonPath("$.responseState").value("FAILURE"))
-                .andExpect(jsonPath("$.httpStatus").value("INTERNAL_SERVER_ERROR"));
+                .andExpect(jsonPath("$.httpStatus").value("CONFLICT"));
 
         // assert
         verify(userService, times(1)).createUser(any(UserDto.class));
