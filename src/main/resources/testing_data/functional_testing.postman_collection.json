@@ -72,17 +72,17 @@
 					"script": {
 						"id": "4b223d39-9269-401e-9f0c-d032ab85f97a",
 						"exec": [
-							"pm.test(\"Status code is 500\", function () {",
-							"    pm.response.to.have.status(500);",
+							"pm.test(\"Status code is 409\", function () {",
+							"    pm.response.to.have.status(409);",
 							"});",
 							"",
 							"let messageDetails = pm.response.json();",
 							"",
 							"pm.test(\"Test error data\", function () {",
-							"    pm.expect(messageDetails.details.status).to.eql(500);",
+							"    pm.expect(messageDetails.details.status).to.eql(409);",
 							"    pm.expect(messageDetails.details.messages[0]).to.include(\"is already registered\");",
 							"    pm.expect(messageDetails.responseState).to.eql(\"FAILURE\");",
-							"    pm.expect(messageDetails.httpStatus).to.eql(\"INTERNAL_SERVER_ERROR\");",
+							"    pm.expect(messageDetails.httpStatus).to.eql(\"CONFLICT\");",
 							"});"
 						],
 						"type": "text/javascript"
