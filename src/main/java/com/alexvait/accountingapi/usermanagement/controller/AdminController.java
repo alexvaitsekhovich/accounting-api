@@ -7,6 +7,12 @@ import com.alexvait.accountingapi.usermanagement.model.response.OperationRespons
 import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -34,10 +40,17 @@ public class AdminController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Get all users", tags = "Administration", description = "Use this endpoint to get a list of users with pagination",
+            security = @SecurityRequirement(name = "JWT Token")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of users was created", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
+    )
     @GetMapping("/user")
     public CollectionModel<EntityModel<UserResponseModel>> getUsers(
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
+            @Parameter(description = "Page number") @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @Parameter(description = "Page size") @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
 
         List<UserDto> usersDto = userService.getUsers(page, size);
 
@@ -50,9 +63,16 @@ public class AdminController {
         return CollectionModel.of(users, selfLink);
     }
 
+    @Operation(summary = "Delete user", tags = "Administration", description = "Use this endpoint to delete a user",
+            security = @SecurityRequirement(name = "JWT Token")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User was deleted", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
+    )
     @DeleteMapping("/user/{publicId}")
     @Secured(SecurityConstants.ROLE_ADMIN)
-    public OperationResponse deleteUser(@PathVariable String publicId) {
+    public OperationResponse deleteUser(@Parameter(description = "User id") @PathVariable String publicId) {
 
         userService.deleteUserByPublicId(publicId);
         return new OperationResponse(ResponseOperationState.SUCCESS, HttpStatus.OK);

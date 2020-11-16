@@ -13,17 +13,17 @@ public class UserTestObjectGenerator {
     public static UserEntity createTestUserEntity() {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(new Random().nextInt(1000));
-        userEntity.setPublicId(randomAlphabetic(100));
-        userEntity.setFirstName(randomAlphabetic(100));
-        userEntity.setLastName(randomAlphabetic(100));
-        userEntity.setEmail(randomAlphabetic(100));
-        userEntity.setEncryptedPassword(randomAlphabetic(100));
+        userEntity.setPublicId(randomAlphabetic(40));
+        userEntity.setFirstName(randomAlphabetic(20));
+        userEntity.setLastName(randomAlphabetic(20));
+        userEntity.setEmail(randomAlphabetic(20) + "@api.com");
+        userEntity.setEncryptedPassword(randomAlphabetic(40));
         return userEntity;
     }
 
     public static UserDto createTestUserDto() {
         UserDto userDto = UserMapper.INSTANCE.userEntityToDto(UserTestObjectGenerator.createTestUserEntity());
-        userDto.setPassword(randomAlphabetic(100));
+        userDto.setPassword(randomAlphabetic(20));
         return userDto;
     }
 

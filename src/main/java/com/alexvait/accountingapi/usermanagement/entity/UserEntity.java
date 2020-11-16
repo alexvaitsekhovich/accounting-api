@@ -4,6 +4,8 @@ import com.alexvait.accountingapi.security.entity.RoleEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,14 +25,18 @@ public class UserEntity {
 
     @Column(nullable = false, length = 50)
     @Size(min = 2, max = 50)
+    @NotNull(message = "First name is mandatory")
     private String firstName;
 
     @Column(nullable = false, length = 50)
     @Size(min = 2, max = 50)
+    @NotNull(message = "Last name is mandatory")
     private String lastName;
 
     @Column(nullable = false, unique = true)
     @Size(min = 5, max = 100)
+    @NotNull(message = "Email is mandatory")
+    @Email(message = "Wrong email format")
     private String email;
 
     @Column(nullable = false)
