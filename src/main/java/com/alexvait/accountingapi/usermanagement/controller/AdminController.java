@@ -41,7 +41,7 @@ public class AdminController {
     }
 
     @Operation(summary = "Get all users", tags = "Administration", description = "Use this endpoint to get a list of users with pagination",
-            security = @SecurityRequirement(name = "JWT Token")
+            security = @SecurityRequirement(name = SecurityConstants.AUTHORIZATION_HEADER)
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of users was created", content = {@Content(mediaType = "application/json")}),
@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @Operation(summary = "Delete user", tags = "Administration", description = "Use this endpoint to delete a user",
-            security = @SecurityRequirement(name = "JWT Token")
+            security = @SecurityRequirement(name = SecurityConstants.AUTHORIZATION_HEADER)
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User was deleted", content = {@Content(mediaType = "application/json")}),

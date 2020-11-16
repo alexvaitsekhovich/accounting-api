@@ -57,7 +57,7 @@ public class UserController {
 
 
     @Operation(summary = "Get user", tags = "User management", description = "Use this endpoint to get a user details",
-            security = @SecurityRequirement(name = "JWT Token")
+            security = @SecurityRequirement(name = SecurityConstants.AUTHORIZATION_HEADER)
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User was found", content = {@Content(mediaType = "application/json")}),
@@ -74,7 +74,7 @@ public class UserController {
 
 
     @Operation(summary = "Update user", tags = "User management", description = "Use this endpoint to update a user",
-            security = @SecurityRequirement(name = "JWT Token")
+            security = @SecurityRequirement(name = SecurityConstants.AUTHORIZATION_HEADER)
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User was updated", content = {@Content(mediaType = "application/json")}),
