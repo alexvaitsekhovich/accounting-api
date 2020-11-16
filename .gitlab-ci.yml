@@ -4,14 +4,14 @@ variables:
 stages:
   - test
   - build
-  - functest
+  - functional tests
   - deploy
 
 unit tests:
   stage: test
   image: openjdk:12-alpine
   script:
-    - ./mvnw test
+    - ./mvnw test -DskipITs=true
 
 build a jar:
   stage: build
@@ -24,8 +24,16 @@ build a jar:
     paths:
       - ./build
 
-functional testing:
-  stage: functest
+integration tests:
+  stage: functional tests
+  image: openjdk:12-alpine
+  script:
+    - java -jar -Dspring.profiles.active=dev ./build/$ARTIFACT_NAME &
+    - sleep 40
+    - ./mvnw verify -DskipUTs=true
+
+postman tests:
+  stage: functional tests
   image: alexvaitsekhovich/alpine-jre-newman
   script:
     - java -jar -Dspring.profiles.active=dev ./build/$ARTIFACT_NAME &

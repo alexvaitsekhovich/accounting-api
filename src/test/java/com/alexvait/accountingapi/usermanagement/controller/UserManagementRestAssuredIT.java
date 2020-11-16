@@ -1,4 +1,4 @@
-package com.alexvait.accountingapi.usermanagement;
+package com.alexvait.accountingapi.usermanagement.controller;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasLength;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class TestUserManagementRestAssured {
+class UserManagementRestAssuredIT {
 
     public static final String APPLICATION_JSON = "application/json";
 
