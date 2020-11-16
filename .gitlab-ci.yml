@@ -24,7 +24,7 @@ build a jar:
     paths:
       - ./build
 
-integration tests:
+rest-assured tests:
   stage: functional tests
   image: openjdk:12-alpine
   script:
