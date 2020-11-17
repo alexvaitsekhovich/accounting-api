@@ -99,7 +99,7 @@ class UserServiceImplTest {
 
         // act, assert
         assertThrows(UserAlreadyExistsException.class, () -> userService.createUser(createTestUserDto()));
-        verify(userRepository, times(0)).save(any(UserEntity.class));
+        verify(userRepository, never()).save(any(UserEntity.class));
     }
 
     @Test
@@ -252,7 +252,7 @@ class UserServiceImplTest {
 
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userService.deleteUserByPublicId("x"));
-        verify(userRepository, times(0)).delete(any());
+        verify(userRepository, never()).delete(any());
     }
 
     @Test
