@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Test OperationResponse")
@@ -52,7 +53,7 @@ class OperationResponseTest {
         // act
 
         // assert
-        assertThat(operationResponse.getDetails().get("messages"), nullValue());
+        assertNull(operationResponse.getDetails().get("messages"));
     }
 
     @Test
@@ -66,6 +67,6 @@ class OperationResponseTest {
         String savedPath = (String) operationResponse.getDetails().get("path");
 
         // assert
-        assertThat(savedPath, equalTo(path));
+        assertEquals(path, savedPath);
     }
 }

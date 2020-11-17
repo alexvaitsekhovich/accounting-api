@@ -10,8 +10,9 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasLength;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserManagementRestAssuredIT {
@@ -55,10 +56,13 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("publicId"), hasLength(40));
-        assertThat(jsonResponse.get("firstName"), equalTo(userData.get("firstName")));
-        assertThat(jsonResponse.get("lastName"), equalTo(userData.get("lastName")));
-        assertThat(jsonResponse.get("email"), equalTo(userData.get("email")));
+        assertAll(
+                "test returned fields",
+                () -> assertThat(jsonResponse.get("publicId"), hasLength(40)),
+                () -> assertEquals(userData.get("firstName"), jsonResponse.get("firstName"), "First name comparison failed"),
+                () -> assertEquals(userData.get("lastName"), jsonResponse.get("lastName"), "Last name comparison failed"),
+                () -> assertEquals(userData.get("email"), jsonResponse.get("email"), "Email name comparison failed")
+        );
 
         publicId = jsonResponse.get("publicId");
     }
@@ -80,7 +84,7 @@ class UserManagementRestAssuredIT {
                 .extract().response();
 
         jwtToken = response.header("Authorization");
-        assertThat(response.header("UserPublicId"), equalTo(publicId));
+        assertEquals(publicId, response.header("UserPublicId"));
     }
 
     @Test
@@ -96,10 +100,13 @@ class UserManagementRestAssuredIT {
                 .statusCode(200)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("publicId"), equalTo(publicId));
-        assertThat(jsonResponse.get("firstName"), equalTo(userData.get("firstName")));
-        assertThat(jsonResponse.get("lastName"), equalTo(userData.get("lastName")));
-        assertThat(jsonResponse.get("email"), equalTo(userData.get("email")));
+        assertAll(
+                "test returned fields",
+                () -> assertEquals(publicId, jsonResponse.get("publicId"), "Public id comparison failed"),
+                () -> assertEquals(userData.get("firstName"), jsonResponse.get("firstName"), "First name comparison failed"),
+                () -> assertEquals(userData.get("lastName"), jsonResponse.get("lastName"), "Last name comparison failed"),
+                () -> assertEquals(userData.get("email"), jsonResponse.get("email"), "Email name comparison failed")
+        );
     }
 
     @Test
@@ -117,10 +124,13 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("publicId"), hasLength(40));
-        assertThat(jsonResponse.get("firstName"), equalTo(changedUserData.get("firstName")));
-        assertThat(jsonResponse.get("lastName"), equalTo(changedUserData.get("lastName")));
-        assertThat(jsonResponse.get("email"), equalTo(userData.get("email")));
+        assertAll(
+                "test returned fields",
+                () -> assertThat(jsonResponse.get("publicId"), hasLength(40)),
+                () -> assertEquals(changedUserData.get("firstName"), jsonResponse.get("firstName"), "First name comparison failed"),
+                () -> assertEquals(changedUserData.get("lastName"), jsonResponse.get("lastName"), "Last name comparison failed"),
+                () -> assertEquals(userData.get("email"), jsonResponse.get("email"), "Email name comparison failed")
+        );
     }
 
     @Test
@@ -137,8 +147,11 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("details.status"), equalTo(500));
-        assertThat(jsonResponse.get("responseState"), equalTo("FAILURE"));
+        assertAll(
+                "test returned fields",
+                () -> assertEquals(500, (int)jsonResponse.get("details.status"), "Last name comparison failed"),
+                () -> assertEquals("FAILURE", jsonResponse.get("responseState"), "Email name comparison failed")
+        );
     }
 
     @Test
@@ -173,10 +186,13 @@ class UserManagementRestAssuredIT {
                 .statusCode(200)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("publicId"), equalTo(publicId));
-        assertThat(jsonResponse.get("firstName"), equalTo(changedUserData.get("firstName")));
-        assertThat(jsonResponse.get("lastName"), equalTo(changedUserData.get("lastName")));
-        assertThat(jsonResponse.get("email"), equalTo(userData.get("email")));
+        assertAll(
+                "test returned fields",
+                () -> assertEquals(publicId, jsonResponse.get("publicId"), "Public id comparison failed"),
+                () -> assertEquals(changedUserData.get("firstName"), jsonResponse.get("firstName"), "First name comparison failed"),
+                () -> assertEquals(changedUserData.get("lastName"), jsonResponse.get("lastName"), "Last name comparison failed"),
+                () -> assertEquals(userData.get("email"), jsonResponse.get("email"), "Email name comparison failed")
+        );
     }
 
     @Test
@@ -198,10 +214,13 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("publicId"), hasLength(40));
-        assertThat(jsonResponse.get("firstName"), equalTo(updateData.get("firstName")));
-        assertThat(jsonResponse.get("lastName"), equalTo(updateData.get("lastName")));
-        assertThat(jsonResponse.get("email"), equalTo(userData.get("email")));
+        assertAll(
+                "test returned fields",
+                () -> assertThat(jsonResponse.get("publicId"), hasLength(40)),
+                () -> assertEquals(updateData.get("firstName"), jsonResponse.get("firstName"), "First name comparison failed"),
+                () -> assertEquals(updateData.get("lastName"), jsonResponse.get("lastName"), "Last name comparison failed"),
+                () -> assertEquals(userData.get("email"), jsonResponse.get("email"), "Email name comparison failed")
+        );
     }
 
     @Test
@@ -218,7 +237,10 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON)
                 .extract().response().jsonPath();
 
-        assertThat(jsonResponse.get("responseState"), equalTo("SUCCESS"));
-        assertThat(jsonResponse.get("httpStatus"), equalTo("OK"));
+        assertAll(
+                "test returned fields",
+                () -> assertEquals("SUCCESS", jsonResponse.get("responseState"), "Response status comparison failed"),
+                () -> assertEquals("OK", jsonResponse.get("httpStatus"), "Http comparison failed")
+        );
     }
 }

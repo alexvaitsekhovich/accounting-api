@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Test OperationResponse")
 class OperationResponseTest {
@@ -47,8 +49,8 @@ class OperationResponseTest {
         // assert
         assertAll(
                 "test OperationResponse states",
-                () -> assertThat("status 200 failed", operationResponse1.getDetails().get("status"), equalTo(200)),
-                () -> assertThat("status 400 failed", operationResponse2.getDetails().get("status"), equalTo(400))
+                () -> assertEquals(200, operationResponse1.getDetails().get("status"), "status 200 failed"),
+                () -> assertEquals(400, operationResponse2.getDetails().get("status"), "status 400 failed")
         );
     }
 

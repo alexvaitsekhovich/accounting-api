@@ -93,7 +93,7 @@ class AdminControllerTest {
         //assert
         assertAll(
                 () -> assertEquals(HttpStatus.OK, operationResponse.getHttpStatus(), "status code failed"),
-                () -> assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState(),  "response failed")
+                () -> assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState(), "response failed")
         );
 
         verify(userService, times(1)).deleteUserByPublicId(anyString());

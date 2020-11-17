@@ -25,8 +25,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -125,7 +124,7 @@ class UserControllerSpringMVCTest {
                 });
         UserResponseModel createdUserModel = returnedEntity.getContent();
 
-        assertThat(createdUserModel, equalTo(UserMapper.INSTANCE.userDtoToResponseModel(userDto)));
+        assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(userDto), createdUserModel, "Created user model comparison failed");
         verify(userService, times(1)).createUser(any(UserDto.class));
     }
 
@@ -180,7 +179,7 @@ class UserControllerSpringMVCTest {
                 });
         UserResponseModel updatedUserModel = returnedEntity.getContent();
 
-        assertThat(updatedUserModel, equalTo(UserMapper.INSTANCE.userDtoToResponseModel(userDto)));
+        assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(userDto), updatedUserModel, "Updated model comparison failed");
         verify(userService, times(1)).updateUser(anyString(), any(UserDto.class));
     }
 
