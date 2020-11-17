@@ -233,6 +233,7 @@
                         <exclude>**/AccountingApiApplication*</exclude>
                         <exclude>**/bootstrap/*</exclude>
                         <exclude>**/security/**/*</exclude>
+                        <exclude>**/config/**/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

@@ -65,26 +65,29 @@ class UserServiceImplTest {
         UserDto createdUserDto = userService.createUser(newUserDto);
 
         // assert
-        assertNotNull(createdUserDto);
-        assertEquals(UserMapper.INSTANCE.userEntityToDto(createdUserEntity), createdUserDto);
+        assertAll(
+                () -> assertNotNull(createdUserDto, "not null failed"),
+                () -> assertEquals(UserMapper.INSTANCE.userEntityToDto(createdUserEntity), createdUserDto, "equals to entity failed")
+        );
+
+        UserEntity createUserEntityCaptor = entityArgumentCaptor.getValue();
+
+        assertAll(
+                "test fields of the created user dto",
+
+                // these fields should be new
+                () -> assertNotEquals(newUserDto.getPublicId(), createUserEntityCaptor.getPublicId(), "public id comparison failed"),
+                () -> assertNotEquals(newUserDto.getEncryptedPassword(), createUserEntityCaptor.getEncryptedPassword(), "encrypted password comparison failed"),
+
+                // all other fields must stay the same
+                () -> assertEquals(newUserDto.getFirstName(), createUserEntityCaptor.getFirstName(), "first name comparison failed"),
+                () -> assertEquals(newUserDto.getLastName(), createUserEntityCaptor.getLastName(), "last name comparison failed"),
+                () -> assertEquals(newUserDto.getEmail(), createUserEntityCaptor.getEmail(), "email comparison failed")
+        );
 
         verify(userRepository, times(1)).findByEmail(anyString());
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(passwordEncoder, times(1)).encode(anyString());
-
-        UserEntity createUserEntityCaptor = entityArgumentCaptor.getValue();
-
-        // these fields should be new
-        assertNotNull(createUserEntityCaptor.getPublicId());
-        assertNotEquals(newUserDto.getPublicId(), createUserEntityCaptor.getPublicId());
-
-        assertNotNull(createUserEntityCaptor.getEncryptedPassword());
-        assertNotEquals(newUserDto.getEncryptedPassword(), createUserEntityCaptor.getEncryptedPassword());
-
-        // all other fields must stay the same
-        assertEquals(newUserDto.getFirstName(), createUserEntityCaptor.getFirstName());
-        assertEquals(newUserDto.getLastName(), createUserEntityCaptor.getLastName());
-        assertEquals(newUserDto.getEmail(), createUserEntityCaptor.getEmail());
     }
 
     @Test
@@ -172,18 +175,23 @@ class UserServiceImplTest {
         // assert
 
         assertNotNull(createdUserDto);
+
+        assertAll(
+                "test fields of the updated user dto",
+
+                // only first and last name must be changed to the provided data
+                () -> assertEquals(userDto.getFirstName(), entityArgumentCaptor.getValue().getFirstName(), "first name comparison failed"),
+                () -> assertEquals(userDto.getLastName(), entityArgumentCaptor.getValue().getLastName(), "last name comparison failed"),
+
+                // all other fields must stay the same in the database
+                () -> assertNotEquals(userDto.getId(), entityArgumentCaptor.getValue().getId(), "id comparison failed"),
+                () -> assertNotEquals(userDto.getPublicId(), entityArgumentCaptor.getValue().getPublicId(), "public id comparison failed"),
+                () -> assertNotEquals(userDto.getEmail(), entityArgumentCaptor.getValue().getEmail(), "email comparison failed"),
+                () -> assertNotEquals(userDto.getEncryptedPassword(), entityArgumentCaptor.getValue().getEncryptedPassword(), "encrypted password comparison failed")
+        );
+
         verify(userRepository, times(1)).findByPublicId(anyString());
         verify(userRepository, times(1)).save(any(UserEntity.class));
-
-        // only first and last name must be changed to the provided data
-        assertEquals(userDto.getFirstName(), entityArgumentCaptor.getValue().getFirstName());
-        assertEquals(userDto.getLastName(), entityArgumentCaptor.getValue().getLastName());
-
-        // all other fields must stay the same in the database
-        assertNotEquals(userDto.getId(), entityArgumentCaptor.getValue().getId());
-        assertNotEquals(userDto.getPublicId(), entityArgumentCaptor.getValue().getPublicId());
-        assertNotEquals(userDto.getEmail(), entityArgumentCaptor.getValue().getEmail());
-        assertNotEquals(userDto.getEncryptedPassword(), entityArgumentCaptor.getValue().getEncryptedPassword());
     }
 
     @Test
@@ -203,9 +211,9 @@ class UserServiceImplTest {
 
         // assert
         assertNotNull(updatedUserDto);
-        verify(userRepository, times(1)).save(any(UserEntity.class));
         assertEquals(updatedUserDto, UserMapper.INSTANCE.userEntityToDto(updatedUserEntity));
 
+        verify(userRepository, times(1)).save(any(UserEntity.class));
     }
 
     @Test

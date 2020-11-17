@@ -28,5 +28,4 @@ public interface UserMapper {
     UserCreateRequestModel userDtoToUserCreateRequestModel(UserDto userDto);
 
     UserUpdateRequestModel userDtoToUserUpdateRequestModel(UserDto userDto);
-
 }

@@ -3,8 +3,7 @@ package com.alexvait.accountingapi.usermanagement.model.response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test UserResponseModel")
 class UserResponseModelTest {
@@ -20,10 +19,13 @@ class UserResponseModelTest {
         userResponseModel3.setFirstName("X");
 
         // act, assert
-        assertEquals(userResponseModel1, userResponseModel1);
-        assertEquals(userResponseModel1, userResponseModel2);
-        assertNotEquals(userResponseModel1, userResponseModel3);
-        assertNotEquals(userResponseModel2, userResponseModel3);
+        assertAll(
+                "test UserResponseModel equals",
+                () -> assertEquals(userResponseModel1, userResponseModel1, "equals self failed"),
+                () -> assertEquals(userResponseModel1, userResponseModel2, "equals 1-2 failed"),
+                () -> assertNotEquals(userResponseModel1, userResponseModel3, "not equals 1-3 failed"),
+                () -> assertNotEquals(userResponseModel2, userResponseModel3, "not equals 2-3 failed")
+        );
     }
 
     @Test
@@ -35,8 +37,11 @@ class UserResponseModelTest {
         UserResponseModel userResponseModel2 = getTestUserResponseModel();
 
         // act, assert
-        assertEquals(userResponseModel1.hashCode(), userResponseModel1.hashCode());
-        assertEquals(userResponseModel1.hashCode(), userResponseModel2.hashCode());
+        assertAll(
+                "test UserResponseModel equals",
+                () -> assertEquals(userResponseModel1.hashCode(), userResponseModel1.hashCode(), "hashCode self failed"),
+                () -> assertEquals(userResponseModel1.hashCode(), userResponseModel2.hashCode(), "hashCode failed")
+        );
     }
 
     private UserResponseModel getTestUserResponseModel() {

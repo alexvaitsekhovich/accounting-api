@@ -54,28 +54,32 @@ class AdminControllerTest {
 
         //assert
 
-        verify(userService, times(1)).getUsers(anyInt(), anyInt());
+        assertAll(
+                "test collection model",
+                () -> assertTrue(collectionModel.getLinks().hasSize(1), "hasSize failed"),
+                () -> assertNotNull(collectionModel.getLink("self"), "self link failed")
+        );
 
-        // test collection model
-        assertTrue(collectionModel.getLinks().hasSize(1));
-        assertNotNull(collectionModel.getLink("self"));
-
-        // test entity models
-        assertEquals(2, responseModels.size());
-        assertThat(
-                usersDto.stream()
-                        .map(UserMapper.INSTANCE::userDtoToResponseModel)
-                        .collect(Collectors.toList())
-                , containsInAnyOrder(
-                        responseModels.stream().map(EntityModel::getContent).toArray()
+        assertAll(
+                "test entity models",
+                () -> assertEquals(2, responseModels.size(), "size failed"),
+                () -> assertThat(
+                        "contains element failed",
+                        usersDto.stream().map(UserMapper.INSTANCE::userDtoToResponseModel).collect(Collectors.toList())
+                        , containsInAnyOrder(responseModels.stream().map(EntityModel::getContent).toArray())
                 )
         );
 
         responseModels.forEach(responseModel -> {
-            assertTrue(responseModel.getLinks().hasSize(2));
-            assertNotNull(responseModel.getLink("self"));
-            assertNotNull(responseModel.getLink("invoices"));
+            assertAll(
+                    "test entity models links for id #" + responseModel.getContent().getPublicId(),
+                    () -> assertTrue(responseModel.getLinks().hasSize(2), "hasSize failed"),
+                    () -> assertNotNull(responseModel.getLink("self"), "self link failed"),
+                    () -> assertNotNull(responseModel.getLink("invoices"), "invoices link failed")
+            );
         });
+
+        verify(userService, times(1)).getUsers(anyInt(), anyInt());
     }
 
     @Test
@@ -87,9 +91,12 @@ class AdminControllerTest {
         OperationResponse operationResponse = adminController.deleteUser("x");
 
         //assert
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, operationResponse.getHttpStatus(), "status code failed"),
+                () -> assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState(),  "response failed")
+        );
+
         verify(userService, times(1)).deleteUserByPublicId(anyString());
-        assertEquals(HttpStatus.OK, operationResponse.getHttpStatus());
-        assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState());
     }
 
     @Test
