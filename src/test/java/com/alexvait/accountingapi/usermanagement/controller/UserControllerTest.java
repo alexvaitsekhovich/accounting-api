@@ -6,6 +6,7 @@ import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequest
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,11 +35,17 @@ class UserControllerTest {
 
     final UserMapper userMapper = UserMapper.INSTANCE;
 
+    private UserDto userDto;
+
+    @BeforeEach
+    void setUp() {
+        userDto = createTestUserDto();
+    }
+
     @Test
     @DisplayName("Test get user")
     void testGetUser() {
         // arrange
-        UserDto userDto = createTestUserDto();
         when(userService.getUserByPublicId(anyString())).thenReturn(userDto);
 
         // act
@@ -65,7 +72,6 @@ class UserControllerTest {
     @DisplayName("Test create user")
     void testCreateUser() {
         // arrange
-        UserDto userDto = createTestUserDto();
         when(userService.createUser(any(UserDto.class))).thenReturn(userDto);
 
         // act
@@ -80,7 +86,6 @@ class UserControllerTest {
     @DisplayName("Test update user")
     void testUpdateUser() {
         // arrange
-        UserDto userDto = createTestUserDto();
         when(userService.updateUser(anyString(), any(UserDto.class))).thenReturn(userDto);
 
         // act
