@@ -30,6 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
+        <springdoc.openapi.version>1.5.0</springdoc.openapi.version>
 
         <docker.image.prefix>alexvaitsekhovich</docker.image.prefix>
         <docker.image.name>${project.artifactId}</docker.image.name>
@@ -133,13 +134,13 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.0</version>
+            <version>${springdoc.openapi.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-security</artifactId>
-            <version>1.5.0</version>
+            <version>${springdoc.openapi.version}</version>
         </dependency>
 
         <dependency>
@@ -165,7 +166,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
                 <executions>
                     <execution>
                         <id>compile</id>
