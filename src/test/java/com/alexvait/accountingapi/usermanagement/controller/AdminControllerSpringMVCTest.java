@@ -53,7 +53,7 @@ class AdminControllerSpringMVCTest {
                 .andExpect(jsonPath("$.httpStatus").value("OK"));
 
         // assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
+        verify(userService).deleteUserByPublicId(anyString());
     }
 
     @Test
@@ -73,6 +73,6 @@ class AdminControllerSpringMVCTest {
                 .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"));
 
         // assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
+        verify(userService).deleteUserByPublicId(anyString());
     }
 }

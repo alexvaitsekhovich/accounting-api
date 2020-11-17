@@ -85,9 +85,9 @@ class UserServiceImplTest {
                 () -> assertEquals(newUserDto.getEmail(), createUserEntityCaptor.getEmail(), "email comparison failed")
         );
 
-        verify(userRepository, times(1)).findByEmail(anyString());
-        verify(userRepository, times(1)).save(any(UserEntity.class));
-        verify(passwordEncoder, times(1)).encode(anyString());
+        verify(userRepository).findByEmail(anyString());
+        verify(userRepository).save(any(UserEntity.class));
+        verify(passwordEncoder).encode(anyString());
     }
 
     @Test
@@ -115,7 +115,7 @@ class UserServiceImplTest {
         // assert
         assertNotNull(userDto);
         assertEquals(userEntity, UserMapper.INSTANCE.userDtoToEntity(userDto));
-        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(userRepository).findByEmail(anyString());
     }
 
     @Test
@@ -126,7 +126,7 @@ class UserServiceImplTest {
 
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userService.getUser("test"));
-        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(userRepository).findByEmail(anyString());
     }
 
     @Test
@@ -142,7 +142,7 @@ class UserServiceImplTest {
         // assert
         assertNotNull(userDto);
         assertEquals(userEntity, UserMapper.INSTANCE.userDtoToEntity(userDto));
-        verify(userRepository, times(1)).findByPublicId(anyString());
+        verify(userRepository).findByPublicId(anyString());
     }
 
     @Test
@@ -153,7 +153,7 @@ class UserServiceImplTest {
 
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userService.getUserByPublicId("test"));
-        verify(userRepository, times(1)).findByPublicId(anyString());
+        verify(userRepository).findByPublicId(anyString());
     }
 
     @Test
@@ -190,8 +190,8 @@ class UserServiceImplTest {
                 () -> assertNotEquals(userDto.getEncryptedPassword(), entityArgumentCaptor.getValue().getEncryptedPassword(), "encrypted password comparison failed")
         );
 
-        verify(userRepository, times(1)).findByPublicId(anyString());
-        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userRepository).findByPublicId(anyString());
+        verify(userRepository).save(any(UserEntity.class));
     }
 
     @Test
@@ -213,7 +213,7 @@ class UserServiceImplTest {
         assertNotNull(updatedUserDto);
         assertEquals(updatedUserDto, UserMapper.INSTANCE.userEntityToDto(updatedUserEntity));
 
-        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userRepository).save(any(UserEntity.class));
     }
 
     @Test
@@ -226,7 +226,7 @@ class UserServiceImplTest {
 
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userService.updateUser(userDto.getPublicId(), userDto));
-        verify(userRepository, times(1)).findByPublicId(anyString());
+        verify(userRepository).findByPublicId(anyString());
     }
 
 
@@ -241,7 +241,7 @@ class UserServiceImplTest {
         userService.deleteUserByPublicId(userEntity.getPublicId());
 
         // assert
-        verify(userRepository, times(1)).delete(userEntity);
+        verify(userRepository).delete(userEntity);
     }
 
     @Test

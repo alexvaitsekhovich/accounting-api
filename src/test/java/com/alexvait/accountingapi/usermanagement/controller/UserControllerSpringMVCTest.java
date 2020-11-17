@@ -73,7 +73,7 @@ class UserControllerSpringMVCTest {
                 .andExpect(jsonPath("$.email").value(userDto.getEmail()));
 
         // assert
-        verify(userService, times(1)).getUserByPublicId(anyString());
+        verify(userService).getUserByPublicId(anyString());
     }
 
     @Test
@@ -94,7 +94,7 @@ class UserControllerSpringMVCTest {
                 .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"));
 
         // assert
-        verify(userService, times(1)).getUserByPublicId(anyString());
+        verify(userService).getUserByPublicId(anyString());
     }
 
     @Test
@@ -125,7 +125,7 @@ class UserControllerSpringMVCTest {
         UserResponseModel createdUserModel = returnedEntity.getContent();
 
         assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(userDto), createdUserModel, "Created user model comparison failed");
-        verify(userService, times(1)).createUser(any(UserDto.class));
+        verify(userService).createUser(any(UserDto.class));
     }
 
     @Test
@@ -149,7 +149,7 @@ class UserControllerSpringMVCTest {
                 .andExpect(jsonPath("$.httpStatus").value("CONFLICT"));
 
         // assert
-        verify(userService, times(1)).createUser(any(UserDto.class));
+        verify(userService).createUser(any(UserDto.class));
     }
 
     @Test
@@ -180,7 +180,7 @@ class UserControllerSpringMVCTest {
         UserResponseModel updatedUserModel = returnedEntity.getContent();
 
         assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(userDto), updatedUserModel, "Updated model comparison failed");
-        verify(userService, times(1)).updateUser(anyString(), any(UserDto.class));
+        verify(userService).updateUser(anyString(), any(UserDto.class));
     }
 
     @Test
@@ -203,6 +203,6 @@ class UserControllerSpringMVCTest {
                 .andExpect(jsonPath("$.responseState").value("FAILURE"))
                 .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"));
 
-        verify(userService, times(1)).updateUser(anyString(), any(UserDto.class));
+        verify(userService).updateUser(anyString(), any(UserDto.class));
     }
 }

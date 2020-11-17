@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
+import com.alexvait.accountingapi.usermanagement.controller.annotated.AdminControllerAnnotated;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
@@ -20,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping(AdminController.BASE_URL)
 @CrossOrigin(origins = "*")
-public class AdminController implements com.alexvait.accountingapi.usermanagement.controller.annotated.AdminControllerAnnotated {
+public class AdminController implements AdminControllerAnnotated {
 
     public static final String BASE_URL = "/admin";
 

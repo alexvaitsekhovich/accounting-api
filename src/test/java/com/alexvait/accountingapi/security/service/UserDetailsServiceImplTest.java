@@ -38,7 +38,7 @@ class UserDetailsServiceImplTest {
         UserDetails userDetails = userService.loadUserByUsername("test");
 
         // assert
-        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(userRepository).findByEmail(anyString());
         assertEquals(userEntity.getEmail(), userDetails.getUsername());
         assertEquals(userEntity.getEncryptedPassword(), userDetails.getPassword());
         assertEquals(0, userDetails.getAuthorities().size());
@@ -52,6 +52,6 @@ class UserDetailsServiceImplTest {
 
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("test"));
-        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(userRepository).findByEmail(anyString());
     }
 }

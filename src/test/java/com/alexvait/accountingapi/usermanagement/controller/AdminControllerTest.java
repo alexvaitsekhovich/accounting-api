@@ -79,7 +79,7 @@ class AdminControllerTest {
             );
         });
 
-        verify(userService, times(1)).getUsers(anyInt(), anyInt());
+        verify(userService).getUsers(anyInt(), anyInt());
     }
 
     @Test
@@ -96,7 +96,7 @@ class AdminControllerTest {
                 () -> assertEquals(ResponseOperationState.SUCCESS, operationResponse.getResponseState(), "response failed")
         );
 
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
+        verify(userService).deleteUserByPublicId(anyString());
     }
 
     @Test
@@ -109,6 +109,6 @@ class AdminControllerTest {
         assertThrows(UsernameNotFoundException.class, () -> adminController.deleteUser("x"));
 
         //assert
-        verify(userService, times(1)).deleteUserByPublicId(anyString());
+        verify(userService).deleteUserByPublicId(anyString());
     }
 }

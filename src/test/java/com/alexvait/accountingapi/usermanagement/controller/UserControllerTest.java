@@ -53,7 +53,7 @@ class UserControllerTest {
 
         //assert
         assertEquals(userMapper.userDtoToResponseModel(userDto), userEntityModel.getContent());
-        verify(userService, times(1)).getUserByPublicId(anyString());
+        verify(userService).getUserByPublicId(anyString());
     }
 
     @Test
@@ -64,7 +64,7 @@ class UserControllerTest {
 
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userController.getUser("1"));
-        verify(userService, times(1)).getUserByPublicId(anyString());
+        verify(userService).getUserByPublicId(anyString());
     }
 
 
@@ -79,7 +79,7 @@ class UserControllerTest {
 
         //assert
         assertEquals(userMapper.userDtoToResponseModel(userDto), userEntityModel.getContent());
-        verify(userService, times(1)).createUser(any());
+        verify(userService).createUser(any());
     }
 
     @Test
@@ -93,6 +93,6 @@ class UserControllerTest {
 
         //assert
         assertEquals(userMapper.userDtoToResponseModel(userDto), userEntityModel.getContent());
-        verify(userService, times(1)).updateUser(anyString(), any());
+        verify(userService).updateUser(anyString(), any());
     }
 }
