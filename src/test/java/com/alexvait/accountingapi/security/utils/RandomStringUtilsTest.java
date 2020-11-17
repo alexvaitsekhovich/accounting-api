@@ -8,9 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Test RandomStringUtilsTest")
 class RandomStringUtilsTest {
 
-    private final String onlyCharsRegexp = "^[a-zA-Z]+$";
-    private final String digitsAndCharsRegexp = "^[a-zA-Z0-9]+$";
-
     @Test
     @DisplayName("Test alphabetic string generation")
     void testRandomAlphabetic() {
@@ -21,6 +18,7 @@ class RandomStringUtilsTest {
         assertEquals(length, randomString.length());
         assertEquals(length, randomString2.length());
 
+        String onlyCharsRegexp = "^[a-zA-Z]+$";
         assertTrue(randomString.matches(onlyCharsRegexp));
         assertTrue(randomString2.matches(onlyCharsRegexp));
 
@@ -37,6 +35,7 @@ class RandomStringUtilsTest {
         assertEquals(length, randomString.length());
         assertEquals(length, randomString2.length());
 
+        String digitsAndCharsRegexp = "^[a-zA-Z0-9]+$";
         assertTrue(randomString.matches(digitsAndCharsRegexp));
         assertTrue(randomString2.matches(digitsAndCharsRegexp));
 

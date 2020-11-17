@@ -14,8 +14,8 @@ import java.util.Objects;
 public class OperationResponse {
     private final Map<String, Object> details;
 
-    private ResponseOperationState responseState;
-    private HttpStatus httpStatus;
+    private final ResponseOperationState responseState;
+    private final HttpStatus httpStatus;
 
     public OperationResponse(ResponseOperationState responseState, HttpStatus httpStatus) {
         this.responseState = Objects.requireNonNull(responseState);

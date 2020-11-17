@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertiesReader {
 
-    private Environment env;
+    private final Environment env;
 
     public PropertiesReader(Environment env) {
         this.env = env;

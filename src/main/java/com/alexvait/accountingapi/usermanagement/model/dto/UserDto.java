@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.usermanagement.model.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Collection;

@@ -34,14 +34,14 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         String authHeader = req.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 
         if (authHeader != null && authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-            UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(req, authHeader);
+            UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(authHeader);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 
         chain.doFilter(req, resp);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req, String authHeader) throws JwtException {
+    private UsernamePasswordAuthenticationToken getAuthentication(String authHeader) throws JwtException {
 
         authHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
 

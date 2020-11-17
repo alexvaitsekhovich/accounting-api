@@ -32,7 +32,7 @@ class UserControllerTest {
     @Mock
     UserService userService;
 
-    UserMapper userMapper = UserMapper.INSTANCE;
+    final UserMapper userMapper = UserMapper.INSTANCE;
 
     @Test
     @DisplayName("Test get user")
