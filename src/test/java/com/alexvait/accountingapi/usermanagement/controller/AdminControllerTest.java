@@ -70,14 +70,14 @@ class AdminControllerTest {
                 )
         );
 
-        responseModels.forEach(responseModel -> {
-            assertAll(
-                    "test entity models links for id #" + responseModel.getContent().getPublicId(),
-                    () -> assertTrue(responseModel.getLinks().hasSize(2), "hasSize failed"),
-                    () -> assertNotNull(responseModel.getLink("self"), "self link failed"),
-                    () -> assertNotNull(responseModel.getLink("invoices"), "invoices link failed")
-            );
-        });
+        responseModels.forEach(responseModel ->
+                assertAll(
+                        "test entity models links for id #" + responseModel.getContent().getPublicId(),
+                        () -> assertTrue(responseModel.getLinks().hasSize(2), "hasSize failed"),
+                        () -> assertNotNull(responseModel.getLink("self"), "self link failed"),
+                        () -> assertNotNull(responseModel.getLink("invoices"), "invoices link failed")
+                )
+        );
 
         verify(userService).getUsers(anyInt(), anyInt());
     }

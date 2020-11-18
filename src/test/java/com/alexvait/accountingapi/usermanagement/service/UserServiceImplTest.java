@@ -1,24 +1,27 @@
 package com.alexvait.accountingapi.usermanagement.service;
 
+import com.alexvait.accountingapi.security.entity.RoleEntity;
 import com.alexvait.accountingapi.security.repository.RoleRepository;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
 import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserEntity;
@@ -44,78 +47,41 @@ class UserServiceImplTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
-    @Test
-    @DisplayName("Test createUser")
-    void createUser() {
-        // arrange
-        UserDto newUserDto = createTestUserDto();
-        // make sure these fields are not set
-        newUserDto.setPublicId(null);
-        newUserDto.setEncryptedPassword(null);
+    UserEntity testingUserEntity;
+    UserDto testingUserDto;
 
-        UserEntity createdUserEntity = createTestUserEntity();
-
-        when(userRepository.findByEmail(anyString())).thenReturn(null);
-        when(passwordEncoder.encode(anyString())).thenReturn("1234");
-
-        final ArgumentCaptor<UserEntity> entityArgumentCaptor = ArgumentCaptor.forClass(UserEntity.class);
-        when(userRepository.save(entityArgumentCaptor.capture())).thenReturn(createdUserEntity);
-
-        // act
-        UserDto createdUserDto = userService.createUser(newUserDto);
-
-        // assert
-        assertAll(
-                () -> assertNotNull(createdUserDto, "not null failed"),
-                () -> assertEquals(UserMapper.INSTANCE.userEntityToDto(createdUserEntity), createdUserDto, "equals to entity failed")
-        );
-
-        UserEntity createUserEntityCaptor = entityArgumentCaptor.getValue();
-
-        assertAll(
-                "test fields of the created user dto",
-
-                // these fields should be new
-                () -> assertNotEquals(newUserDto.getPublicId(), createUserEntityCaptor.getPublicId(), "public id comparison failed"),
-                () -> assertNotEquals(newUserDto.getEncryptedPassword(), createUserEntityCaptor.getEncryptedPassword(), "encrypted password comparison failed"),
-
-                // all other fields must stay the same
-                () -> assertEquals(newUserDto.getFirstName(), createUserEntityCaptor.getFirstName(), "first name comparison failed"),
-                () -> assertEquals(newUserDto.getLastName(), createUserEntityCaptor.getLastName(), "last name comparison failed"),
-                () -> assertEquals(newUserDto.getEmail(), createUserEntityCaptor.getEmail(), "email comparison failed")
-        );
-
-        verify(userRepository).findByEmail(anyString());
-        verify(userRepository).save(any(UserEntity.class));
-        verify(passwordEncoder).encode(anyString());
+    @BeforeEach
+    void setUp() {
+        testingUserEntity = createTestUserEntity();
+        testingUserDto = createTestUserDto();
     }
 
     @Test
     @DisplayName("Test createUser when the email is already registered")
     void createUserEmailExists() {
         // arrange
-        UserEntity userEntity = createTestUserEntity();
-        when(userRepository.findByEmail(anyString())).thenReturn(userEntity);
+        when(userRepository.findByEmail(anyString())).thenReturn(testingUserEntity);
 
         // act, assert
-        assertThrows(UserAlreadyExistsException.class, () -> userService.createUser(createTestUserDto()));
+        assertThrows(UserAlreadyExistsException.class, () -> userService.createUser(testingUserDto));
         verify(userRepository, never()).save(any(UserEntity.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
     @DisplayName("Test getUser")
     void testGetUser() {
         // arrange
-        UserEntity userEntity = createTestUserEntity();
-        when(userRepository.findByEmail(anyString())).thenReturn(userEntity);
+        when(userRepository.findByEmail(anyString())).thenReturn(testingUserEntity);
 
         // act
-        UserDto userDto = userService.getUser("test");
+        UserDto userDto = userService.getUser("test@api.com");
 
         // assert
         assertNotNull(userDto);
-        assertEquals(userEntity, UserMapper.INSTANCE.userDtoToEntity(userDto));
+        assertEquals(testingUserEntity, UserMapper.INSTANCE.userDtoToEntity(userDto));
         verify(userRepository).findByEmail(anyString());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -125,24 +91,25 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(anyString())).thenReturn(null);
 
         // act, assert
-        assertThrows(UsernameNotFoundException.class, () -> userService.getUser("test"));
+        assertThrows(UsernameNotFoundException.class, () -> userService.getUser("test@api.com"));
         verify(userRepository).findByEmail(anyString());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
     @DisplayName("Test getUserByPublicId")
     void testGetUserByPublicId() {
         // arrange
-        UserEntity userEntity = createTestUserEntity();
-        when(userRepository.findByPublicId(anyString())).thenReturn(userEntity);
+        when(userRepository.findByPublicId(anyString())).thenReturn(testingUserEntity);
 
         // act
         UserDto userDto = userService.getUserByPublicId("test");
 
         // assert
         assertNotNull(userDto);
-        assertEquals(userEntity, UserMapper.INSTANCE.userDtoToEntity(userDto));
+        assertEquals(testingUserEntity, UserMapper.INSTANCE.userDtoToEntity(userDto));
         verify(userRepository).findByPublicId(anyString());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -154,66 +121,25 @@ class UserServiceImplTest {
         // act, assert
         assertThrows(UsernameNotFoundException.class, () -> userService.getUserByPublicId("test"));
         verify(userRepository).findByPublicId(anyString());
-    }
-
-    @Test
-    @DisplayName("Test updateUser changes only certain fields")
-    void testUpdateUserSettingData() {
-        // arrange
-        UserEntity originalUserEntity = createTestUserEntity();
-        when(userRepository.findByPublicId(anyString())).thenReturn(originalUserEntity);
-
-        final ArgumentCaptor<UserEntity> entityArgumentCaptor = ArgumentCaptor.forClass(UserEntity.class);
-        when(userRepository.save(entityArgumentCaptor.capture())).thenReturn(createTestUserEntity());
-
-        // data to update the user
-        UserDto userDto = createTestUserDto();
-
-        // act
-        UserDto createdUserDto = userService.updateUser(userDto.getPublicId(), userDto);
-
-        // assert
-
-        assertNotNull(createdUserDto);
-
-        assertAll(
-                "test fields of the updated user dto",
-
-                // only first and last name must be changed to the provided data
-                () -> assertEquals(userDto.getFirstName(), entityArgumentCaptor.getValue().getFirstName(), "first name comparison failed"),
-                () -> assertEquals(userDto.getLastName(), entityArgumentCaptor.getValue().getLastName(), "last name comparison failed"),
-
-                // all other fields must stay the same in the database
-                () -> assertNotEquals(userDto.getId(), entityArgumentCaptor.getValue().getId(), "id comparison failed"),
-                () -> assertNotEquals(userDto.getPublicId(), entityArgumentCaptor.getValue().getPublicId(), "public id comparison failed"),
-                () -> assertNotEquals(userDto.getEmail(), entityArgumentCaptor.getValue().getEmail(), "email comparison failed"),
-                () -> assertNotEquals(userDto.getEncryptedPassword(), entityArgumentCaptor.getValue().getEncryptedPassword(), "encrypted password comparison failed")
-        );
-
-        verify(userRepository).findByPublicId(anyString());
-        verify(userRepository).save(any(UserEntity.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
     @DisplayName("Test updateUser converts data correctly")
     void testUpdateUserResult() {
         // arrange
-        UserEntity updatedUserEntity = createTestUserEntity();
-
         when(userRepository.findByPublicId(anyString())).thenReturn(createTestUserEntity());
-        when(userRepository.save(any())).thenReturn(updatedUserEntity);
-
-        // placeholder
-        UserDto userDto = createTestUserDto();
+        when(userRepository.save(any())).thenReturn(testingUserEntity);
 
         // act
-        UserDto updatedUserDto = userService.updateUser(userDto.getPublicId(), userDto);
+        UserDto updatedUserDto = userService.updateUser("X", testingUserDto);
 
         // assert
         assertNotNull(updatedUserDto);
-        assertEquals(updatedUserDto, UserMapper.INSTANCE.userEntityToDto(updatedUserEntity));
+        assertEquals(updatedUserDto, UserMapper.INSTANCE.userEntityToDto(testingUserEntity));
 
         verify(userRepository).save(any(UserEntity.class));
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -221,12 +147,11 @@ class UserServiceImplTest {
     void testUpdateUserNotFound() {
         // arrange
         when(userRepository.findByPublicId(anyString())).thenReturn(null);
-        // placeholder
-        UserDto userDto = createTestUserDto();
 
         // act, assert
-        assertThrows(UsernameNotFoundException.class, () -> userService.updateUser(userDto.getPublicId(), userDto));
+        assertThrows(UsernameNotFoundException.class, () -> userService.updateUser("X", testingUserDto));
         verify(userRepository).findByPublicId(anyString());
+        verifyNoMoreInteractions(userRepository);
     }
 
 
@@ -234,14 +159,14 @@ class UserServiceImplTest {
     @DisplayName("Test deleteUserByPublicId")
     void testDeleteUserByPublicId() {
         // arrange
-        UserEntity userEntity = createTestUserEntity();
-        when(userRepository.findByPublicId(anyString())).thenReturn(userEntity);
+        when(userRepository.findByPublicId(anyString())).thenReturn(testingUserEntity);
 
         // act
-        userService.deleteUserByPublicId(userEntity.getPublicId());
+        userService.deleteUserByPublicId(testingUserEntity.getPublicId());
 
         // assert
-        verify(userRepository).delete(userEntity);
+        verify(userRepository).delete(testingUserEntity);
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -251,7 +176,7 @@ class UserServiceImplTest {
         when(userRepository.findByPublicId(anyString())).thenReturn(null);
 
         // act, assert
-        assertThrows(UsernameNotFoundException.class, () -> userService.deleteUserByPublicId("x"));
+        assertThrows(UsernameNotFoundException.class, () -> userService.deleteUserByPublicId("test"));
         verify(userRepository, never()).delete(any());
     }
 
@@ -259,10 +184,9 @@ class UserServiceImplTest {
     @DisplayName("Test getUsers")
     void getUsers() {
         // arrange
-        UserEntity userEntity1 = createTestUserEntity();
         UserEntity userEntity2 = createTestUserEntity();
 
-        List<UserEntity> userEntities = List.of(userEntity1, userEntity2);
+        List<UserEntity> userEntities = List.of(testingUserEntity, userEntity2);
         PageRequest pageRequest = PageRequest.of(0, 2);
 
         when(userRepository.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(userEntities));
@@ -273,8 +197,111 @@ class UserServiceImplTest {
         // assert
         assertNotNull(usersDto);
 
-        List<UserDto> usersDtoExpected = List.of(UserMapper.INSTANCE.userEntityToDto(userEntity1), UserMapper.INSTANCE.userEntityToDto(userEntity2));
+        List<UserDto> usersDtoExpected = List.of(
+                UserMapper.INSTANCE.userEntityToDto(testingUserEntity),
+                UserMapper.INSTANCE.userEntityToDto(userEntity2)
+        );
         assertEquals(usersDtoExpected, usersDto);
         assertThat(usersDtoExpected, containsInAnyOrder(usersDto.toArray()));
+
+        verify(userRepository).findAll(any(PageRequest.class));
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    @Nested
+    @DisplayName("Test User service implementation with UserEntity captor")
+    class UserServiceImplWithCaptorTest {
+
+        @Captor
+        ArgumentCaptor<UserEntity> entityArgumentCaptor;
+
+        @Test
+        @DisplayName("Test createUser")
+        void createUser() {
+            // arrange
+            // make sure these fields are not set
+            testingUserDto.setPublicId(null);
+            testingUserDto.setEncryptedPassword(null);
+
+            List<String> roles = Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_SOMEBODY");
+            testingUserDto.setRoles(roles);
+
+            when(userRepository.findByEmail(anyString())).thenReturn(null);
+            when(userRepository.save(entityArgumentCaptor.capture())).thenReturn(testingUserEntity);
+            when(passwordEncoder.encode(anyString())).thenReturn("1234");
+            when(roleRepository.findByName(anyString())).thenReturn(
+                    new RoleEntity(UUID.randomUUID().toString()),
+                    new RoleEntity(UUID.randomUUID().toString()),
+                    new RoleEntity(UUID.randomUUID().toString())
+            );
+
+            InOrder inOrder = inOrder(userRepository, passwordEncoder, roleRepository);
+
+            // act
+            UserDto createdUserDto = userService.createUser(testingUserDto);
+
+            // assert
+            assertAll(
+                    () -> assertNotNull(createdUserDto, "not null failed"),
+                    () -> assertEquals(UserMapper.INSTANCE.userEntityToDto(testingUserEntity), createdUserDto, "equals to entity failed")
+            );
+
+            UserEntity createUserEntityCaptor = entityArgumentCaptor.getValue();
+
+            assertAll(
+                    "test fields of the created user dto",
+
+                    () -> assertEquals(3, createUserEntityCaptor.getRoles().size()),
+
+                    // these fields should be new
+                    () -> assertNotEquals(testingUserDto.getPublicId(), createUserEntityCaptor.getPublicId(), "public id comparison failed"),
+                    () -> assertNotEquals(testingUserDto.getEncryptedPassword(), createUserEntityCaptor.getEncryptedPassword(), "encrypted password comparison failed"),
+
+                    // all other fields must stay the same
+                    () -> assertEquals(testingUserDto.getFirstName(), createUserEntityCaptor.getFirstName(), "first name comparison failed"),
+                    () -> assertEquals(testingUserDto.getLastName(), createUserEntityCaptor.getLastName(), "last name comparison failed"),
+                    () -> assertEquals(testingUserDto.getEmail(), createUserEntityCaptor.getEmail(), "email comparison failed")
+            );
+
+            inOrder.verify(userRepository).findByEmail(anyString());
+            inOrder.verify(passwordEncoder).encode(anyString());
+            inOrder.verify(roleRepository, times(roles.size())).findByName(anyString());
+            inOrder.verify(userRepository).save(any(UserEntity.class));
+            verifyNoMoreInteractions(userRepository);
+        }
+
+        @Test
+        @DisplayName("Test updateUser changes only certain fields")
+        void testUpdateUserSettingData() {
+            // arrange
+            when(userRepository.findByPublicId(anyString())).thenReturn(testingUserEntity);
+            when(userRepository.save(entityArgumentCaptor.capture())).thenReturn(createTestUserEntity());
+            InOrder inOrder = inOrder(userRepository);
+
+            // act
+            UserDto createdUserDto = userService.updateUser("X", testingUserDto);
+
+            // assert
+
+            assertNotNull(createdUserDto);
+
+            assertAll(
+                    "test fields of the updated user dto",
+
+                    // only first and last name must be changed to the provided data
+                    () -> assertEquals(testingUserDto.getFirstName(), entityArgumentCaptor.getValue().getFirstName(), "first name comparison failed"),
+                    () -> assertEquals(testingUserDto.getLastName(), entityArgumentCaptor.getValue().getLastName(), "last name comparison failed"),
+
+                    // all other fields must stay the same in the database
+                    () -> assertNotEquals(testingUserDto.getId(), entityArgumentCaptor.getValue().getId(), "id comparison failed"),
+                    () -> assertNotEquals(testingUserDto.getPublicId(), entityArgumentCaptor.getValue().getPublicId(), "public id comparison failed"),
+                    () -> assertNotEquals(testingUserDto.getEmail(), entityArgumentCaptor.getValue().getEmail(), "email comparison failed"),
+                    () -> assertNotEquals(testingUserDto.getEncryptedPassword(), entityArgumentCaptor.getValue().getEncryptedPassword(), "encrypted password comparison failed")
+            );
+
+            inOrder.verify(userRepository).findByPublicId(anyString());
+            inOrder.verify(userRepository).save(any(UserEntity.class));
+            verifyNoMoreInteractions(userRepository);
+        }
     }
 }

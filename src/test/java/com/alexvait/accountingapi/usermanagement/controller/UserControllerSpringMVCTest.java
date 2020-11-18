@@ -43,8 +43,11 @@ class UserControllerSpringMVCTest {
 
     private MockMvc mockMvc;
 
+    UserDto testingUserDto;
+
     @BeforeEach
     void setUp() {
+        testingUserDto = createTestUserDto();
         jsonMapper = new ObjectMapper();
 
         UserController userController = new UserController(userService);
@@ -57,8 +60,7 @@ class UserControllerSpringMVCTest {
     @DisplayName("Test get user")
     void testGetUser() throws Exception {
         // arrange
-        UserDto userDto = createTestUserDto();
-        when(userService.getUserByPublicId(anyString())).thenReturn(userDto);
+        when(userService.getUserByPublicId(anyString())).thenReturn(testingUserDto);
 
         // act
         mockMvc.perform(get(UserController.BASE_URL + "/1")
@@ -67,10 +69,10 @@ class UserControllerSpringMVCTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.publicId").value(userDto.getPublicId()))
-                .andExpect(jsonPath("$.firstName").value(userDto.getFirstName()))
-                .andExpect(jsonPath("$.lastName").value(userDto.getLastName()))
-                .andExpect(jsonPath("$.email").value(userDto.getEmail()));
+                .andExpect(jsonPath("$.publicId").value(testingUserDto.getPublicId()))
+                .andExpect(jsonPath("$.firstName").value(testingUserDto.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(testingUserDto.getLastName()))
+                .andExpect(jsonPath("$.email").value(testingUserDto.getEmail()));
 
         // assert
         verify(userService).getUserByPublicId(anyString());
@@ -101,9 +103,8 @@ class UserControllerSpringMVCTest {
     @DisplayName("Test create user")
     void testCreateUser() throws Exception {
         // arrange
-        UserDto userDto = createTestUserDto();
-        UserCreateRequestModel createRequestModel = UserMapper.INSTANCE.userDtoToUserCreateRequestModel(userDto);
-        when(userService.createUser(any(UserDto.class))).thenReturn(userDto);
+        UserCreateRequestModel createRequestModel = UserMapper.INSTANCE.userDtoToUserCreateRequestModel(testingUserDto);
+        when(userService.createUser(any(UserDto.class))).thenReturn(testingUserDto);
 
         // act, assert
         MvcResult result = mockMvc.perform(post(UserController.BASE_URL)
@@ -113,10 +114,10 @@ class UserControllerSpringMVCTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.publicId").value(userDto.getPublicId()))
-                .andExpect(jsonPath("$.firstName").value(userDto.getFirstName()))
-                .andExpect(jsonPath("$.lastName").value(userDto.getLastName()))
-                .andExpect(jsonPath("$.email").value(userDto.getEmail()))
+                .andExpect(jsonPath("$.publicId").value(testingUserDto.getPublicId()))
+                .andExpect(jsonPath("$.firstName").value(testingUserDto.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(testingUserDto.getLastName()))
+                .andExpect(jsonPath("$.email").value(testingUserDto.getEmail()))
                 .andReturn();
 
         EntityModel<UserResponseModel> returnedEntity = jsonMapper.readValue(
@@ -124,7 +125,7 @@ class UserControllerSpringMVCTest {
                 });
         UserResponseModel createdUserModel = returnedEntity.getContent();
 
-        assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(userDto), createdUserModel, "Created user model comparison failed");
+        assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(testingUserDto), createdUserModel, "Created user model comparison failed");
         verify(userService).createUser(any(UserDto.class));
     }
 
@@ -132,8 +133,7 @@ class UserControllerSpringMVCTest {
     @DisplayName("Test create user with already registered email")
     void testCreateUserEmailExists() throws Exception {
         // arrange
-        UserDto userDto = createTestUserDto();
-        UserCreateRequestModel createRequestModel = UserMapper.INSTANCE.userDtoToUserCreateRequestModel(userDto);
+        UserCreateRequestModel createRequestModel = UserMapper.INSTANCE.userDtoToUserCreateRequestModel(testingUserDto);
         when(userService.createUser(any(UserDto.class))).thenThrow(new UserAlreadyExistsException(""));
 
         // act
@@ -156,9 +156,8 @@ class UserControllerSpringMVCTest {
     @DisplayName("Test update user")
     void testUpdateUser() throws Exception {
         // arrange
-        UserDto userDto = createTestUserDto();
-        UserUpdateRequestModel updateRequestModel = UserMapper.INSTANCE.userDtoToUserUpdateRequestModel(userDto);
-        when(userService.updateUser(anyString(), any(UserDto.class))).thenReturn(userDto);
+        UserUpdateRequestModel updateRequestModel = UserMapper.INSTANCE.userDtoToUserUpdateRequestModel(testingUserDto);
+        when(userService.updateUser(anyString(), any(UserDto.class))).thenReturn(testingUserDto);
 
         // act, assert
         MvcResult result = mockMvc.perform(put(UserController.BASE_URL + "/x")
@@ -168,10 +167,10 @@ class UserControllerSpringMVCTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.publicId").value(userDto.getPublicId()))
-                .andExpect(jsonPath("$.firstName").value(userDto.getFirstName()))
-                .andExpect(jsonPath("$.lastName").value(userDto.getLastName()))
-                .andExpect(jsonPath("$.email").value(userDto.getEmail()))
+                .andExpect(jsonPath("$.publicId").value(testingUserDto.getPublicId()))
+                .andExpect(jsonPath("$.firstName").value(testingUserDto.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(testingUserDto.getLastName()))
+                .andExpect(jsonPath("$.email").value(testingUserDto.getEmail()))
                 .andReturn();
 
         EntityModel<UserResponseModel> returnedEntity = jsonMapper.readValue(
@@ -179,7 +178,7 @@ class UserControllerSpringMVCTest {
                 });
         UserResponseModel updatedUserModel = returnedEntity.getContent();
 
-        assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(userDto), updatedUserModel, "Updated model comparison failed");
+        assertEquals(UserMapper.INSTANCE.userDtoToResponseModel(testingUserDto), updatedUserModel, "Updated model comparison failed");
         verify(userService).updateUser(anyString(), any(UserDto.class));
     }
 
@@ -187,8 +186,7 @@ class UserControllerSpringMVCTest {
     @DisplayName("Test update user when user was not found")
     void testUpdateUserNotFound() throws Exception {
         // arrange
-        UserDto userDto = createTestUserDto();
-        UserUpdateRequestModel updateRequestModel = UserMapper.INSTANCE.userDtoToUserUpdateRequestModel(userDto);
+        UserUpdateRequestModel updateRequestModel = UserMapper.INSTANCE.userDtoToUserUpdateRequestModel(testingUserDto);
         when(userService.updateUser(anyString(), any(UserDto.class))).thenThrow(new UsernameNotFoundException(""));
 
         // act, assert
