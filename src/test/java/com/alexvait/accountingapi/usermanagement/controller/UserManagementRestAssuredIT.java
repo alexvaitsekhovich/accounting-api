@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName("User management integration tests")
 class UserManagementRestAssuredIT {
 
     public static final String APPLICATION_JSON = "application/json";
@@ -45,6 +46,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(1)
+    @DisplayName("Test create user")
     void testCreateUser() {
         JsonPath jsonResponse = given()
                 .contentType(APPLICATION_JSON).accept(APPLICATION_JSON)
@@ -69,6 +71,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(2)
+    @DisplayName("Test login user")
     void testLoginUser() {
         Map<String, String> loginData = new HashMap<>();
         loginData.put("email", userData.get("email"));
@@ -89,6 +92,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(3)
+    @DisplayName("Test get user")
     void testGetUser() {
         JsonPath jsonResponse = given()
                 .pathParam("publicId", publicId)
@@ -111,6 +115,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(4)
+    @DisplayName("Test update user")
     void testUpdateUser() {
         JsonPath jsonResponse = given()
                 .pathParam("publicId", publicId)
@@ -135,6 +140,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(5)
+    @DisplayName("Test delete user")
     void testDeleteUser() {
         JsonPath jsonResponse = given()
                 .pathParam("publicId", publicId)
@@ -156,6 +162,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(6)
+    @DisplayName("Test login as admin")
     void testLoginAdmin() {
         Map<String, String> loginData = new HashMap<>();
         loginData.put("email", "admin@api.com");
@@ -175,6 +182,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(7)
+    @DisplayName("Test get user as admin")
     void testGetUserByAdmin() {
         JsonPath jsonResponse = given()
                 .pathParam("publicId", publicId)
@@ -197,6 +205,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(8)
+    @DisplayName("Test update user as admin")
     void testUpdateUserByAdmin() {
         Map<String, String> updateData = new HashMap<>();
         updateData.put("firstName", "AdminChangedFirst");
@@ -225,6 +234,7 @@ class UserManagementRestAssuredIT {
 
     @Test
     @Order(9)
+    @DisplayName("Test delete user as admin")
     void testDeleteUserByAdmin() {
         JsonPath jsonResponse = given()
                 .pathParam("publicId", publicId)
