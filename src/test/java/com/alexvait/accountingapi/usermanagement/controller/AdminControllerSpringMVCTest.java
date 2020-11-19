@@ -1,30 +1,28 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
 import com.alexvait.accountingapi.helpers.UserTestObjectGenerator;
-import com.alexvait.accountingapi.security.config.ControllerExceptionHandler;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -32,22 +30,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
-@DisplayName("Test Admin controller with mockMvc")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@DisplayName("Test AdminController with SpringBootTest and MockMvc")
 @ActiveProfiles("testing")
 class AdminControllerSpringMVCTest {
 
-    @Mock
+    @MockBean
     private UserService userService;
 
+    @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        AdminController adminController = new AdminController(userService);
-        mockMvc = MockMvcBuilders.standaloneSetup(adminController)
-                .setControllerAdvice(new ControllerExceptionHandler())
-                .build();
+    @AfterEach
+    void tearDown() {
+        reset(userService);
     }
 
     @Test
@@ -65,8 +62,7 @@ class AdminControllerSpringMVCTest {
         when(userService.getUsers(pageNumberCaptor.capture(), pageSizeCaptor.capture())).thenReturn(usersDto);
 
         // act
-        mockMvc.perform(get(AdminController.BASE_URL + "/user")
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(AdminController.BASE_URL + "/user"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -101,7 +97,7 @@ class AdminControllerSpringMVCTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.content", hasSize(pageSize)));
+                .andExpect(jsonPath("$..users.length()").value(pageSize));
         // assert
 
         assertEquals(pageNumber, pageNumberCaptor.getValue());

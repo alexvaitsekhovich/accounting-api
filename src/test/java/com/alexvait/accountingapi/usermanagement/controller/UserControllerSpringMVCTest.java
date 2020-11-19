@@ -32,18 +32,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Test User controller with mockMvc")
+@DisplayName("Test UserController with MockMvc")
 @ActiveProfiles("testing")
 class UserControllerSpringMVCTest {
 
     @Mock
     private UserService userService;
 
-    private ObjectMapper jsonMapper;
-
     private MockMvc mockMvc;
 
-    UserDto testingUserDto;
+    private ObjectMapper jsonMapper;
+    private UserDto testingUserDto;
 
     @BeforeEach
     void setUp() {

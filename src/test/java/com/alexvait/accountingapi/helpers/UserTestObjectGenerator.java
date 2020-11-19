@@ -11,7 +11,7 @@ import static com.alexvait.accountingapi.security.utils.RandomStringUtils.random
 
 public class UserTestObjectGenerator {
 
-    private static Random random = new SecureRandom();
+    private final static Random random = new SecureRandom();
 
     public static UserEntity createTestUserEntity() {
         UserEntity userEntity = new UserEntity();
