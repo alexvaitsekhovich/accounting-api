@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.service;
 
+import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.entity.RoleEntity;
 import com.alexvait.accountingapi.security.repository.RoleRepository;
 import com.alexvait.accountingapi.security.utils.RandomStringUtils;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,27 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        Objects.requireNonNull(userDto);
-
-        if (userRepository.findByEmail(userDto.getEmail()) != null) {
-            throw new UserAlreadyExistsException(String.format("User with email %s is already registered", userDto.getEmail()));
-        }
-
-        UserEntity userEntity = userMapper.userDtoToEntity(userDto);
-
-        userEntity.setPublicId(RandomStringUtils.randomAlphanumeric(40));
-        userEntity.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        Collection<RoleEntity> roleEntities = userDto.getRoles().stream()
-                .map(roleRepository::findByName)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-
-        userEntity.setRoles(roleEntities);
-
-        UserEntity savedUser = userRepository.save(userEntity);
-
-        return userMapper.userEntityToDto(savedUser);
+        return createUserWithRoles(userDto, Collections.singletonList(SecurityConstants.ROLE_USER));
     }
 
     @Override
@@ -112,5 +94,28 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> entitiesPage = userRepository.findAll(PageRequest.of(page, size)).getContent();
 
         return entitiesPage.stream().map(userMapper::userEntityToDto).collect(Collectors.toList());
+    }
+
+    protected UserDto createUserWithRoles(UserDto userDto, Collection<String> roleNames) {
+        Objects.requireNonNull(userDto);
+
+        if (userRepository.findByEmail(userDto.getEmail()) != null) {
+            throw new UserAlreadyExistsException(String.format("User with email %s is already registered", userDto.getEmail()));
+        }
+
+        UserEntity userEntity = userMapper.userDtoToEntity(userDto);
+
+        userEntity.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
+        userEntity.setPublicId(RandomStringUtils.randomAlphanumeric(40));
+        userEntity.setRoles(getRoleEntitiesFromRoleNames(roleNames));
+
+        return userMapper.userEntityToDto(userRepository.save(userEntity));
+    }
+
+    private Collection<RoleEntity> getRoleEntitiesFromRoleNames(Collection<String> roleNames) {
+        return roleNames.stream()
+                .map(roleRepository::findByName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 }

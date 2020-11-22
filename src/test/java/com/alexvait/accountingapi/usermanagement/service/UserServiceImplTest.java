@@ -216,7 +216,7 @@ class UserServiceImplTest {
         ArgumentCaptor<UserEntity> entityArgumentCaptor;
 
         @Test
-        @DisplayName("Test createUser")
+        @DisplayName("Test createUser with roles")
         void createUser() {
             // arrange
             // make sure these fields are not set
@@ -238,7 +238,7 @@ class UserServiceImplTest {
             InOrder inOrder = inOrder(userRepository, passwordEncoder, roleRepository);
 
             // act
-            UserDto createdUserDto = userService.createUser(testingUserDto);
+            UserDto createdUserDto = userService.createUserWithRoles(testingUserDto, roles);
 
             // assert
             assertAll(

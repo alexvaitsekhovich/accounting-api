@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.usermanagement.controller.annotated.UserControllerAnnotated;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 
 @RestController
 @RequestMapping(UserController.BASE_URL)
@@ -36,10 +34,9 @@ public class UserController implements UserControllerAnnotated {
     public EntityModel<UserResponseModel> createUser(@Valid @RequestBody UserCreateRequestModel userReqModel) {
 
         UserDto newUser = userMapper.userCreateRequestModelToDto(userReqModel);
-        newUser.setRoles(Collections.singletonList(SecurityConstants.ROLE_USER));
         UserDto createdUserDto = userService.createUser(newUser);
 
-        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(createdUserDto);
+        return getUserResponseModelHateoasFromDto(createdUserDto);
     }
 
     @Override
@@ -47,9 +44,8 @@ public class UserController implements UserControllerAnnotated {
     public EntityModel<UserResponseModel> getUser(@PathVariable String publicId) {
 
         UserDto userDto = userService.getUserByPublicId(publicId);
-        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
+        return getUserResponseModelHateoasFromDto(userDto);
     }
-
 
     @Override
     @PutMapping("/{publicId}")
@@ -60,6 +56,11 @@ public class UserController implements UserControllerAnnotated {
 
         UserDto createdUserDto = userService.updateUser(publicId, userDto);
 
-        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(createdUserDto);
+        return getUserResponseModelHateoasFromDto(createdUserDto);
     }
+
+    private EntityModel<UserResponseModel> getUserResponseModelHateoasFromDto(UserDto userDto) {
+        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
+    }
+
 }
