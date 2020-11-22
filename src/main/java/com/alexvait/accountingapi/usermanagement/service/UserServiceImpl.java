@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByPublicId(publicId);
 
         if (userEntity == null)
-            throw new UsernameNotFoundException("No user found having public id: " + publicId);
+            throw new UsernameNotFoundException("No user found with public id: " + publicId);
 
         return userEntity;
     }
