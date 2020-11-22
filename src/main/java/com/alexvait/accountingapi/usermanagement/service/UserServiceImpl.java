@@ -42,50 +42,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email);
-
-        if (userEntity == null)
-            throw new UsernameNotFoundException(email);
-
-        return userMapper.userEntityToDto(userEntity);
+        return convertUserEntityToDto(findUserByEmail(email));
     }
 
     @Override
     public UserDto getUserByPublicId(String publicId) {
-        UserEntity userEntity = userRepository.findByPublicId(publicId);
-
-        if (null == userEntity)
-            throw new UsernameNotFoundException("No user found with public id " + publicId);
-
-        return userMapper.userEntityToDto(userEntity);
+        return convertUserEntityToDto(findUserByPublicId(publicId));
     }
 
     @Override
     public UserDto updateUser(String publicId, UserDto userDto) {
         Objects.requireNonNull(userDto);
 
-        UserEntity userEntity = userRepository.findByPublicId(publicId);
-
-        if (userEntity == null)
-            throw new UsernameNotFoundException("No user found with public id " + publicId);
+        UserEntity userEntity = findUserByPublicId(publicId);
 
         userEntity.setFirstName(userDto.getFirstName());
         userEntity.setLastName(userDto.getLastName());
 
-        UserEntity updatedUserEntity = userRepository.save(userEntity);
-
-        return userMapper.userEntityToDto(updatedUserEntity);
+        return convertUserEntityToDto(userRepository.save(userEntity));
     }
 
     @Override
     public void deleteUserByPublicId(String publicId) {
-
-        UserEntity userEntity = userRepository.findByPublicId(publicId);
-
-        if (userEntity == null)
-            throw new UsernameNotFoundException("No user found with public id " + publicId);
-
-        userRepository.delete(userEntity);
+        userRepository.delete(findUserByPublicId(publicId));
     }
 
     @Override
@@ -93,7 +72,9 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> entitiesPage = userRepository.findAll(PageRequest.of(page, size)).getContent();
 
-        return entitiesPage.stream().map(userMapper::userEntityToDto).collect(Collectors.toList());
+        return entitiesPage.stream()
+                .map(userMapper::userEntityToDto)
+                .collect(Collectors.toList());
     }
 
     protected UserDto createUserWithRoles(UserDto userDto, Collection<String> roleNames) {
@@ -109,7 +90,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setPublicId(RandomStringUtils.randomAlphanumeric(40));
         userEntity.setRoles(getRoleEntitiesFromRoleNames(roleNames));
 
-        return userMapper.userEntityToDto(userRepository.save(userEntity));
+        return convertUserEntityToDto(userRepository.save(userEntity));
     }
 
     private Collection<RoleEntity> getRoleEntitiesFromRoleNames(Collection<String> roleNames) {
@@ -117,5 +98,27 @@ public class UserServiceImpl implements UserService {
                 .map(roleRepository::findByName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+    }
+
+    private UserDto convertUserEntityToDto(UserEntity userEntity) {
+        return userMapper.userEntityToDto(userEntity);
+    }
+
+    private UserEntity findUserByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null)
+            throw new UsernameNotFoundException(email);
+
+        return userEntity;
+    }
+
+    private UserEntity findUserByPublicId(String publicId) {
+        UserEntity userEntity = userRepository.findByPublicId(publicId);
+
+        if (userEntity == null)
+            throw new UsernameNotFoundException("No user found having public id: " + publicId);
+
+        return userEntity;
     }
 }
