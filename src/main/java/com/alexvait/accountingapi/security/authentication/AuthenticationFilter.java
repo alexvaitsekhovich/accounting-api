@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.security.authentication;
 
+import com.alexvait.accountingapi.security.config.SecurityConfiguration;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.model.UserPrincipal;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
@@ -58,7 +59,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String token = Jwts.builder()
                 .setSubject(userEmail)
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME_MS_15_MINUTES))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
+                .signWith(SignatureAlgorithm.HS512, SecurityConfiguration.getTokenSecret())
                 .compact();
 
         UserService userService = SpringApplicationContextProvider.getBean(UserService.class);

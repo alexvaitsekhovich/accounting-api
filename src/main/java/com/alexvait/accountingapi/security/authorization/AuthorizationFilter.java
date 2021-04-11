@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.security.authorization;
 
+import com.alexvait.accountingapi.security.config.SecurityConfiguration;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.model.UserPrincipal;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
@@ -47,7 +48,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         try {
             String userEmail = Jwts.parser()
-                    .setSigningKey(SecurityConstants.getTokenSecret())
+                    .setSigningKey(SecurityConfiguration.getTokenSecret())
                     .parseClaimsJws(authHeader)
                     .getBody()
                     .getSubject();

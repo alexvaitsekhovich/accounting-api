@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
+// Open API: {host}/v3/api-docs
+// Open API UI: {host}/swagger-ui.html
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Accounting API",

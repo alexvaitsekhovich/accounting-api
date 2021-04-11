@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.usermanagement.model.response;
 
-import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

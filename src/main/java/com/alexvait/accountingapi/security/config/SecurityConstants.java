@@ -1,8 +1,6 @@
 package com.alexvait.accountingapi.security.config;
 
 import com.alexvait.accountingapi.usermanagement.controller.UserController;
-import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
-import com.alexvait.accountingapi.security.utils.PropertiesReader;
 
 public class SecurityConstants {
     public static final long EXPIRATION_TIME_MS_15_MINUTES = 1000L * 60 * 15;
@@ -19,9 +17,4 @@ public class SecurityConstants {
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
-
-    public static String getTokenSecret() {
-        PropertiesReader propsReader = SpringApplicationContextProvider.getBean(PropertiesReader.class);
-        return propsReader.getTokenSecret();
-    }
 }

@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+// Using this class to retrieve Spring beans for classes that are not injected into application context
+
 @Component
 public class SpringApplicationContextProvider implements ApplicationContextAware {
 
