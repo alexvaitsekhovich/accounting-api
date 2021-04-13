@@ -12,14 +12,14 @@ import java.util.Arrays;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class HateoasBuilderUtil {
+public class UsersHateoasBuilderUtil {
 
     public static EntityModel<UserResponseModel> getUserResponseModelHateoasFromDto(UserDto userDto) {
 
         UserResponseModel userResponseModel = UserMapper.INSTANCE.userDtoToResponseModel(userDto);
 
         Link selfLink = linkTo(methodOn(UserController.class).getUser(userDto.getPublicId())).withSelfRel();
-        Link invoicesLink = linkTo(methodOn(InvoiceController.class).getInvoices(userDto.getPublicId())).withRel("invoices");
+        Link invoicesLink = linkTo(methodOn(InvoiceController.class).getInvoices()).withRel("invoices");
 
         return EntityModel.of(userResponseModel, Arrays.asList(selfLink, invoicesLink));
     }

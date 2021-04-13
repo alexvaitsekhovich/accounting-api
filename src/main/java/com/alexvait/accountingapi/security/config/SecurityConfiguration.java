@@ -1,10 +1,15 @@
 package com.alexvait.accountingapi.security.config;
 
+import com.alexvait.accountingapi.security.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.security.Principal;
+import java.util.Optional;
 
 @Configuration
 public class SecurityConfiguration {

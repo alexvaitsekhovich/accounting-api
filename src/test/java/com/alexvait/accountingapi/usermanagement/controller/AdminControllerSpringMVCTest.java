@@ -51,8 +51,8 @@ class AdminControllerSpringMVCTest {
     @DisplayName("Test get users with default pagination")
     void testGetUsersWithDefaultParameters() throws Exception {
         // arrange
-        int defaultPageNumber = Integer.parseInt(AdminController.defaultPageNumber);
-        int defaultPageSize = Integer.parseInt(AdminController.defaultPageSize);
+        int defaultPageNumber = Integer.parseInt(AdminController.defaultAdminPageNumber);
+        int defaultPageSize = Integer.parseInt(AdminController.defaultAdminPageSize);
 
         // generate stubs
         List<UserDto> usersDto = new ArrayList<>();

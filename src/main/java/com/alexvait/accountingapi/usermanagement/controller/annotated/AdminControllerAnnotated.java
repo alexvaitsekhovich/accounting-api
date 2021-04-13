@@ -2,7 +2,7 @@ package com.alexvait.accountingapi.usermanagement.controller.annotated;
 
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
-import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilderUtil;
+import com.alexvait.accountingapi.usermanagement.model.response.UsersHateoasBuilderUtil;
 import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +49,6 @@ public interface AdminControllerAnnotated {
 
 
     default EntityModel<UserResponseModel> userDtoToResponseModelHateoas(UserDto userDto) {
-        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
+        return UsersHateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
     }
 }
