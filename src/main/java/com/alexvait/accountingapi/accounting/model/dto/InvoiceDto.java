@@ -1,7 +1,7 @@
 package com.alexvait.accountingapi.accounting.model.dto;
 
 import com.alexvait.accountingapi.accounting.entity.enums.InvoiceState;
-import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
+import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import lombok.Data;
 
 @Data
@@ -11,5 +11,5 @@ public class InvoiceDto {
     private InvoiceState state;
     private long amount;
     private long customerId;
-    private UserEntity user;
+    private UserDto user;
 }

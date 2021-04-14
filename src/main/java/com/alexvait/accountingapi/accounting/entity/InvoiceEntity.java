@@ -3,6 +3,7 @@ package com.alexvait.accountingapi.accounting.entity;
 import com.alexvait.accountingapi.accounting.entity.enums.InvoiceState;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,8 +33,10 @@ public class InvoiceEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
+    @ToString.Exclude
     private UserEntity user;
 
     @OneToMany(mappedBy = "invoice")
+    @ToString.Exclude
     private List<PositionEntity> positions;
 }

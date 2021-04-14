@@ -2,9 +2,6 @@ package com.alexvait.accountingapi.usermanagement.model.dto;
 
 import lombok.Data;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 @Data
 public class UserDto {
     private long id;
@@ -14,5 +11,5 @@ public class UserDto {
     private String email;
     private String password;
     private String encryptedPassword;
-    private Collection<String> roles = new HashSet<>();
+//    private Collection<String> roles = new HashSet<>();
 }

@@ -1,10 +1,10 @@
 package com.alexvait.accountingapi.accounting.controller;
 
-import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.model.response.InvoiceHateoasBuilderUtil;
 import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
+import com.alexvait.accountingapi.accounting.model.response.PositionHateoasBuilderUtil;
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
 import com.alexvait.accountingapi.accounting.service.InvoiceService;
 import org.springframework.hateoas.CollectionModel;
@@ -53,7 +53,7 @@ public class InvoiceController {
     @GetMapping("/{invoiceNr}")
     public EntityModel<InvoiceResponseModel> getInvoice(@PathVariable String invoiceNr) {
         InvoiceDto invoiceDto = invoiceService.getInvoice(invoiceNr);
-        return getInvoiceResponseModelHateoasFromDto(invoiceDto);
+        return InvoiceHateoasBuilderUtil.getInvoiceResponseModelHateoasFromDto(invoiceDto);
     }
 
     @GetMapping("/{invoiceNr}/positions")
@@ -62,24 +62,19 @@ public class InvoiceController {
         List<PositionDto> positionsDto = invoiceService.getPositions(invoiceNr);
 
         List<EntityModel<PositionResponseModel>> positions = positionsDto.stream()
-                .map(PositionMapper.INSTANCE::positionDtoToResponseModel)
-                .map(EntityModel::of)
+                .map(PositionHateoasBuilderUtil::getPositionHateoasFromDtoNoInvoiceLink)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(positions);
     }
 
     @PostMapping("/generate")
-    public void createInvoice() {
-        return;
+    public EntityModel<InvoiceResponseModel> createInvoice() {
+        InvoiceDto invoiceDto = invoiceService.generateInvoice();
+        return InvoiceHateoasBuilderUtil.getInvoiceResponseModelHateoasFromDto(invoiceDto);
     }
 
     public CollectionModel<EntityModel<InvoiceResponseModel>> getInvoices() {
         return getInvoices(Integer.parseInt(defaultInvoicesPageNumber), Integer.parseInt(defaultInvoicesPageSize));
     }
-
-    private EntityModel<InvoiceResponseModel> getInvoiceResponseModelHateoasFromDto(InvoiceDto invoiceDto) {
-        return InvoiceHateoasBuilderUtil.getInvoiceResponseModelHateoasFromDto(invoiceDto);
-    }
-
 }

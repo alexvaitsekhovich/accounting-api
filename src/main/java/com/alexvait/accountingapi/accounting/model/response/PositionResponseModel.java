@@ -1,17 +1,20 @@
 package com.alexvait.accountingapi.accounting.model.response;
 
-import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
-import com.alexvait.accountingapi.accounting.entity.enums.Payment;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.hateoas.server.core.Relation;
+
+import java.util.Locale;
 
 @Data
 @Relation(collectionRelation = "positions", itemRelation = "position")
 public class PositionResponseModel {
+    private long id;
     private long amount;
-    private Payment payment;
+    private String payment;
     private long customerId;
-    @JsonIgnore
-    private InvoiceEntity invoice;
+    private String invoiceNumber;
+
+    public void setPayment(String payment) {
+        this.payment = payment.toLowerCase();
+    }
 }

@@ -20,6 +20,6 @@ public class InvoiceHateoasBuilderUtil {
         Link selfLink = linkTo(methodOn(InvoiceController.class).getInvoice(invoiceDto.getNumber())).withSelfRel();
         Link positionsLink = linkTo(methodOn(InvoiceController.class).getBilledPositions(invoiceDto.getNumber())).withRel("positions");
 
-        return EntityModel.of(invoiceResponseModel, Arrays.asList(selfLink, positionsLink));
+        return EntityModel.of(invoiceResponseModel, selfLink, positionsLink);
     }
 }

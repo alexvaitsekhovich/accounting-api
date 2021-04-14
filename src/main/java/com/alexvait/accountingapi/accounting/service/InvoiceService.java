@@ -11,4 +11,6 @@ public interface InvoiceService {
     InvoiceDto getInvoice(String number);
 
     List<PositionDto> getPositions(String number);
+
+    InvoiceDto generateInvoice();
 }

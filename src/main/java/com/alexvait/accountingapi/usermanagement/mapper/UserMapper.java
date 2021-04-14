@@ -17,10 +17,10 @@ public interface UserMapper {
 
     UserDto userUpdateRequestModelToDto(UserUpdateRequestModel userUpdateRequestModel);
 
-    @Mapping(target = "roles", ignore = true)
+//    @Mapping(target = "roles", ignore = true)
     UserDto userEntityToDto(UserEntity userEntity);
 
-    @Mapping(target = "roles", ignore = true)
+//    @Mapping(target = "roles", ignore = true)
     UserEntity userDtoToEntity(UserDto userDto);
 
     UserResponseModel userDtoToResponseModel(UserDto userDto);

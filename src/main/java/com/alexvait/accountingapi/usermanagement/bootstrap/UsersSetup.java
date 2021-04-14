@@ -70,10 +70,14 @@ public class UsersSetup implements CommandLineRunner {
         List<UserEntity> users = IntStream.range(1, 12).mapToObj(i -> createDummyUser("john.doe" + i + "@api.com", userRole))
                 .collect(Collectors.toList());
 
-        List<InvoiceEntity> invoices = IntStream.range(1, 5).mapToObj(i -> createInvoice(users.get(users.size() - 1), (i + "").repeat(20), randomGenerator.nextInt(1000)))
+        UserEntity lastUser = users.get(users.size() - 1);
+        List<InvoiceEntity> invoices = IntStream.range(1, 5).mapToObj(i -> createInvoice(lastUser, (i + "").repeat(20), randomGenerator.nextInt(1000)))
                 .collect(Collectors.toList());
 
-        IntStream.range(0, 20).forEach(i -> createPosition(invoices.get(0), i + 100, i));
+        IntStream.range(0, 20).forEach(i -> createPosition(lastUser, invoices.get(0), i + 100, i));
+        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, invoices.get(1), i + 100, i));
+
+        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, null, i + 100, i));
     }
 
     @Transactional
@@ -130,13 +134,13 @@ public class UsersSetup implements CommandLineRunner {
         return invoiceRepository.save(invoice);
     }
 
-    private PositionEntity createPosition(InvoiceEntity invoice, long amount, long customerId) {
+    private PositionEntity createPosition(UserEntity user, InvoiceEntity invoice, long amount, long customerId) {
         PositionEntity position = new PositionEntity();
         position.setAmount(amount);
         position.setPayment(Payment.CASH);
         position.setCustomerId(customerId);
         position.setInvoice(invoice);
-        position.setUser(invoice.getUser());
+        position.setUser(user);
         return positionRepository.save(position);
     }
 
