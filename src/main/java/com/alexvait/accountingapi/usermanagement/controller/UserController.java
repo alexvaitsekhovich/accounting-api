@@ -5,7 +5,7 @@ import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
-import com.alexvait.accountingapi.usermanagement.model.response.HateoasBuilderUtil;
+import com.alexvait.accountingapi.usermanagement.model.response.UsersHateoasBuilderUtil;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.springframework.hateoas.EntityModel;
@@ -60,7 +60,7 @@ public class UserController implements UserControllerAnnotated {
     }
 
     private EntityModel<UserResponseModel> getUserResponseModelHateoasFromDto(UserDto userDto) {
-        return HateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
+        return UsersHateoasBuilderUtil.getUserResponseModelHateoasFromDto(userDto);
     }
 
 }

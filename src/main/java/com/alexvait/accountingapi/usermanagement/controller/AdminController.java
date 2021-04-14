@@ -25,8 +25,8 @@ public class AdminController implements AdminControllerAnnotated {
 
     public static final String BASE_URL = "/admin";
 
-    public static final String defaultPageNumber = "0";
-    public static final String defaultPageSize = "5";
+    public static final String defaultAdminPageNumber = "0";
+    public static final String defaultAdminPageSize = "5";
 
     private final UserService userService;
 
@@ -37,8 +37,8 @@ public class AdminController implements AdminControllerAnnotated {
     @Override
     @GetMapping("/user")
     public CollectionModel<EntityModel<UserResponseModel>> getUsers(
-            @RequestParam(value = "page", required = false, defaultValue = defaultPageNumber) int page,
-            @RequestParam(value = "size", required = false, defaultValue = defaultPageSize) int size) {
+            @RequestParam(value = "page", required = false, defaultValue = defaultAdminPageNumber) int page,
+            @RequestParam(value = "size", required = false, defaultValue = defaultAdminPageSize) int size) {
 
         List<UserDto> usersDto = userService.getUsers(page, size);
 

@@ -1,5 +1,10 @@
 package com.alexvait.accountingapi.usermanagement.bootstrap;
 
+import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
+import com.alexvait.accountingapi.accounting.entity.PositionEntity;
+import com.alexvait.accountingapi.accounting.entity.enums.Payment;
+import com.alexvait.accountingapi.accounting.repository.InvoiceRepository;
+import com.alexvait.accountingapi.accounting.repository.PositionRepository;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.entity.AuthorityEntity;
 import com.alexvait.accountingapi.security.entity.RoleEntity;
@@ -14,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.security.SecureRandom;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
@@ -26,19 +31,26 @@ public class UsersSetup implements CommandLineRunner {
     private final AuthorityRepository authorityRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final InvoiceRepository invoiceRepository;
+    private final PositionRepository positionRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UsersSetup(AuthorityRepository authorityRepository, RoleRepository roleRepository,
-                      UserRepository userRepository, PasswordEncoder passwordEncoder) {
+                      UserRepository userRepository, PasswordEncoder passwordEncoder,
+                      InvoiceRepository invoiceRepository, PositionRepository positionRepository) {
         this.authorityRepository = authorityRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.invoiceRepository = invoiceRepository;
+        this.positionRepository = positionRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        final Random randomGenerator = new SecureRandom();
+
         AuthorityEntity readAuthority = createAuthority(SecurityConstants.READ_AUTHORITY);
         AuthorityEntity writeAuthority = createAuthority(SecurityConstants.WRITE_AUTHORITY);
         AuthorityEntity deleteAuthority = createAuthority(SecurityConstants.DELETE_AUTHORITY);
@@ -55,7 +67,17 @@ public class UsersSetup implements CommandLineRunner {
         }
 
         createUser("John", "Admin", "admin@api.com", "admin-pass", adminRole);
-        IntStream.range(1, 12).forEach(i -> createDummyUser("john.doe" + i + "@api.com", userRole));
+        List<UserEntity> users = IntStream.range(1, 12).mapToObj(i -> createDummyUser("john.doe" + i + "@api.com", userRole))
+                .collect(Collectors.toList());
+
+        UserEntity lastUser = users.get(users.size() - 1);
+        List<InvoiceEntity> invoices = IntStream.range(1, 5).mapToObj(i -> createInvoice(lastUser, (i + "").repeat(20), randomGenerator.nextInt(1000)))
+                .collect(Collectors.toList());
+
+        IntStream.range(0, 20).forEach(i -> createPosition(lastUser, invoices.get(0), i + 100, i));
+        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, invoices.get(1), i + 100, i));
+
+        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, null, i + 100, i));
     }
 
     @Transactional
@@ -102,4 +124,24 @@ public class UsersSetup implements CommandLineRunner {
 
         return userRepository.save(user);
     }
+
+    private InvoiceEntity createInvoice(UserEntity user, String number, long amount) {
+        InvoiceEntity invoice = new InvoiceEntity();
+        invoice.setNumber(number);
+        invoice.setAmount(amount);
+        invoice.setUser(user);
+
+        return invoiceRepository.save(invoice);
+    }
+
+    private PositionEntity createPosition(UserEntity user, InvoiceEntity invoice, long amount, long customerId) {
+        PositionEntity position = new PositionEntity();
+        position.setAmount(amount);
+        position.setPayment(Payment.CASH);
+        position.setCustomerId(customerId);
+        position.setInvoice(invoice);
+        position.setUser(user);
+        return positionRepository.save(position);
+    }
+
 }

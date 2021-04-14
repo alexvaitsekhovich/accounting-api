@@ -7,7 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class UserPrincipal implements UserDetails {
 
@@ -16,9 +17,13 @@ public class UserPrincipal implements UserDetails {
     @Getter
     private final String publicId;
 
+    @Getter
+    private final long id;
+
     public UserPrincipal(UserEntity userEntity) {
         this.userEntity = userEntity;
         this.publicId = userEntity.getPublicId();
+        this.id = userEntity.getId();
     }
 
     @Override
@@ -35,6 +40,10 @@ public class UserPrincipal implements UserDetails {
         });
 
         return authorities;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
     @Override
