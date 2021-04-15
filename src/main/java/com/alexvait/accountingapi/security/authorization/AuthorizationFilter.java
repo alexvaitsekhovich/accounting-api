@@ -44,12 +44,12 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(String authHeader) throws JwtException {
 
-        authHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
+        String updatedAuthHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
 
         try {
             String userEmail = Jwts.parser()
                     .setSigningKey(SecurityConfiguration.getTokenSecret())
-                    .parseClaimsJws(authHeader)
+                    .parseClaimsJws(updatedAuthHeader)
                     .getBody()
                     .getSubject();
 

@@ -6,7 +6,6 @@ import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequest
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.response.UserResponseModel;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -17,10 +16,10 @@ public interface UserMapper {
 
     UserDto userUpdateRequestModelToDto(UserUpdateRequestModel userUpdateRequestModel);
 
-//    @Mapping(target = "roles", ignore = true)
+    //    @Mapping(target = "roles", ignore = true)
     UserDto userEntityToDto(UserEntity userEntity);
 
-//    @Mapping(target = "roles", ignore = true)
+    //    @Mapping(target = "roles", ignore = true)
     UserEntity userDtoToEntity(UserDto userDto);
 
     UserResponseModel userDtoToResponseModel(UserDto userDto);

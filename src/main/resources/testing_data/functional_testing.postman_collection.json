@@ -2606,7 +2606,7 @@
 							"",
 							"pm.test(\"Test user data\", function () {",
 							"    pm.expect(positionData.amount).to.eql(666);",
-							"    pm.expect(positionData.payment).to.eql('cash');",
+							"    pm.expect(positionData.payment).to.eql('paypal');",
 							"    pm.expect(positionData.label).to.eql('Test position');",
 							"    pm.expect(positionData.customerId).to.eql(4);",
 							"    pm.expect(positionData.invoiceNumber).to.eql(null);",
@@ -2624,7 +2624,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"amount\" : 666,\n    \"payment\" : \"CASH\",\n    \"customerId\" : 4,\n    \"label\": \"Test position\"\n}",
+					"raw": "{\n    \"amount\" : 666,\n    \"payment\" : \"payPAL\",\n    \"customerId\" : 4,\n    \"label\": \"Test position\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

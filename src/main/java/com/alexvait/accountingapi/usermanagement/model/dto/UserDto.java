@@ -11,5 +11,4 @@ public class UserDto {
     private String email;
     private String password;
     private String encryptedPassword;
-//    private Collection<String> roles = new HashSet<>();
 }

@@ -5,8 +5,6 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
