@@ -2,7 +2,6 @@ package com.alexvait.accountingapi.usermanagement.bootstrap;
 
 import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
 import com.alexvait.accountingapi.accounting.entity.PositionEntity;
-import com.alexvait.accountingapi.accounting.entity.enums.Payment;
 import com.alexvait.accountingapi.accounting.repository.InvoiceRepository;
 import com.alexvait.accountingapi.accounting.repository.PositionRepository;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
@@ -74,10 +73,10 @@ public class UsersSetup implements CommandLineRunner {
         List<InvoiceEntity> invoices = IntStream.range(1, 5).mapToObj(i -> createInvoice(lastUser, (i + "").repeat(20), randomGenerator.nextInt(1000)))
                 .collect(Collectors.toList());
 
-        IntStream.range(0, 20).forEach(i -> createPosition(lastUser, invoices.get(0), i + 100, i));
-        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, invoices.get(1), i + 100, i));
+        IntStream.range(0, 20).forEach(i -> createPosition(lastUser, invoices.get(0), i + 100, i, "Position " + i));
+        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, invoices.get(1), i + 100, i, "Position " + i));
 
-        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, null, i + 100, i));
+        IntStream.range(0, 10).forEach(i -> createPosition(lastUser, null, i + 100, i, "Unbilled position " + i));
     }
 
     @Transactional
@@ -134,13 +133,14 @@ public class UsersSetup implements CommandLineRunner {
         return invoiceRepository.save(invoice);
     }
 
-    private PositionEntity createPosition(UserEntity user, InvoiceEntity invoice, long amount, long customerId) {
+    private PositionEntity createPosition(UserEntity user, InvoiceEntity invoice, long amount, long customerId, String label) {
         PositionEntity position = new PositionEntity();
         position.setAmount(amount);
-        position.setPayment(Payment.CASH);
+        position.setPayment(PositionEntity.Payment.CASH);
         position.setCustomerId(customerId);
         position.setInvoice(invoice);
         position.setUser(user);
+        position.setLabel(label);
         return positionRepository.save(position);
     }
 

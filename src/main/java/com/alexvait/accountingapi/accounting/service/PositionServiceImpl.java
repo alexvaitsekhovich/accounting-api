@@ -11,6 +11,7 @@ import com.alexvait.accountingapi.security.config.authentication.AuthenticationF
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,15 @@ public class PositionServiceImpl implements PositionService {
                     p.setInvoice(invoiceEntity);
                     positionRepository.save(p);
                 });
+    }
+
+    @Override
+    public PositionDto createPosition(PositionDto newPositionDto) {
+        Objects.requireNonNull(newPositionDto);
+
+        PositionEntity positionEntity = positionMapper.positionDtoToEntity(newPositionDto);
+        positionEntity.setUser(authenticationFacade.getAuthenticatedUser().getUserEntity());
+        return positionMapper.positionEntityToDto(positionRepository.save(positionEntity));
     }
 
     public List<PositionEntity> getOpenPositionEntities() {

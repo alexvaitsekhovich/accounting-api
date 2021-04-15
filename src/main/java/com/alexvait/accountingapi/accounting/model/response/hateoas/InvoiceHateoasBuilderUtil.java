@@ -1,8 +1,9 @@
-package com.alexvait.accountingapi.accounting.model.response;
+package com.alexvait.accountingapi.accounting.model.response.hateoas;
 
 import com.alexvait.accountingapi.accounting.controller.InvoiceController;
 import com.alexvait.accountingapi.accounting.mapper.InvoiceMapper;
 import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
+import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 

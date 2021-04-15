@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "79e31213-62b8-465c-89df-8c826e49155c",
+		"_postman_id": "9d642ab2-4425-4d05-96a9-1c1039476ea6",
 		"name": "accounting api functional testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5a3dfbc7-0cde-4c7e-9f07-31458f5715fb",
 						"exec": [
 							"pm.test(\"Status code is 201\", function () {",
 							"    pm.response.to.have.status(201);",
@@ -70,7 +69,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4b223d39-9269-401e-9f0c-d032ab85f97a",
 						"exec": [
 							"pm.test(\"Status code is 409\", function () {",
 							"    pm.response.to.have.status(409);",
@@ -129,7 +127,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "1b08307e-d0e4-4fc2-8f30-a4902e1dd7fd",
 						"exec": [
 							""
 						],
@@ -139,7 +136,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "243b682a-90d2-41d5-9a92-63efc94df560",
 						"exec": [
 							"pm.test(\"Status code is 403\", function () {",
 							"    pm.response.to.have.status(403);",
@@ -196,7 +192,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "53d353d7-0c08-404e-9e8d-f7a632ecceec",
 						"exec": [
 							"pm.test(\"Status code is 403\", function () {",
 							"    pm.response.to.have.status(403);",
@@ -215,7 +210,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "0edb499c-7803-494b-9401-2f1bcfb6f9b4",
 						"exec": [
 							""
 						],
@@ -257,7 +251,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "23c21bd2-4171-4759-b89b-5de71da20723",
 						"exec": [
 							""
 						],
@@ -267,7 +260,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9cca9a3c-bb80-4f8e-b3f4-08f4990340bd",
 						"exec": [
 							"pm.test(\"Status code is 403\", function () {",
 							"    pm.response.to.have.status(403);",
@@ -317,7 +309,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "01be0f7c-d719-4d42-b654-dfb46084dcff",
 						"exec": [
 							""
 						],
@@ -327,7 +318,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "033e8b4d-c8ac-4ab9-8fd5-5e15e05fb0a0",
 						"exec": [
 							"pm.test(\"Status code is 403\", function () {",
 							"    pm.response.to.have.status(403);",
@@ -369,7 +359,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ae9b0038-bf34-4a98-8748-f73e235d85f3",
 						"exec": [
 							"pm.test(\"Status code is 403\", function () {",
 							"    pm.response.to.have.status(403);",
@@ -414,7 +403,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5a71578c-bede-4a48-9709-dad0a818d873",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -464,7 +452,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "acab80ae-35f1-4878-ba76-d71c2a701512",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -477,7 +464,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ca8cdfc0-f70e-4160-9917-adc83ed7ad03",
 						"exec": [
 							"pm.test(\"Status code is 500\", function () {",
 							"    pm.response.to.have.status(500);",
@@ -518,24 +504,350 @@
 			"response": []
 		},
 		{
+			"name": "Get all invoices from user without invoices - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(pm.response.json()._embedded).to.eql(undefined);",
+							"    pm.expect(Object.keys(pm.response.json()._links).length).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single invoice, wrong user - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"let message = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(message.details.status).to.eql(403);",
+							"    pm.expect(message.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(message.httpStatus).to.eql(\"FORBIDDEN\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice/11111111111111111111",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice",
+						"11111111111111111111"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get positions of an invoice, wrong user - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"let message = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(message.details.status).to.eql(403);",
+							"    pm.expect(message.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(message.httpStatus).to.eql(\"FORBIDDEN\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice/11111111111111111111/positions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice",
+						"11111111111111111111",
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get unbilled positions, no positions found - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(pm.response.json()).to.eql({});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single billed position, wrong user - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"let message = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(message.details.status).to.eql(403);",
+							"    pm.expect(message.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(message.httpStatus).to.eql(\"FORBIDDEN\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single unbilled position, wrong user - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"let message = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(message.details.status).to.eql(403);",
+							"    pm.expect(message.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(message.httpStatus).to.eql(\"FORBIDDEN\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get all users with user token another user - failure",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "2dea8a4a-fe63-4be0-91e6-d5b5f84cccbf",
 						"exec": [
 							"pm.test(\"Status code is 500\", function () {",
 							"    pm.response.to.have.status(500);",
 							"});",
 							"",
-							"let messageDetails = pm.response.json();",
+							"let message = pm.response.json();",
 							"",
 							"pm.test(\"Test error data\", function () {",
-							"    pm.expect(messageDetails.details.status).to.eql(500);",
-							"    pm.expect(messageDetails.details.messages[0]).to.eql(\"Access is denied\");",
-							"    pm.expect(messageDetails.responseState).to.eql(\"FAILURE\");",
-							"    pm.expect(messageDetails.httpStatus).to.eql(\"INTERNAL_SERVER_ERROR\");",
+							"    pm.expect(message.details.status).to.eql(500);",
+							"    pm.expect(message.responseState).to.eql(\"FAILURE\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -544,7 +856,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6930b8f8-732f-42b1-8fb6-1e6de8e646f4",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -584,12 +895,11 @@
 			"response": []
 		},
 		{
-			"name": "Update user with user token another useer - failure",
+			"name": "Generate invoice, wrong user - failure",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "c181f44c-5d98-457b-b585-2267a3408091",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -602,7 +912,62 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f91962ba-ae4a-4f12-8cad-a30df0a16b7f",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"let message = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(message.details.status).to.eql(404);",
+							"    pm.expect(message.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(message.httpStatus).to.eql(\"NOT_FOUND\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice/generate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user with user token another useer - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
 						"exec": [
 							"pm.test(\"Status code is 500\", function () {",
 							"    pm.response.to.have.status(500);",
@@ -654,7 +1019,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "af04c181-1cc2-4886-9a98-7fe7f7fa1f75",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -667,7 +1031,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b701e3b6-5ef9-4cb4-b95f-2de6ad8b004b",
 						"exec": [
 							"pm.test(\"Status code is 500\", function () {",
 							"    pm.response.to.have.status(500);",
@@ -711,7 +1074,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d7afcb35-9ece-495a-b57c-569838966610",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -761,7 +1123,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3b670fe0-a8c6-4135-aabf-e4e9fd266a69",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -774,7 +1135,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "2a800acb-debb-4497-986b-41f64b76bc50",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -825,7 +1185,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f237dd4e-5c43-437c-83f5-7d230c7dec63",
 						"exec": [
 							"pm.test(\"Status code is 500\", function () {",
 							"    pm.response.to.have.status(500);",
@@ -846,7 +1205,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "70e02f02-5246-4571-9725-5365fcfbb455",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -891,7 +1249,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "a85cdbef-8b1b-4b21-b450-74b06c61d1b7",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -904,7 +1261,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "21586d31-2115-49a4-8806-953f229e1305",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -961,7 +1317,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "f1296da5-d90d-4918-b092-866b61e69068",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -974,7 +1329,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ea35229b-ac99-4ee4-8de9-bca8b32af42c",
 						"exec": [
 							"pm.test(\"Status code is 500\", function () {",
 							"    pm.response.to.have.status(500);",
@@ -1018,7 +1372,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d7afcb35-9ece-495a-b57c-569838966610",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1068,7 +1421,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "36785876-064a-4b56-b70b-fb0af08858ed",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -1081,7 +1433,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "84093ebb-043e-4f1c-bfd9-86d55b2af16b",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1133,7 +1484,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a3f6c365-b40c-4254-907f-e4e2888082fd",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1141,7 +1491,6 @@
 							"",
 							"let users = pm.response.json()._embedded.users;",
 							"",
-							"console.log(users[0]);",
 							"pm.test(\"Test count of fields in objects\", function () {",
 							"    pm.expect(Object.keys(users).length).to.eql(6);",
 							"    pm.expect(Object.keys(pm.response.json()._links).length).to.eql(1);",
@@ -1159,7 +1508,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "afffa3d0-47a0-411e-86d5-9d64024f1793",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -1199,12 +1547,11 @@
 			"response": []
 		},
 		{
-			"name": "Get 100 users with admin token - success",
+			"name": "Get  users with admin token - success",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "f6988611-d398-4498-994b-14e7bd754f25",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1230,7 +1577,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "015c748b-0cb0-46d5-b9c2-acd03eb6e390",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -1275,7 +1621,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "686fe65c-6c9c-47ac-a8d7-39e17a965f15",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -1288,7 +1633,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c4a1f64d-e972-420d-bc1b-f8d71fad7182",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1345,7 +1689,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "1040101c-faaa-4ac7-bdd4-1f1ee22d57d7",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -1358,7 +1701,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d5b615dd-509d-4ae2-8f9f-1561a5b0d2c3",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -1401,7 +1743,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3249f63d-6ebd-42b5-8087-d7866bf6144e",
 						"exec": [
 							"pm.request.headers.add({",
 							"  key: 'Authorization',",
@@ -1414,7 +1755,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "114a1442-2909-48b4-ae51-81be0181fd10",
 						"exec": [
 							"pm.test(\"Status code is 400\", function () {",
 							"    pm.response.to.have.status(400);",
@@ -1451,7 +1791,860 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "User login for user with invoices - success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get authorization header\", function() {",
+							"    let jwtToken = pm.response.headers.get(\"Authorization\")",
+							"    pm.globals.set(\"jwtToken\", jwtToken);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"john.doe11@api.com\",\n    \"password\" : \"user-pass\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/gettoken",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gettoken"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all invoices from user with invoices - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let invoices = pm.response.json()._embedded.invoices;",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(invoices).length).to.eql(4);",
+							"    pm.expect(Object.keys(pm.response.json()._links).length).to.eql(1);",
+							"",
+							"    for (i = 1, len = invoices.length; i < len; i++) {",
+							"        pm.expect(invoices[i].state).to.eql(\"OPEN\");",
+							"        pm.expect(invoices[i].number.length).to.eql(20);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all invoices from user, pagination - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let invoices = pm.response.json()._embedded.invoices;",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(invoices).length).to.eql(2);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice?page=0&size=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all invoices from user, pagination 2 - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let invoices = pm.response.json()._embedded.invoices;",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(invoices).length).to.eql(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice?page=1&size=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single invoice - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let invoiceData = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(invoiceData).length).to.eql(5);",
+							"    pm.expect(Object.keys(invoiceData._links).length).to.eql(2);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Test invoice data\", function () {",
+							"    pm.expect(invoiceData.number).to.eql(\"11111111111111111111\");",
+							"    pm.expect(invoiceData.state).to.eql(\"OPEN\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice/11111111111111111111",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice",
+						"11111111111111111111"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get positions of an invoice - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let positionsData = pm.response.json()._embedded.positions;",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(positionsData).length).to.eql(20);",
+							"",
+							"    for (i = 1, len = positionsData.length; i < len; i++) {",
+							"        pm.expect(positionsData[i].payment).to.eql('cash');",
+							"        pm.expect(positionsData[i].invoiceNumber).to.eql('11111111111111111111');",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice/11111111111111111111/positions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice",
+						"11111111111111111111",
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get unbilled positions - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let positionsData = pm.response.json()._embedded.positions;",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(positionsData).length).to.eql(10);",
+							"",
+							"    for (i = 1, len = positionsData.length; i < len; i++) {",
+							"        pm.expect(positionsData[i].payment).to.eql(\"cash\");",
+							"        pm.expect(positionsData[i].invoiceNumber).to.eql(null);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single billed position - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let position = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(position).length).to.eql(7);",
+							"    pm.expect(Object.keys(position._links).length).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Test position data\", function () {",
+							"    pm.expect(position.id).to.eql(1);",
+							"    pm.expect(position.payment).to.eql('cash');",
+							"    pm.expect(position.invoiceNumber).to.eql('11111111111111111111');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single unbilled position - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let position = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(position).length).to.eql(6);",
+							"    pm.expect(position._links).to.eql(undefined);",
+							"});",
+							"",
+							"pm.test(\"Test position data\", function () {",
+							"    pm.expect(position.id).to.eql(40);",
+							"    pm.expect(position.payment).to.eql('cash');",
+							"    pm.expect(position.invoiceNumber).to.eql(null);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate invoice - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let invoiceData = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(invoiceData).length).to.eql(5);",
+							"    pm.expect(Object.keys(invoiceData._links).length).to.eql(2);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Test invoice data\", function () {",
+							"    pm.expect(invoiceData.state).to.eql(\"OPEN\");",
+							"    pm.expect(invoiceData.amount).to.eql(1045);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/invoice/generate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get unbilled positions after invoice generation - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.response.json());",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(pm.response.json()).to.eql({});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/position/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create position bad data - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"let messageDetails = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(messageDetails.details.status).to.eql(400);",
+							"    pm.expect(messageDetails.details.messages[0]).to.eql(\"Label is mandatory\");",
+							"    pm.expect(messageDetails.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(messageDetails.httpStatus).to.eql(\"BAD_REQUEST\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\" : 666,\n    \"payment\" : \"PAYPAL\",\n    \"customerId\" : 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/position/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create position bad data 2 - failure",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"let messageDetails = pm.response.json();",
+							"",
+							"pm.test(\"Test error data\", function () {",
+							"    pm.expect(messageDetails.details.status).to.eql(400);",
+							"    pm.expect(messageDetails.responseState).to.eql(\"FAILURE\");",
+							"    pm.expect(messageDetails.httpStatus).to.eql(\"BAD_REQUEST\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\" : 666,\n    \"payment\" : \"A\",\n    \"customerId\" : 4,\n    \"label\": \"Test position\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/position/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create position - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"let positionData = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(positionData).length).to.eql(7);",
+							"    pm.expect(Object.keys(positionData._links).length).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Test user data\", function () {",
+							"    pm.expect(positionData.amount).to.eql(666);",
+							"    pm.expect(positionData.payment).to.eql('cash');",
+							"    pm.expect(positionData.label).to.eql('Test position');",
+							"    pm.expect(positionData.customerId).to.eql(4);",
+							"    pm.expect(positionData.invoiceNumber).to.eql(null);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\" : 666,\n    \"payment\" : \"CASH\",\n    \"customerId\" : 4,\n    \"label\": \"Test position\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/position/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						""
+					]
+				}
+			},
+			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
