@@ -11,6 +11,7 @@ public class PositionResponseModel {
     private long id;
     private long amount;
     private String payment;
+    private String label;
     private long customerId;
     private String invoiceNumber;
 

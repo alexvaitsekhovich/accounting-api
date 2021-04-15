@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
+import static com.alexvait.accountingapi.helpers.TestObjectsGenerator.createTestUserDto;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;

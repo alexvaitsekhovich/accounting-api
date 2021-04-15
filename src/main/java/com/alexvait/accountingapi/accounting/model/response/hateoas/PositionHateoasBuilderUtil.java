@@ -1,9 +1,10 @@
-package com.alexvait.accountingapi.accounting.model.response;
+package com.alexvait.accountingapi.accounting.model.response.hateoas;
 
 import com.alexvait.accountingapi.accounting.controller.InvoiceController;
 import com.alexvait.accountingapi.accounting.controller.PositionController;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
+import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 

@@ -14,4 +14,6 @@ public interface PositionService {
     PositionDto getPosition(long id);
 
     void billPositions(List<PositionEntity> openPositions, InvoiceEntity invoiceEntity);
+
+    PositionDto createPosition(PositionDto newPositionDto);
 }

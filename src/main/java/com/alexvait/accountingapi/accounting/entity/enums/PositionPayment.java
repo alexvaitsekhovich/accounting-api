@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.accounting.entity.enums;
 
-public enum Payment {
+public enum PositionPayment {
     CASH,
     CREDIT_CARD,
     PAYPAL,

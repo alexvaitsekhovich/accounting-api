@@ -2,10 +2,10 @@ package com.alexvait.accountingapi.accounting.controller;
 
 import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
-import com.alexvait.accountingapi.accounting.model.response.InvoiceHateoasBuilderUtil;
 import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
-import com.alexvait.accountingapi.accounting.model.response.PositionHateoasBuilderUtil;
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceHateoasBuilderUtil;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.PositionHateoasBuilderUtil;
 import com.alexvait.accountingapi.accounting.service.InvoiceService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
