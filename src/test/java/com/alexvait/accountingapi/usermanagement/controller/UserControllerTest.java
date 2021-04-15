@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import static com.alexvait.accountingapi.helpers.UserTestObjectGenerator.createTestUserDto;
+import static com.alexvait.accountingapi.helpers.TestObjectsGenerator.createTestUserDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

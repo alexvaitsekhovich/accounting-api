@@ -2,6 +2,7 @@ package com.alexvait.accountingapi.usermanagement.bootstrap;
 
 import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
 import com.alexvait.accountingapi.accounting.entity.PositionEntity;
+import com.alexvait.accountingapi.accounting.entity.enums.PositionPayment;
 import com.alexvait.accountingapi.accounting.repository.InvoiceRepository;
 import com.alexvait.accountingapi.accounting.repository.PositionRepository;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
@@ -136,7 +137,7 @@ public class UsersSetup implements CommandLineRunner {
     private PositionEntity createPosition(UserEntity user, InvoiceEntity invoice, long amount, long customerId, String label) {
         PositionEntity position = new PositionEntity();
         position.setAmount(amount);
-        position.setPayment(PositionEntity.Payment.CASH);
+        position.setPayment(PositionPayment.CASH);
         position.setCustomerId(customerId);
         position.setInvoice(invoice);
         position.setUser(user);

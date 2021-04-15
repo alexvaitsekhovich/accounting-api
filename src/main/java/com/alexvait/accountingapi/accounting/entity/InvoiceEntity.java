@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.accounting.entity;
 
+import com.alexvait.accountingapi.accounting.entity.enums.InvoiceState;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import lombok.Data;
 import lombok.ToString;
@@ -11,13 +12,6 @@ import java.util.List;
 @Table(name = "invoices")
 @Data
 public class InvoiceEntity {
-
-    public enum InvoiceState {
-        OPEN,
-        PAID,
-        CANCELLED,
-        PARTLY_PAID
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

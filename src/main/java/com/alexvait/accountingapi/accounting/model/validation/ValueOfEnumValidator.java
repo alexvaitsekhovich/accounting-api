@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Source: Source : https://www.baeldung.com/javax-validations-enums
+ */
+
 public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
     private List<String> acceptedValues;
 
@@ -13,6 +17,7 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
     public void initialize(ValueOfEnum annotation) {
         acceptedValues = Stream.of(annotation.enumClass().getEnumConstants())
                 .map(Enum::name)
+                .map(String::toUpperCase)
                 .collect(Collectors.toList());
     }
 
@@ -22,6 +27,6 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Ch
             return true;
         }
 
-        return acceptedValues.contains(value.toString());
+        return acceptedValues.contains(value.toString().toUpperCase());
     }
 }

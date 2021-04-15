@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Source: Source : https://www.baeldung.com/javax-validations-enums
+ */
+
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Documented
@@ -16,7 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface ValueOfEnum {
     Class<? extends Enum<?>> enumClass();
 
-    String message() default "must be any of enum {enumClass}";
+    String message() default "Value ${validatedValue} is not valid";
 
     Class<?>[] groups() default {};
 

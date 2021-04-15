@@ -7,8 +7,6 @@ import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 
-import java.util.Arrays;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 

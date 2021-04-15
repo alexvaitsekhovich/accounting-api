@@ -12,6 +12,8 @@ public interface InvoiceMapper {
 
     InvoiceDto invoiceEntityToDto(InvoiceEntity invoiceEntity);
 
+    InvoiceEntity invoiceDtoToEntity(InvoiceDto invoiceDto);
+
     InvoiceResponseModel invoiceDtoToResponseModel(InvoiceDto invoiceDto);
 
 }

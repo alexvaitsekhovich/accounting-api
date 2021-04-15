@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.helpers.UserTestObjectGenerator;
+import com.alexvait.accountingapi.helpers.TestObjectsGenerator;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.service.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -83,7 +83,7 @@ class AdminControllerSpringMVCTest {
 
         // generate stubs
         List<UserDto> usersDto = Stream
-                .generate(UserTestObjectGenerator::createTestUserDto)
+                .generate(TestObjectsGenerator::createTestUserDto)
                 .limit(pageSize)
                 .collect(Collectors.toList());
 
