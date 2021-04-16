@@ -12,7 +12,6 @@ import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.repository.InvoiceRepository;
 import com.alexvait.accountingapi.security.config.authentication.AuthenticationFacade;
 import com.alexvait.accountingapi.security.model.UserPrincipal;
-import com.alexvait.accountingapi.security.utils.RandomStringUtils;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +24,6 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,20 +39,20 @@ import static org.mockito.Mockito.*;
 class InvoiceServiceImplTest {
 
     @InjectMocks
-    InvoiceServiceImpl invoiceService;
+    private InvoiceServiceImpl invoiceService;
 
     @Mock
-    InvoiceRepository invoiceRepository;
+    private InvoiceRepository invoiceRepository;
 
     @Mock
-    PositionService positionService;
+    private PositionService positionService;
 
     @Mock
-    AuthenticationFacade authenticationFacade;
+    private AuthenticationFacade authenticationFacade;
 
-    List<InvoiceEntity> testingInvoiceEntities;
+    private List<InvoiceEntity> testingInvoiceEntities;
 
-    UserEntity authenticatedUser = createTestUserEntity();
+    private final UserEntity authenticatedUser = createTestUserEntity();
 
     @BeforeEach
     void setUp() {

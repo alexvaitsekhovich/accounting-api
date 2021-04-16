@@ -36,19 +36,19 @@ import static org.mockito.Mockito.*;
 class UserServiceImplTest {
 
     @InjectMocks
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Mock
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    UserEntity testingUserEntity;
-    UserDto testingUserDto;
+    private UserEntity testingUserEntity;
+    private UserDto testingUserDto;
 
     @BeforeEach
     void setUp() {

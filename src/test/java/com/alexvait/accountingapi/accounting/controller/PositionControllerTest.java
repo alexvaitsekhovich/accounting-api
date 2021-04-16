@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +31,10 @@ import static org.mockito.Mockito.*;
 class PositionControllerTest {
 
     @InjectMocks
-    PositionController positionController;
+    private PositionController positionController;
 
     @Mock
-    PositionService positionService;
+    private PositionService positionService;
 
     @Test
     @DisplayName("Test getFreePositions")

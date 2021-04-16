@@ -35,10 +35,10 @@ import static org.mockito.Mockito.*;
 class InvoiceControllerTest {
 
     @InjectMocks
-    InvoiceController invoiceController;
+    private InvoiceController invoiceController;
 
     @Mock
-    InvoiceService invoiceService;
+    private InvoiceService invoiceService;
 
     @Test
     @DisplayName("Test getInvoices")

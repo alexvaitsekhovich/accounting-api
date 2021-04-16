@@ -48,7 +48,7 @@ public class UsersSetup implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         final Random randomGenerator = new SecureRandom();
 
         AuthorityEntity readAuthority = createAuthority(SecurityConstants.READ_AUTHORITY);

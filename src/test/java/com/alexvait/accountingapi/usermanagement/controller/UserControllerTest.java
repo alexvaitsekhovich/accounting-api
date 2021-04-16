@@ -29,12 +29,12 @@ import static org.mockito.Mockito.when;
 class UserControllerTest {
 
     @InjectMocks
-    UserController userController;
+    private UserController userController;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
-    final UserMapper userMapper = UserMapper.INSTANCE;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
     private UserDto userDto;
 

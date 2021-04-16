@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 class UserDetailsServiceImplTest {
 
     @InjectMocks
-    UserDetailsServiceImpl userService;
+    private UserDetailsServiceImpl userService;
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("Test loadUserByUsername")

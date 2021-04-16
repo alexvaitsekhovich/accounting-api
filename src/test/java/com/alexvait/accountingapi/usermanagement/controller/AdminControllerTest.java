@@ -32,10 +32,10 @@ import static org.mockito.Mockito.*;
 class AdminControllerTest {
 
     @InjectMocks
-    AdminController adminController;
+    private AdminController adminController;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @Test
     @DisplayName("Test getUsers")

@@ -36,22 +36,17 @@ import static org.mockito.Mockito.*;
 @DisplayName("Test Position service implementation")
 class PositionServiceImplTest {
 
+    private final UserEntity authenticatedUser = createTestUserEntity();
     @InjectMocks
-    PositionServiceImpl positionService;
-
+    private PositionServiceImpl positionService;
     @Mock
-    PositionRepository positionRepository;
-
+    private PositionRepository positionRepository;
     @Mock
-    AuthenticationFacade authenticationFacade;
-
+    private AuthenticationFacade authenticationFacade;
     @Captor
-    ArgumentCaptor<PositionEntity> entityArgumentCaptor;
-
-    InvoiceEntity testInvoice;
-    List<PositionEntity> testingPositionEntities;
-
-    UserEntity authenticatedUser = createTestUserEntity();
+    private ArgumentCaptor<PositionEntity> entityArgumentCaptor;
+    private InvoiceEntity testInvoice;
+    private List<PositionEntity> testingPositionEntities;
 
     @BeforeEach
     void setUp() {
@@ -150,9 +145,9 @@ class PositionServiceImplTest {
         positionService.billPositions(testingPositionEntities, testInvoiceNew);
 
         // assert
-        testingPositionEntities.forEach(p -> {
-            assertEquals(testInvoiceNew, p.getInvoice(), "Entity equality test failed");
-        });
+        testingPositionEntities.forEach(p ->
+                assertEquals(testInvoiceNew, p.getInvoice(), "Entity equality test failed")
+        );
 
         verify(positionRepository, times(testingPositionEntities.size())).save(any(PositionEntity.class));
         verifyNoMoreInteractions(positionRepository);
