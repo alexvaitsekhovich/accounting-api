@@ -2645,6 +2645,73 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get valid position payments - success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({",
+							"  key: 'Authorization',",
+							"  value: pm.globals.get(\"jwtToken\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let paymentsData = pm.response.json();",
+							"",
+							"pm.test(\"Test payment types\", function () {",
+							"    pm.expect(pm.response.json()).to.eql([\"cash\",\"credit\",\"paypal\",\"voucher\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\" : 666,\n    \"payment\" : \"payPAL\",\n    \"customerId\" : 4,\n    \"label\": \"Test position\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/position/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"position",
+						"payments"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

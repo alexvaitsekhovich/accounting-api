@@ -18,7 +18,7 @@ public class InvoiceEntity {
     @Column(updatable = false, nullable = false)
     private long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String number;
 
     @Column(nullable = false)

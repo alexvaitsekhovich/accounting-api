@@ -42,4 +42,20 @@ class RandomStringUtilsTest {
         assertNotEquals(randomString2, randomString);
     }
 
+    @Test
+    @DisplayName("Test numeric string generation")
+    void testRandomNumeric() {
+        int length = 300;
+        String randomString = RandomStringUtils.randomNumeric(length);
+        String randomString2 = RandomStringUtils.randomNumeric(length);
+
+        assertEquals(length, randomString.length());
+        assertEquals(length, randomString2.length());
+
+        String onlyDigitsRegexp = "^[0-9]+$";
+        assertTrue(randomString.matches(onlyDigitsRegexp));
+        assertTrue(randomString2.matches(onlyDigitsRegexp));
+
+        assertNotEquals(randomString2, randomString);
+    }
 }

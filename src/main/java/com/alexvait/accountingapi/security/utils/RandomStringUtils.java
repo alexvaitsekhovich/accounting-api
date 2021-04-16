@@ -15,6 +15,10 @@ public class RandomStringUtils {
         return randomString(length, upper + lower);
     }
 
+    public static String randomNumeric(int length) {
+        return randomString(length, digits);
+    }
+
     public static String randomAlphanumeric(int length) {
         return randomString(length, upper + lower + digits);
     }

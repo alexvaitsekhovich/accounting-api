@@ -42,6 +42,16 @@ class ValueOfEnumValidatorTest {
     }
 
     @Test
+    @DisplayName("Test validate empty payment failure")
+    void testValidateNullSuccess() {
+        PositionCreateRequestModel positionCreateRequestModel =
+                PositionMapper.INSTANCE.positionDtoToRequestModel(TestObjectsGenerator.createTestPositionDto());
+        positionCreateRequestModel.setPayment(null);
+        Set<ConstraintViolation<PositionCreateRequestModel>> violations = validator.validate(positionCreateRequestModel);
+        assertEquals(2, violations.size());
+    }
+
+    @Test
     @DisplayName("Test validate failure")
     void testValidateFailure() {
         PositionCreateRequestModel positionCreateRequestModel =

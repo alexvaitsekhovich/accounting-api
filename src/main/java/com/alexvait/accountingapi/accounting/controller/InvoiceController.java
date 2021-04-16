@@ -74,7 +74,6 @@ public class InvoiceController {
         return InvoiceHateoasBuilderUtil.getInvoiceResponseModelHateoasFromDto(invoiceDto);
     }
 
-
     public CollectionModel<EntityModel<InvoiceResponseModel>> getInvoices() {
         return getInvoices(Integer.parseInt(defaultInvoicesPageNumber), Integer.parseInt(defaultInvoicesPageSize));
     }

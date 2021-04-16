@@ -69,7 +69,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         InvoiceEntity invoiceEntity = new InvoiceEntity();
-        invoiceEntity.setNumber(RandomStringUtils.randomAlphabetic(20));
+        invoiceEntity.setNumber(generateRandomInvoiceNumber());
 
         long positionsSum = openPositions.stream().mapToLong(PositionEntity::getAmount).sum();
         invoiceEntity.setAmount(positionsSum);
@@ -100,5 +100,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private long getAuthenticatedUserId() {
         return authenticationFacade.getAuthenticatedUser().getId();
+    }
+
+    private String generateRandomInvoiceNumber() {
+        return RandomStringUtils.randomAlphabetic(3).toUpperCase()
+                + "-"
+                + RandomStringUtils.randomNumeric(20).replaceAll("(.{4})(?!$)", "$1-");
     }
 }
