@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.accounting.controller;
 
+import com.alexvait.accountingapi.accounting.controller.annotated.InvoiceControllerAnnotated;
 import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
@@ -21,7 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping(InvoiceController.BASE_URL)
 @CrossOrigin(origins = "*")
-public class InvoiceController {
+public class InvoiceController implements InvoiceControllerAnnotated {
 
     public static final String BASE_URL = "/invoice";
 

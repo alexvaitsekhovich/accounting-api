@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.accounting.controller;
 
+import com.alexvait.accountingapi.accounting.controller.annotated.PositionControllerAnnotated;
 import com.alexvait.accountingapi.accounting.entity.enums.PositionPayment;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(PositionController.BASE_URL)
 @CrossOrigin(origins = "*")
-public class PositionController {
+public class PositionController implements PositionControllerAnnotated {
 
     public static final String BASE_URL = "/position";
 
