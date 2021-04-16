@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.accounting.controller;
 
+import com.alexvait.accountingapi.accounting.entity.enums.PositionPayment;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.model.request.PositionCreateRequestModel;
@@ -14,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.accounting.controller;
 
+import com.alexvait.accountingapi.accounting.entity.enums.PositionPayment;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.model.request.PositionCreateRequestModel;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,4 +57,13 @@ public class PositionController {
 
         return PositionHateoasBuilderUtil.getPositionHateoasFromDtoNoInvoiceLink(createdPositionDto);
     }
+
+    @GetMapping("/payments")
+    public List<String> getPayments() {
+        return Arrays.stream(PositionPayment.values())
+                .map(Enum::name)
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
+    }
+
 }
