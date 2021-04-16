@@ -20,4 +20,7 @@ public interface PositionMapper {
     PositionResponseModel positionDtoToResponseModel(PositionDto positionDto);
 
     PositionDto positionRequestModelToDto(PositionCreateRequestModel positionRequestModel);
+
+    PositionCreateRequestModel positionDtoToRequestModel(PositionDto positionDto);
+
 }
