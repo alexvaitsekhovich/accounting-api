@@ -241,6 +241,7 @@
                         <exclude>**/bootstrap/*</exclude>
                         <exclude>**/security/**/*</exclude>
                         <exclude>**/config/**/*</exclude>
+                        <exclude>**/AccountingControllerExceptionHandler*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -280,6 +281,14 @@
                     <to>
                         <image>${docker.image.prefix}/${docker.image.name}</image>
                     </to>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
