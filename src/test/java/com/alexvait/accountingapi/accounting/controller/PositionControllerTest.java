@@ -143,4 +143,11 @@ class PositionControllerTest {
         verify(positionService).createPosition(any(PositionDto.class));
         verifyNoMoreInteractions(positionService);
     }
+
+    @Test
+    void getPayments() {
+        List<String> payments = positionController.getPayments();
+        assertEquals(PositionPayment.values().length, payments.size());
+
+    }
 }
