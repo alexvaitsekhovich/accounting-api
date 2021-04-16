@@ -224,7 +224,6 @@ class UserServiceImplTest {
             testingUserDto.setEncryptedPassword(null);
 
             List<String> roles = Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_SOMEBODY");
-//            testingUserDto.setRoles(roles);
 
             when(userRepository.findByEmail(anyString())).thenReturn(null);
             when(userRepository.save(entityArgumentCaptor.capture())).thenReturn(testingUserEntity);

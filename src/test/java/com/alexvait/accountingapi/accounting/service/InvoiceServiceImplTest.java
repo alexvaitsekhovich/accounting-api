@@ -66,7 +66,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test getInvoices")
-    void getInvoices() {
+    void testGetInvoices() {
         int pageSize = testingInvoiceEntities.size();
 
         // arrange
@@ -93,7 +93,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test getInvoice")
-    void getInvoice() {
+    void testGetInvoice() {
         // arrange
         InvoiceEntity testInvoiceEntity = testingInvoiceEntities.get(0);
         when(invoiceRepository.findByNumber(anyString())).thenReturn(testInvoiceEntity);
@@ -110,7 +110,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test getInvoice not found")
-    void getInvoiceNotFound() {
+    void testGetInvoiceNotFound() {
         // arrange
         when(invoiceRepository.findByNumber(anyString())).thenReturn(null);
 
@@ -122,7 +122,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test getInvoice with wrong user")
-    void getInvoiceWrongUser() {
+    void testGetInvoiceWrongUser() {
         // arrange
         InvoiceEntity testInvoiceEntity = testingInvoiceEntities.get(0);
         UserEntity user = createTestUserEntity();
@@ -139,7 +139,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test getPositions")
-    void getPositions() {
+    void testGetPositions() {
         // arrange
         InvoiceEntity testInvoiceEntity = testingInvoiceEntities.get(0);
 
@@ -169,7 +169,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test generateInvoice")
-    void generateInvoice() {
+    void testGenerateInvoice() {
         // arrange
         List<PositionEntity> testingPositionEntities = IntStream.range(0, 20)
                 .mapToObj(i -> createTestPositionEntity())
@@ -194,7 +194,7 @@ class InvoiceServiceImplTest {
 
     @Test
     @DisplayName("Test generateInvoice when no positions found")
-    void generateInvoiceNoPositions() {
+    void testGenerateInvoiceNoPositions() {
         // arrange
         when(positionService.getOpenPositionEntities()).thenReturn(new ArrayList<>());
 
