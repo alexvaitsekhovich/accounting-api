@@ -3,6 +3,10 @@ package com.alexvait.accountingapi.helpers;
 import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
 import com.alexvait.accountingapi.accounting.entity.PositionEntity;
 import com.alexvait.accountingapi.accounting.entity.enums.PositionPayment;
+import com.alexvait.accountingapi.accounting.mapper.InvoiceMapper;
+import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
+import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
+import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
@@ -28,13 +32,9 @@ public class TestObjectsGenerator {
     }
 
     public static UserDto createTestUserDto() {
-        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(TestObjectsGenerator.createTestUserEntity());
+        UserDto userDto = UserMapper.INSTANCE.userEntityToDto(createTestUserEntity());
         userDto.setPassword(randomAlphabetic(20));
         return userDto;
-    }
-
-    public static InvoiceEntity createTestInvoiceEntity() {
-        return createTestInvoiceEntity(null);
     }
 
     public static InvoiceEntity createTestInvoiceEntity(UserEntity user) {
@@ -43,6 +43,10 @@ public class TestObjectsGenerator {
         invoiceEntity.setAmount(random.nextInt(1000));
         invoiceEntity.setUser(user);
         return invoiceEntity;
+    }
+
+    public static InvoiceDto createTestInvoiceDto() {
+        return InvoiceMapper.INSTANCE.invoiceEntityToDto(createTestInvoiceEntity(null));
     }
 
     public static PositionEntity createTestPositionEntity(InvoiceEntity invoice) {
@@ -57,6 +61,10 @@ public class TestObjectsGenerator {
             positionEntity.setUser(invoice.getUser());
 
         return positionEntity;
+    }
+
+    public static PositionDto createTestPositionDto() {
+        return PositionMapper.INSTANCE.positionEntityToDto(createTestPositionEntity());
     }
 
     public static PositionEntity createTestPositionEntity() {

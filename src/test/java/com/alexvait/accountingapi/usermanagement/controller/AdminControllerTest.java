@@ -41,10 +41,7 @@ class AdminControllerTest {
     @DisplayName("Test getUsers")
     void testGetUsers() {
         // arrange
-        UserDto userDto1 = createTestUserDto();
-        UserDto userDto2 = createTestUserDto();
-
-        List<UserDto> usersDto = List.of(userDto1, userDto2);
+        List<UserDto> usersDto = List.of(createTestUserDto(), createTestUserDto());
         when(userService.getUsers(anyInt(), anyInt())).thenReturn(usersDto);
 
         // act
