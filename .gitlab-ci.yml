@@ -30,13 +30,13 @@ rest-assured tests:
   script:
     - java -jar -Dspring.profiles.active=dev ./build/$ARTIFACT_NAME &
     - sleep 40
-    - ./mvnw verify -DskipUTs=true
+    - ./mvnw verify -Dspring.profiles.active=testing -DskipUTs=true
 
 postman tests:
   stage: functional tests
   image: alexvaitsekhovich/alpine-jre-newman
   script:
-    - java -jar -Dspring.profiles.active=testing ./build/$ARTIFACT_NAME &
+    - java -jar -Dspring.profiles.active=dev ./build/$ARTIFACT_NAME &
     - sleep 40
     - newman run src/main/resources/testing_data/functional_testing.postman_collection.json
   dependencies:
