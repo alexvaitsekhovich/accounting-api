@@ -1,6 +1,9 @@
 variables:
   ARTIFACT_NAME: accounting-api-1.0.$CI_PIPELINE_IID.jar
 
+default:
+  image: openjdk:12-alpine
+
 stages:
   - test
   - build
@@ -9,13 +12,11 @@ stages:
 
 unit tests:
   stage: test
-  image: openjdk:12-alpine
   script:
     - ./mvnw test -DskipITs=true
 
 build a jar:
   stage: build
-  image: openjdk:12-alpine
   script:
     - ./mvnw package -Dmaven.test.skip=true
     - mkdir ./build
@@ -26,7 +27,6 @@ build a jar:
 
 rest-assured tests:
   stage: functional tests
-  image: openjdk:12-alpine
   script:
     - java -jar -Dspring.profiles.active=dev ./build/$ARTIFACT_NAME &
     - sleep 40
@@ -44,7 +44,6 @@ postman tests:
 
 push to docker:
   stage: deploy
-  image: openjdk:12-alpine
   script:
     - ./mvnw clean compile jib:build -Djib.to.auth.username=alexvaitsekhovich -Djib.to.auth.password="${DOCKERHUB_PASSWORD}"
   dependencies:
