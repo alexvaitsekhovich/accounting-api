@@ -1,13 +1,17 @@
 package com.alexvait.accountingapi.security.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "authorities")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class AuthorityEntity {
 
     @Id
@@ -20,9 +24,6 @@ public class AuthorityEntity {
 
     @ManyToMany(mappedBy = "authorities")
     private Collection<RoleEntity> roles;
-
-    public AuthorityEntity() {
-    }
 
     public AuthorityEntity(String name) {
         this.name = name;

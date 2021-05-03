@@ -38,21 +38,16 @@ import static org.mockito.Mockito.*;
 @DisplayName("Test Invoice service implementation")
 class InvoiceServiceImplTest {
 
+    private final UserEntity authenticatedUser = createTestUserEntity();
     @InjectMocks
     private InvoiceServiceImpl invoiceService;
-
     @Mock
     private InvoiceRepository invoiceRepository;
-
     @Mock
     private PositionService positionService;
-
     @Mock
     private AuthenticationFacade authenticationFacade;
-
     private List<InvoiceEntity> testingInvoiceEntities;
-
-    private final UserEntity authenticatedUser = createTestUserEntity();
 
     @BeforeEach
     void setUp() {
@@ -103,7 +98,14 @@ class InvoiceServiceImplTest {
 
         // assert
         assertNotNull(invoiceDto);
-        assertEquals(testInvoiceEntity, InvoiceMapper.INSTANCE.invoiceDtoToEntity(invoiceDto));
+        InvoiceEntity retrievedEntity = InvoiceMapper.INSTANCE.invoiceDtoToEntity(invoiceDto);
+        assertAll(
+                () -> assertEquals(testInvoiceEntity.getId(), retrievedEntity.getId()),
+                () -> assertEquals(testInvoiceEntity.getNumber(), retrievedEntity.getNumber()),
+                () -> assertEquals(testInvoiceEntity.getAmount(), retrievedEntity.getAmount()),
+                () -> assertEquals(testInvoiceEntity.getState(), retrievedEntity.getState()),
+                () -> assertEquals(testInvoiceEntity.getCustomerId(), retrievedEntity.getCustomerId())
+        );
         verify(invoiceRepository).findByNumber(anyString());
         verifyNoMoreInteractions(invoiceRepository);
     }

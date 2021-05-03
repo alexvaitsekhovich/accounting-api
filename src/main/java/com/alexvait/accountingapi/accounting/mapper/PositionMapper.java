@@ -6,13 +6,17 @@ import com.alexvait.accountingapi.accounting.model.request.PositionCreateRequest
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", uses = InvoiceMapper.class)
 public interface PositionMapper {
     PositionMapper INSTANCE = Mappers.getMapper(PositionMapper.class);
 
-    @Mapping(source = "invoice.number", target = "invoiceNumber")
+    @Mappings({
+            @Mapping(target = "created", source = "createdDate", dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(source = "invoice.number", target = "invoiceNumber")
+    })
     PositionDto positionEntityToDto(PositionEntity positionEntity);
 
     PositionEntity positionDtoToEntity(PositionDto positionDto);
@@ -22,5 +26,4 @@ public interface PositionMapper {
     PositionDto positionRequestModelToDto(PositionCreateRequestModel positionRequestModel);
 
     PositionCreateRequestModel positionDtoToRequestModel(PositionDto positionDto);
-
 }

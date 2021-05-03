@@ -10,4 +10,5 @@ public class InvoiceResponseModel {
     private String state;
     private long amount;
     private long customerId;
+    private String created;
 }

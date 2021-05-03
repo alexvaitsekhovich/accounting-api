@@ -2,17 +2,25 @@ package com.alexvait.accountingapi.usermanagement.entity;
 
 import com.alexvait.accountingapi.security.entity.RoleEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 public class UserEntity {
 
     @Id
@@ -48,4 +56,13 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id")
     )
     private Collection<RoleEntity> roles = new HashSet<>();
+
+    @CreationTimestamp
+    @EqualsAndHashCode.Exclude
+    @Column(updatable = false)
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    @EqualsAndHashCode.Exclude
+    private Timestamp lastModifiedDate;
 }

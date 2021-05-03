@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.security.config.ControllerExceptionHandler;
+import com.alexvait.accountingapi.security.exception.handler.ControllerExceptionHandler;
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
 import com.alexvait.accountingapi.usermanagement.mapper.UserMapper;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;

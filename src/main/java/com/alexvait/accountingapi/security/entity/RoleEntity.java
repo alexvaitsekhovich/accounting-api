@@ -1,14 +1,18 @@
 package com.alexvait.accountingapi.security.entity;
 
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class RoleEntity {
 
     @Id
@@ -28,9 +32,6 @@ public class RoleEntity {
             inverseJoinColumns = @JoinColumn(name = "authorityId", referencedColumnName = "id")
     )
     private Collection<AuthorityEntity> authorities;
-
-    public RoleEntity() {
-    }
 
     public RoleEntity(String name) {
         this.name = name;
