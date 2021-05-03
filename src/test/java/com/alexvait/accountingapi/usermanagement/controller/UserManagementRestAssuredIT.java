@@ -1,9 +1,11 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
+import com.alexvait.accountingapi.security.config.SecurityConstants;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("User management integration tests")
+@EnabledIf(value = "#{'${spring.profiles.active}' == 'testing'}", loadContext = true)
 class UserManagementRestAssuredIT {
 
     public static final String APPLICATION_JSON = "application/json";
@@ -27,6 +30,9 @@ class UserManagementRestAssuredIT {
 
     @BeforeAll
     static void setUserData() {
+        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.port = 8080;
+
         userData = new HashMap<>();
         userData.put("firstName", "Rest_John");
         userData.put("lastName", "Rest_Doe");
@@ -38,12 +44,6 @@ class UserManagementRestAssuredIT {
         changedUserData.put("lastName", "Ross");
     }
 
-    @BeforeEach
-    void setUp() {
-        RestAssured.baseURI = "http://localhost:8080";
-        RestAssured.port = 8080;
-    }
-
     @Test
     @Order(1)
     @DisplayName("Test create user")
@@ -52,7 +52,7 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .body(userData)
                 .when()
-                .post("/user")
+                .post(UserController.BASE_URL)
                 .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
@@ -81,7 +81,7 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .body(loginData)
                 .when()
-                .post("/gettoken")
+                .post(SecurityConstants.LOGIN_URL)
                 .then()
                 .statusCode(200)
                 .extract().response();
@@ -99,7 +99,7 @@ class UserManagementRestAssuredIT {
                 .header("Authorization", jwtToken)
                 .accept(APPLICATION_JSON)
                 .when()
-                .get("/user/{publicId}")
+                .get(UserController.BASE_URL + "/{publicId}")
                 .then()
                 .statusCode(200)
                 .extract().response().jsonPath();
@@ -123,7 +123,7 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .body(changedUserData)
                 .when()
-                .put("/user/{publicId}")
+                .put(UserController.BASE_URL + "/{publicId}")
                 .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
@@ -147,7 +147,7 @@ class UserManagementRestAssuredIT {
                 .header("Authorization", jwtToken)
                 .accept(APPLICATION_JSON)
                 .when()
-                .delete("/admin/user/{publicId}")
+                .delete(AdminController.BASE_URL + "/user/{publicId}")
                 .then()
                 .statusCode(500)
                 .contentType(APPLICATION_JSON)
@@ -155,7 +155,7 @@ class UserManagementRestAssuredIT {
 
         assertAll(
                 "test returned fields",
-                () -> assertEquals(500, (int)jsonResponse.get("details.status"), "Last name comparison failed"),
+                () -> assertEquals(500, (int) jsonResponse.get("details.status"), "Last name comparison failed"),
                 () -> assertEquals("FAILURE", jsonResponse.get("responseState"), "Email name comparison failed")
         );
     }
@@ -189,7 +189,7 @@ class UserManagementRestAssuredIT {
                 .header("Authorization", jwtToken)
                 .accept(APPLICATION_JSON)
                 .when()
-                .get("/user/{publicId}")
+                .get(UserController.BASE_URL + "/{publicId}")
                 .then()
                 .statusCode(200)
                 .extract().response().jsonPath();
@@ -217,7 +217,7 @@ class UserManagementRestAssuredIT {
                 .contentType(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .body(updateData)
                 .when()
-                .put("/user/{publicId}")
+                .put(UserController.BASE_URL + "/{publicId}")
                 .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
@@ -241,7 +241,7 @@ class UserManagementRestAssuredIT {
                 .header("Authorization", jwtToken)
                 .accept(APPLICATION_JSON)
                 .when()
-                .delete("/admin/user/{publicId}")
+                .delete(AdminController.BASE_URL + "/user/{publicId}")
                 .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)

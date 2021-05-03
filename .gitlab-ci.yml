@@ -30,7 +30,7 @@ rest-assured tests:
   script:
     - java -jar -Dspring.profiles.active=dev ./build/$ARTIFACT_NAME &
     - sleep 40
-    - ./mvnw verify -DskipUTs=true
+    - ./mvnw verify -Dspring.profiles.active=testing -DskipUTs=true
 
 postman tests:
   stage: functional tests

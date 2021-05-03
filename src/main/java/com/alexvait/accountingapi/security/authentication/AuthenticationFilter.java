@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.security.authentication;
 
-import com.alexvait.accountingapi.security.config.SecurityConfiguration;
+import com.alexvait.accountingapi.security.config.JwtTokenContainer;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.model.UserPrincipal;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
@@ -17,7 +17,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -54,12 +53,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse resp,
                                             FilterChain chain, Authentication authResult) {
 
+        JwtTokenContainer jwtTokenContainer = SpringApplicationContextProvider.getBean(JwtTokenContainer.class);
         String userEmail = ((UserPrincipal) authResult.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
                 .setSubject(userEmail)
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME_MS_15_MINUTES))
-                .signWith(SignatureAlgorithm.HS512, SecurityConfiguration.getTokenSecret())
+                .signWith(SignatureAlgorithm.HS512, jwtTokenContainer.getTokenSecret())
                 .compact();
 
         UserService userService = SpringApplicationContextProvider.getBean(UserService.class);

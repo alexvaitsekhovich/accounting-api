@@ -12,6 +12,7 @@ public class PositionResponseModel {
     private String label;
     private long customerId;
     private String invoiceNumber;
+    private String created;
 
     public void setPayment(String payment) {
         this.payment = payment.toLowerCase();

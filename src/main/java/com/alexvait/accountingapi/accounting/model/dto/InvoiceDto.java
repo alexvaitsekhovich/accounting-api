@@ -11,4 +11,5 @@ public class InvoiceDto {
     private long amount;
     private long customerId;
     private UserDto user;
+    private String created;
 }

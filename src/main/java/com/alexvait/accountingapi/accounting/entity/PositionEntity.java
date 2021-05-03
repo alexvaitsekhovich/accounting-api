@@ -2,16 +2,20 @@ package com.alexvait.accountingapi.accounting.entity;
 
 import com.alexvait.accountingapi.accounting.entity.enums.PositionPayment;
 import com.alexvait.accountingapi.usermanagement.entity.UserEntity;
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "accounting_positions")
-@Data
+@Getter
+@Setter
 public class PositionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +39,16 @@ public class PositionEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    @ToString.Exclude
     private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "invoiceId")
     private InvoiceEntity invoice;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
 }

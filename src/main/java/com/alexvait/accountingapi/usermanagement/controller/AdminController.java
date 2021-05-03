@@ -23,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins = "*")
 public class AdminController implements AdminControllerAnnotated {
 
-    public static final String BASE_URL = "/admin";
+    public static final String BASE_URL = "/api/v1/admin";
 
     public static final String defaultAdminPageNumber = "0";
     public static final String defaultAdminPageSize = "5";

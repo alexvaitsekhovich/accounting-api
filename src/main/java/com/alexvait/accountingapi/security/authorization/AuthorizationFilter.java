@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.security.authorization;
 
-import com.alexvait.accountingapi.security.config.SecurityConfiguration;
+import com.alexvait.accountingapi.security.config.JwtTokenContainer;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.model.UserPrincipal;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
@@ -47,8 +47,10 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         String updatedAuthHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
 
         try {
+            JwtTokenContainer jwtTokenContainer = SpringApplicationContextProvider.getBean(JwtTokenContainer.class);
+
             String userEmail = Jwts.parser()
-                    .setSigningKey(SecurityConfiguration.getTokenSecret())
+                    .setSigningKey(jwtTokenContainer.getTokenSecret())
                     .parseClaimsJws(updatedAuthHeader)
                     .getBody()
                     .getSubject();

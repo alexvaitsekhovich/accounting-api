@@ -23,7 +23,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     // using my own implementation: com.alexvait.accountingapi.security.service.UserDetailsServiceImpl
-    public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
+                       PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }

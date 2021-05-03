@@ -1,8 +1,9 @@
-package com.alexvait.accountingapi.security.config;
+package com.alexvait.accountingapi.security.exception.handler;
 
 import com.alexvait.accountingapi.usermanagement.exception.service.UserAlreadyExistsException;
 import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,23 +18,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Slf4j
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<OperationResponse> handleUserExistsException(UserAlreadyExistsException ex, HttpServletRequest httpRequest) {
+        log.error(ex.getMessage(), ex);
         return constructResponseEntity(HttpStatus.CONFLICT, ex.getMessage(), httpRequest.getRequestURI());
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<OperationResponse> handleUsernameNotFoundException(UsernameNotFoundException ex, HttpServletRequest httpRequest) {
+        log.error(ex.getMessage(), ex);
         return constructResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), httpRequest.getRequestURI());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<OperationResponse> handleMethodArgumentNotValidException(
-            MethodArgumentNotValidException exception, HttpServletRequest httpRequest) {
+            MethodArgumentNotValidException ex, HttpServletRequest httpRequest) {
 
-        List<String> errors = exception.getBindingResult()
+        log.error(ex.getMessage(), ex);
+
+        List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -44,6 +50,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<OperationResponse> handleGenericException(Exception ex, HttpServletRequest httpRequest) {
+        log.error(ex.getMessage(), ex);
         return constructResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), httpRequest.getRequestURI());
     }
 
