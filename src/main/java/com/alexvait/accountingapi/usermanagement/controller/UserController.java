@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class UserController implements UserControllerAnnotated {
 
-    public static final String BASE_URL = "/user";
+    public static final String BASE_URL = "/api/v1/user";
 
     private final UserService userService;
     private final UserMapper userMapper = UserMapper.INSTANCE;

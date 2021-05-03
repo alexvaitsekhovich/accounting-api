@@ -24,7 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins = "*")
 public class InvoiceController implements InvoiceControllerAnnotated {
 
-    public static final String BASE_URL = "/invoice";
+    public static final String BASE_URL = "/api/v1/invoice";
 
     public static final String defaultInvoicesPageNumber = "0";
     public static final String defaultInvoicesPageSize = "5";

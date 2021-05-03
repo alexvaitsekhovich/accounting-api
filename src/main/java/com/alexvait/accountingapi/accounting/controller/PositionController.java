@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class PositionController implements PositionControllerAnnotated {
 
-    public static final String BASE_URL = "/position";
+    public static final String BASE_URL = "/api/v1/position";
 
     private final PositionService positionService;
     private final PositionMapper positionMapper = PositionMapper.INSTANCE;
