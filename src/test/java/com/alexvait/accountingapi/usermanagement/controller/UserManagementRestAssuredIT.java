@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("User management integration tests")
+@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'testing'}", loadContext = true)
 class UserManagementRestAssuredIT {
 
     public static final String APPLICATION_JSON = "application/json";
@@ -155,7 +157,7 @@ class UserManagementRestAssuredIT {
 
         assertAll(
                 "test returned fields",
-                () -> assertEquals(500, (int)jsonResponse.get("details.status"), "Last name comparison failed"),
+                () -> assertEquals(500, (int) jsonResponse.get("details.status"), "Last name comparison failed"),
                 () -> assertEquals("FAILURE", jsonResponse.get("responseState"), "Email name comparison failed")
         );
     }
