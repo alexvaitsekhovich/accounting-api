@@ -113,7 +113,7 @@
 					"query": [
 						{
 							"key": "",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -389,7 +389,7 @@
 					"query": [
 						{
 							"key": "",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -438,7 +438,7 @@
 					"query": [
 						{
 							"key": "",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -1109,7 +1109,7 @@
 					"query": [
 						{
 							"key": "",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -1407,7 +1407,7 @@
 					"query": [
 						{
 							"key": "",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -1833,7 +1833,7 @@
 					"query": [
 						{
 							"key": "",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -2052,7 +2052,7 @@
 							"let invoiceData = pm.response.json();",
 							"",
 							"pm.test(\"Test count of fields in objects\", function () {",
-							"    pm.expect(Object.keys(invoiceData).length).to.eql(5);",
+							"    pm.expect(Object.keys(invoiceData).length).to.eql(6);",
 							"    pm.expect(Object.keys(invoiceData._links).length).to.eql(2);",
 							"});",
 							"",
@@ -2232,7 +2232,7 @@
 							"let position = pm.response.json();",
 							"",
 							"pm.test(\"Test count of fields in objects\", function () {",
-							"    pm.expect(Object.keys(position).length).to.eql(7);",
+							"    pm.expect(Object.keys(position).length).to.eql(8);",
 							"    pm.expect(Object.keys(position._links).length).to.eql(1);",
 							"});",
 							"",
@@ -2293,7 +2293,7 @@
 							"let position = pm.response.json();",
 							"",
 							"pm.test(\"Test count of fields in objects\", function () {",
-							"    pm.expect(Object.keys(position).length).to.eql(6);",
+							"    pm.expect(Object.keys(position).length).to.eql(7);",
 							"    pm.expect(position._links).to.eql(undefined);",
 							"});",
 							"",
@@ -2354,7 +2354,7 @@
 							"let invoiceData = pm.response.json();",
 							"",
 							"pm.test(\"Test count of fields in objects\", function () {",
-							"    pm.expect(Object.keys(invoiceData).length).to.eql(5);",
+							"    pm.expect(Object.keys(invoiceData).length).to.eql(6);",
 							"    pm.expect(Object.keys(invoiceData._links).length).to.eql(2);",
 							"});",
 							"",
@@ -2600,7 +2600,7 @@
 							"let positionData = pm.response.json();",
 							"",
 							"pm.test(\"Test count of fields in objects\", function () {",
-							"    pm.expect(Object.keys(positionData).length).to.eql(7);",
+							"    pm.expect(Object.keys(positionData).length).to.eql(8);",
 							"    pm.expect(Object.keys(positionData._links).length).to.eql(1);",
 							"});",
 							"",

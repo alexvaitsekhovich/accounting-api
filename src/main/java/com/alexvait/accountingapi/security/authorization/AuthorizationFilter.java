@@ -1,6 +1,6 @@
 package com.alexvait.accountingapi.security.authorization;
 
-import com.alexvait.accountingapi.security.config.SecurityConfiguration;
+import com.alexvait.accountingapi.security.config.JwtTokenContainer;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.security.model.UserPrincipal;
 import com.alexvait.accountingapi.security.springcontext.SpringApplicationContextProvider;
@@ -24,8 +24,11 @@ import java.io.IOException;
 @Slf4j
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final JwtTokenContainer jwtTokenContainer;
+
+    public AuthorizationFilter(AuthenticationManager authenticationManager, JwtTokenContainer jwtTokenContainer) {
         super(authenticationManager);
+        this.jwtTokenContainer = jwtTokenContainer;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         try {
             String userEmail = Jwts.parser()
-                    .setSigningKey(SecurityConfiguration.getTokenSecret())
+                    .setSigningKey(jwtTokenContainer.getTokenSecret())
                     .parseClaimsJws(updatedAuthHeader)
                     .getBody()
                     .getSubject();
