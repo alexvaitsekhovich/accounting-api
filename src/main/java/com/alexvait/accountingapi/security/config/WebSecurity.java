@@ -21,15 +21,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenContainer jwtTokenContainer;
 
     // using my own implementation: com.alexvait.accountingapi.security.service.UserDetailsServiceImpl
     public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
-                       PasswordEncoder passwordEncoder,
-                       JwtTokenContainer jwtTokenContainer) {
+                       PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenContainer = jwtTokenContainer;
     }
 
     @Override
@@ -44,7 +41,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter())
-                .addFilter(new AuthorizationFilter(authenticationManager(), jwtTokenContainer));
+                .addFilter(new AuthorizationFilter(authenticationManager()));
 
         http.headers().frameOptions().disable();
     }
@@ -55,7 +52,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), jwtTokenContainer);
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
         filter.setFilterProcessesUrl(SecurityConstants.LOGIN_URL);
         return filter;
     }

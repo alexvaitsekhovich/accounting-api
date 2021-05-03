@@ -24,11 +24,8 @@ import java.io.IOException;
 @Slf4j
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    private final JwtTokenContainer jwtTokenContainer;
-
-    public AuthorizationFilter(AuthenticationManager authenticationManager, JwtTokenContainer jwtTokenContainer) {
+    public AuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
-        this.jwtTokenContainer = jwtTokenContainer;
     }
 
     @Override
@@ -50,6 +47,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         String updatedAuthHeader = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
 
         try {
+            JwtTokenContainer jwtTokenContainer = SpringApplicationContextProvider.getBean(JwtTokenContainer.class);
+
             String userEmail = Jwts.parser()
                     .setSigningKey(jwtTokenContainer.getTokenSecret())
                     .parseClaimsJws(updatedAuthHeader)

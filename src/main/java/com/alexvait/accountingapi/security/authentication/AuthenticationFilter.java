@@ -26,16 +26,9 @@ import java.util.Date;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenContainer jwtTokenContainer;
 
-//    public AuthenticationFilter(AuthenticationManager authenticationManager) {
-//        this.authenticationManager = authenticationManager;
-//    }
-
-
-    public AuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenContainer jwtTokenContainer) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenContainer = jwtTokenContainer;
     }
 
     @Override
@@ -60,6 +53,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse resp,
                                             FilterChain chain, Authentication authResult) {
 
+        JwtTokenContainer jwtTokenContainer = SpringApplicationContextProvider.getBean(JwtTokenContainer.class);
         String userEmail = ((UserPrincipal) authResult.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
