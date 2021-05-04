@@ -6,18 +6,15 @@ import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
 import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceHateoasBuilderUtil;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceResponseModelPagedList;
 import com.alexvait.accountingapi.accounting.model.response.hateoas.PositionHateoasBuilderUtil;
 import com.alexvait.accountingapi.accounting.service.InvoiceService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(InvoiceController.BASE_URL)
@@ -27,6 +24,7 @@ public class InvoiceController implements InvoiceControllerAnnotated {
     public static final String BASE_URL = "/api/v1/invoice";
 
     public static final String defaultInvoicesPageNumber = "0";
+
     public static final String defaultInvoicesPageSize = "5";
 
     private final InvoiceService invoiceService;
@@ -36,19 +34,11 @@ public class InvoiceController implements InvoiceControllerAnnotated {
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<InvoiceResponseModel>> getInvoices(
+    public InvoiceResponseModelPagedList getInvoices(
             @RequestParam(value = "page", required = false, defaultValue = defaultInvoicesPageNumber) int page,
             @RequestParam(value = "size", required = false, defaultValue = defaultInvoicesPageSize) int size) {
 
-        List<InvoiceDto> invoicesDto = invoiceService.getInvoices(page, size);
-
-        Link selfLink = linkTo(methodOn(InvoiceController.class).getInvoices(page, size)).withSelfRel();
-
-        List<EntityModel<InvoiceResponseModel>> invoices = invoicesDto.stream()
-                .map(InvoiceHateoasBuilderUtil::getInvoiceResponseModelHateoasFromDto)
-                .collect(Collectors.toList());
-
-        return CollectionModel.of(invoices, selfLink);
+        return invoiceService.getInvoices(page, size);
     }
 
     @GetMapping("/{invoiceNr}")
@@ -75,7 +65,7 @@ public class InvoiceController implements InvoiceControllerAnnotated {
         return InvoiceHateoasBuilderUtil.getInvoiceResponseModelHateoasFromDto(invoiceDto);
     }
 
-    public CollectionModel<EntityModel<InvoiceResponseModel>> getInvoices() {
+    public InvoiceResponseModelPagedList getInvoices() {
         return getInvoices(Integer.parseInt(defaultInvoicesPageNumber), Integer.parseInt(defaultInvoicesPageSize));
     }
 }

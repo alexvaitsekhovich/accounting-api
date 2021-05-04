@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/alexvaitsekhovich/accounting-api/branch/main/graph/badge.svg)](https://codecov.io/gh/alexvaitsekhovich/accounting-api) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0b0d328306c94036bbb320910b2f5cf9)](https://www.codacy.com/gh/alexvaitsekhovich/accounting-api/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexvaitsekhovich/accounting-api&amp;utm_campaign=Badge_Grade) [![Maintainability](https://api.codeclimate.com/v1/badges/932b96f3407d5d9f2ad1/maintainability)](https://codeclimate.com/github/alexvaitsekhovich/accounting-api/maintainability)
 
 Swagger UI:
-http://localhost:8080/swagger-ui.html
+{{url}}/swagger-ui.html
 
 Endpoints:
 

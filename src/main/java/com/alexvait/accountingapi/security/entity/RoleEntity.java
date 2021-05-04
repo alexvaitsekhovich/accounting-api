@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "roles")
@@ -20,7 +21,7 @@ public class RoleEntity {
     @Column(updatable = false, nullable = false)
     private long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 40)
     private String name;
 
     @ManyToMany(mappedBy = "roles")
@@ -31,7 +32,7 @@ public class RoleEntity {
             joinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authorityId", referencedColumnName = "id")
     )
-    private Collection<AuthorityEntity> authorities;
+    private Collection<AuthorityEntity> authorities = new HashSet<>();
 
     public RoleEntity(String name) {
         this.name = name;

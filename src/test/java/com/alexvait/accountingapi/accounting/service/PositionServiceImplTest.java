@@ -2,7 +2,6 @@ package com.alexvait.accountingapi.accounting.service;
 
 import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
 import com.alexvait.accountingapi.accounting.entity.PositionEntity;
-import com.alexvait.accountingapi.accounting.exception.AccessDeniedException;
 import com.alexvait.accountingapi.accounting.exception.PositionNotFoundException;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
@@ -19,6 +18,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.Optional;

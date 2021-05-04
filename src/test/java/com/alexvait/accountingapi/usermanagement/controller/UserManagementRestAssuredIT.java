@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("User management integration tests")
-@EnabledIf(value = "#{'${spring.profiles.active}' == 'testing'}", loadContext = true)
+//@EnabledIf(value = "#{'${spring.profiles.active}' == 'testing'}", loadContext = true)
 class UserManagementRestAssuredIT {
 
     public static final String APPLICATION_JSON = "application/json";
@@ -149,13 +149,13 @@ class UserManagementRestAssuredIT {
                 .when()
                 .delete(AdminController.BASE_URL + "/user/{publicId}")
                 .then()
-                .statusCode(500)
+                .statusCode(403)
                 .contentType(APPLICATION_JSON)
                 .extract().response().jsonPath();
 
         assertAll(
                 "test returned fields",
-                () -> assertEquals(500, (int) jsonResponse.get("details.status"), "Last name comparison failed"),
+                () -> assertEquals(403, (int) jsonResponse.get("details.status"), "Last name comparison failed"),
                 () -> assertEquals("FAILURE", jsonResponse.get("responseState"), "Email name comparison failed")
         );
     }
@@ -165,7 +165,7 @@ class UserManagementRestAssuredIT {
     @DisplayName("Test login as admin")
     void testLoginAdmin() {
         Map<String, String> loginData = new HashMap<>();
-        loginData.put("email", "admin@api.com");
+        loginData.put("email", "users-admin@api.com");
         loginData.put("password", "admin-pass");
 
         Response response = given()

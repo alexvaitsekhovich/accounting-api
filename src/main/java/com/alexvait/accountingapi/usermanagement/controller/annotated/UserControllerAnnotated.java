@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller.annotated;
 
+import com.alexvait.accountingapi.security.config.AuthorityConstants;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.usermanagement.model.request.UserCreateRequestModel;
 import com.alexvait.accountingapi.usermanagement.model.request.UserUpdateRequestModel;
@@ -34,7 +35,7 @@ public interface UserControllerAnnotated {
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "400", description = "User was not found", content = {@Content(mediaType = "application/json")})}
     )
-    @PreAuthorize("hasRole('" + SecurityConstants.ROLE_ADMIN + "') || #publicId == principal.publicId")
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.USER_READ + "') || #publicId == principal.publicId")
     EntityModel<UserResponseModel> getUser(
             @Parameter(description = "Id of the user") String publicId
     );
@@ -49,7 +50,7 @@ public interface UserControllerAnnotated {
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "400", description = "User was not found", content = {@Content(mediaType = "application/json")})}
     )
-    @PreAuthorize("hasRole('" + SecurityConstants.ROLE_ADMIN + "') || #publicId == principal.publicId")
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.USER_UPDATE + "') || #publicId == principal.publicId")
     EntityModel<UserResponseModel> updateUser(
             @Parameter(description = "Id of the user to be updated") String publicId,
             @Parameter(description = "New data for the user") UserUpdateRequestModel userReqModel

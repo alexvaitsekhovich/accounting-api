@@ -1,5 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.controller.annotated;
 
+import com.alexvait.accountingapi.security.config.AuthorityConstants;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import com.alexvait.accountingapi.usermanagement.model.dto.UserDto;
 import com.alexvait.accountingapi.usermanagement.model.response.UsersHateoasBuilderUtil;
@@ -14,9 +15,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Secured(SecurityConstants.ROLE_ADMIN)
 public interface AdminControllerAnnotated {
     @Operation(
             summary = "Get all users",
@@ -28,6 +29,7 @@ public interface AdminControllerAnnotated {
             @ApiResponse(responseCode = "200", description = "List of users was created", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.MULTIPLE_USERS_READ + "')")
     CollectionModel<EntityModel<UserResponseModel>> getUsers(
             @Parameter(description = "Page number") int page,
             @Parameter(description = "Page size") int size);
@@ -44,6 +46,7 @@ public interface AdminControllerAnnotated {
             @ApiResponse(responseCode = "200", description = "User was deleted", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.USER_DELETE + "')")
     OperationResponse deleteUser(@Parameter(description = "User id") @PathVariable String publicId);
 
 

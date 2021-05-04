@@ -19,7 +19,7 @@ public class AuthorityEntity {
     @Column(updatable = false, nullable = false)
     private long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 40)
     private String name;
 
     @ManyToMany(mappedBy = "authorities")

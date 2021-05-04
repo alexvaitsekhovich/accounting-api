@@ -11,10 +11,7 @@ public class SecurityConstants {
     public static final String SIGNUP_URL = UserController.BASE_URL;
     public static final String LOGIN_URL = "/gettoken";
 
-    public static final String READ_AUTHORITY = "CAN_READ";
-    public static final String WRITE_AUTHORITY = "CAN_WRITE";
-    public static final String DELETE_AUTHORITY = "CAN_DELETE";
-
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_SUPER_ADMIN = "ROLE_SUPER_ADMIN";
+    public static final String ROLE_USER_ADMIN = "ROLE_USER_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
 }
