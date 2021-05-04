@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("User management integration tests")
-//@EnabledIf(value = "#{'${spring.profiles.active}' == 'testing'}", loadContext = true)
+@EnabledIf(value = "#{'${spring.profiles.active}' == 'testing'}", loadContext = true)
 class UserManagementRestAssuredIT {
 
     public static final String APPLICATION_JSON = "application/json";

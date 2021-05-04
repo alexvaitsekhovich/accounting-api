@@ -26,12 +26,9 @@ class AdminControllerPermissionsTest {
     @Autowired
     WebApplicationContext wac;
 
-    String testUserPublicId;
-
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        testUserPublicId = userRepository.findAll().get(3).getPublicId();
     }
 
     @Test
