@@ -1,6 +1,5 @@
 package com.alexvait.accountingapi.usermanagement.controller;
 
-import com.alexvait.accountingapi.usermanagement.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AdminControllerPermissionsTest {
 
     protected MockMvc mockMvc;
-
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     WebApplicationContext wac;
