@@ -22,7 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -33,10 +36,15 @@ import java.util.stream.Stream;
 public class UsersSetup implements CommandLineRunner {
 
     private final AuthorityRepository authorityRepository;
+
     private final RoleRepository roleRepository;
+
     private final UserRepository userRepository;
+
     private final InvoiceRepository invoiceRepository;
+
     private final PositionRepository positionRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -123,7 +131,7 @@ public class UsersSetup implements CommandLineRunner {
         user.setEmail(email);
         user.setPublicId(RandomStringUtils.randomAlphanumeric(40));
         user.setEncryptedPassword(passwordEncoder.encode(password));
-        user.setRoles(Collections.singletonList(role));
+        user.setRoles(Set.of(role));
 
         if (userRepository.findByEmail(user.getEmail()) != null) {
             return null;

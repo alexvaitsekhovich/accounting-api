@@ -14,18 +14,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final UserMapper userMapper;
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         return convertUserEntityToDto(userRepository.save(userEntity));
     }
 
-    private Collection<RoleEntity> getRoleEntitiesFromRoleNames(Collection<String> roleNames) {
+    private Set<RoleEntity> getRoleEntitiesFromRoleNames(Collection<String> roleNames) {
         return roleNames.stream()
                 .map(roleRepository::findByName)
                 .filter(Objects::nonNull)

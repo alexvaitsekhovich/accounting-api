@@ -21,6 +21,9 @@ class AdminControllerPermissionsTest {
     protected MockMvc mockMvc;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     WebApplicationContext wac;
 
     @BeforeEach
