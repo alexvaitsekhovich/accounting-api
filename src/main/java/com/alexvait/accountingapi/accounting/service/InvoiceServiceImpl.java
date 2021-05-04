@@ -2,17 +2,22 @@ package com.alexvait.accountingapi.accounting.service;
 
 import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
 import com.alexvait.accountingapi.accounting.entity.PositionEntity;
-import com.alexvait.accountingapi.accounting.exception.AccessDeniedException;
 import com.alexvait.accountingapi.accounting.exception.InvoiceNotFoundException;
 import com.alexvait.accountingapi.accounting.exception.NotFoundException;
 import com.alexvait.accountingapi.accounting.mapper.InvoiceMapper;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
+import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceHateoasBuilderUtil;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceResponseModelPagedList;
 import com.alexvait.accountingapi.accounting.repository.InvoiceRepository;
 import com.alexvait.accountingapi.security.config.authentication.AuthenticationFacade;
 import com.alexvait.accountingapi.security.utils.RandomStringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +27,13 @@ import java.util.stream.Collectors;
 public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
+
     private final PositionService positionService;
+
     private final InvoiceMapper invoiceMapper;
+
     private final PositionMapper positionMapper;
+
     private final AuthenticationFacade authenticationFacade;
 
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository, PositionService positionService,
@@ -39,12 +48,22 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> getInvoices(int page, int size) {
-        List<InvoiceEntity> entitiesPage = invoiceRepository.findAllByUserId(getAuthenticatedUserId(), PageRequest.of(page, size));
+    public InvoiceResponseModelPagedList getInvoices(int page, int size) {
 
-        return entitiesPage.stream()
+        Page<InvoiceEntity> entitiesPage = invoiceRepository.findAllByUserId(getAuthenticatedUserId(), PageRequest.of(page, size));
+
+        List<EntityModel<InvoiceResponseModel>> invoiceResponseModelList = entitiesPage.stream()
                 .map(invoiceMapper::invoiceEntityToDto)
+                .map(InvoiceHateoasBuilderUtil::getInvoiceResponseModelHateoasFromDto)
                 .collect(Collectors.toList());
+
+        return new InvoiceResponseModelPagedList(
+                invoiceResponseModelList,
+                PageRequest.of(
+                        entitiesPage.getPageable().getPageNumber(),
+                        entitiesPage.getPageable().getPageSize()
+                ),
+                entitiesPage.getTotalElements());
     }
 
     @Override

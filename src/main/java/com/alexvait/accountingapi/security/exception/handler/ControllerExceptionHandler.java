@@ -48,6 +48,7 @@ public class ControllerExceptionHandler {
         return constructResponseEntity(HttpStatus.BAD_REQUEST, errors, httpRequest.getRequestURI());
     }
 
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<OperationResponse> handleGenericException(Exception ex, HttpServletRequest httpRequest) {
         log.error(ex.getMessage(), ex);

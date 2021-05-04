@@ -2,12 +2,12 @@ package com.alexvait.accountingapi.accounting.service;
 
 import com.alexvait.accountingapi.accounting.entity.InvoiceEntity;
 import com.alexvait.accountingapi.accounting.entity.PositionEntity;
-import com.alexvait.accountingapi.accounting.exception.AccessDeniedException;
 import com.alexvait.accountingapi.accounting.exception.PositionNotFoundException;
 import com.alexvait.accountingapi.accounting.mapper.PositionMapper;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.repository.PositionRepository;
 import com.alexvait.accountingapi.security.config.authentication.AuthenticationFacade;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

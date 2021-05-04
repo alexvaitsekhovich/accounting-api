@@ -2,6 +2,8 @@ package com.alexvait.accountingapi.accounting.controller.annotated;
 
 import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceResponseModelPagedList;
+import com.alexvait.accountingapi.security.config.AuthorityConstants;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Secured(SecurityConstants.ROLE_USER)
@@ -26,7 +29,8 @@ public interface InvoiceControllerAnnotated {
             @ApiResponse(responseCode = "200", description = "List of invoice was returned", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
-    CollectionModel<EntityModel<InvoiceResponseModel>> getInvoices(
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.MULTIPLE_INVOICES_READ + "')")
+    InvoiceResponseModelPagedList getInvoices(
             @Parameter(description = "Page number") int page,
             @Parameter(description = "Page size") int size);
 
@@ -41,6 +45,7 @@ public interface InvoiceControllerAnnotated {
             @ApiResponse(responseCode = "200", description = "Invoice was returned", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.INVOICE_READ + "')")
     EntityModel<InvoiceResponseModel> getInvoice(@Parameter(description = "Invoice number") @PathVariable String invoiceNr);
 
 
@@ -55,6 +60,7 @@ public interface InvoiceControllerAnnotated {
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "Invoice not found", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.MULTIPLE_POSITIONS_READ + "')")
     CollectionModel<EntityModel<PositionResponseModel>> getBilledPositions(@Parameter(description = "Invoice number") @PathVariable String invoiceNr);
 
 
@@ -69,6 +75,7 @@ public interface InvoiceControllerAnnotated {
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "No open positions found", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.INVOICE_GENERATE + "')")
     EntityModel<InvoiceResponseModel> createInvoice();
 
 }

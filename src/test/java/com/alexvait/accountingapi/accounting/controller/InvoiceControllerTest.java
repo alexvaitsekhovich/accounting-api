@@ -6,6 +6,8 @@ import com.alexvait.accountingapi.accounting.model.dto.InvoiceDto;
 import com.alexvait.accountingapi.accounting.model.dto.PositionDto;
 import com.alexvait.accountingapi.accounting.model.response.InvoiceResponseModel;
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceHateoasBuilderUtil;
+import com.alexvait.accountingapi.accounting.model.response.hateoas.InvoiceResponseModelPagedList;
 import com.alexvait.accountingapi.accounting.service.InvoiceService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,54 +41,6 @@ class InvoiceControllerTest {
 
     @Mock
     private InvoiceService invoiceService;
-
-    @Test
-    @DisplayName("Test getInvoices")
-    void testGetInvoices() {
-
-        int page = 1;
-        int pageSize = 10;
-
-        // arrange
-        List<InvoiceDto> invoicesDto = IntStream.range(0, pageSize)
-                .mapToObj(i -> createTestInvoiceDto())
-                .collect(Collectors.toList());
-
-        when(invoiceService.getInvoices(anyInt(), anyInt())).thenReturn(invoicesDto);
-
-        // act
-        CollectionModel<EntityModel<InvoiceResponseModel>> collectionModel = invoiceController.getInvoices(page, pageSize);
-        Collection<EntityModel<InvoiceResponseModel>> responseModels = collectionModel.getContent();
-
-        //assert
-        assertAll(
-                "test collection model",
-                () -> assertTrue(collectionModel.getLinks().hasSize(1), "hasSize failed"),
-                () -> assertNotNull(collectionModel.getLink("self"), "self link failed")
-        );
-
-        assertAll(
-                "test entity models",
-                () -> assertEquals(pageSize, responseModels.size(), "size failed"),
-                () -> assertThat(
-                        "contains element failed",
-                        invoicesDto.stream().map(InvoiceMapper.INSTANCE::invoiceDtoToResponseModel).collect(Collectors.toList())
-                        , containsInAnyOrder(responseModels.stream().map(EntityModel::getContent).toArray())
-                )
-        );
-
-        responseModels.forEach(responseModel ->
-                assertAll(
-                        "test entity models links for number #" + responseModel.getContent().getNumber(),
-                        () -> assertTrue(responseModel.getLinks().hasSize(2), "hasSize failed"),
-                        () -> assertNotNull(responseModel.getLink("self"), "self link failed"),
-                        () -> assertNotNull(responseModel.getLink("positions"), "positions link failed")
-                )
-        );
-
-        verify(invoiceService).getInvoices(page, pageSize);
-        verifyNoMoreInteractions(invoiceService);
-    }
 
     @Test
     @DisplayName("Test getInvoices with default pagination")

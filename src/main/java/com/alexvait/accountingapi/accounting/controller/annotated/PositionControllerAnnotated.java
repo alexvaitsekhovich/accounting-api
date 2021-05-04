@@ -2,6 +2,7 @@ package com.alexvait.accountingapi.accounting.controller.annotated;
 
 import com.alexvait.accountingapi.accounting.model.request.PositionCreateRequestModel;
 import com.alexvait.accountingapi.accounting.model.response.PositionResponseModel;
+import com.alexvait.accountingapi.security.config.AuthorityConstants;
 import com.alexvait.accountingapi.security.config.SecurityConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public interface PositionControllerAnnotated {
             @ApiResponse(responseCode = "200", description = "List of positions was returned", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.MULTIPLE_POSITIONS_READ + "')")
     CollectionModel<EntityModel<PositionResponseModel>> getFreePositions();
 
 
@@ -42,6 +45,7 @@ public interface PositionControllerAnnotated {
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "Position not found", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.POSITION_READ + "')")
     EntityModel<PositionResponseModel> getPosition(@Parameter(description = "Position id") @PathVariable long positionId);
 
 
@@ -56,6 +60,7 @@ public interface PositionControllerAnnotated {
             @ApiResponse(responseCode = "400", description = "Invalid position data", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.POSITION_CREATE + "')")
     EntityModel<PositionResponseModel> createPosition(
             @Parameter(description = "Data of the position to be created") PositionCreateRequestModel positionReqModel
     );
@@ -71,6 +76,7 @@ public interface PositionControllerAnnotated {
             @ApiResponse(responseCode = "200", description = "List was returned", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "403", description = "Access denied", content = {@Content(mediaType = "application/json")})}
     )
+    @PreAuthorize("hasAuthority('" + AuthorityConstants.LIST_PAYMENTS + "')")
     List<String> getPayments();
 
 }

@@ -1,7 +1,6 @@
 package com.alexvait.accountingapi.usermanagement.entity;
 
 import com.alexvait.accountingapi.security.entity.RoleEntity;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +12,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -55,7 +54,7 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id")
     )
-    private Collection<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
 
     @CreationTimestamp
     @EqualsAndHashCode.Exclude

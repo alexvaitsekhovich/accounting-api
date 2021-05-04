@@ -1,12 +1,12 @@
 package com.alexvait.accountingapi.accounting.exception.handler;
 
-import com.alexvait.accountingapi.accounting.exception.AccessDeniedException;
 import com.alexvait.accountingapi.accounting.exception.NotFoundException;
 import com.alexvait.accountingapi.usermanagement.model.response.OperationResponse;
 import com.alexvait.accountingapi.usermanagement.model.response.ResponseOperationState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
