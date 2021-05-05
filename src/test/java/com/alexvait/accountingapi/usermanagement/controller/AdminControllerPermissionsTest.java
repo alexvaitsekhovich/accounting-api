@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Test access permission for Admin controller")
+@Disabled
 class AdminControllerPermissionsTest {
 
     protected MockMvc mockMvc;
