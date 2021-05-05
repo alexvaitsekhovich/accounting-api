@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "authorities")
@@ -23,7 +24,7 @@ public class AuthorityEntity {
     private String name;
 
     @ManyToMany(mappedBy = "authorities")
-    private Collection<RoleEntity> roles;
+    private Set<RoleEntity> roles;
 
     public AuthorityEntity(String name) {
         this.name = name;
