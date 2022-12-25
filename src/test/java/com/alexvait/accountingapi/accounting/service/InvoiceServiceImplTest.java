@@ -89,12 +89,6 @@ class InvoiceServiceImplTest {
         assertNotNull(invoicesPagedList);
         assertEquals(pageSize, invoicesPagedList.getSize());
 
-        List<InvoiceDto> invoicesDtoExpected = testingInvoiceEntities.stream()
-                .map(InvoiceMapper.INSTANCE::invoiceEntityToDto)
-                .collect(Collectors.toList());
-
-        //assertThat(invoicesDtoExpected, containsInAnyOrder(invoicesPagedList.toArray()));
-
         verify(invoiceRepository).findAllByUserId(anyLong(), any(PageRequest.class));
         verifyNoMoreInteractions(invoiceRepository);
     }
