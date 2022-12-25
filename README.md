@@ -12,4 +12,4 @@ Endpoints:
 
 <br>
 
-<img src="https://github.com/alexvaitsekhovich/images/blob/main/accounting_api.png" width="800px" height="821px" alt="Accounting API endpoints">
+<img src="https://github.com/alexvaitsekhovich/images/blob/main/accounting_api.png" width="800px" height="520px" alt="Accounting API endpoints">
